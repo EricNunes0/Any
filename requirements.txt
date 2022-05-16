@@ -1,0 +1,16 @@
+discord.py
+requests
+datetime
+aiohttp
+animec
+asyncio
+components
+discord
+discord-components
+discord-py-slash-command
+googletrans
+nextcord
+Pillow
+PyNaCl
+python-dotenv
+rule34
