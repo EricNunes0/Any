@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions, bot_has_permissions, BotMissingPermissions, MissingPermissions
+import math
 import asyncio
 import datetime
 from io import BytesIO
@@ -56,6 +57,16 @@ userPermEmoji = discord.Embed(title = f"Sem permissão", description = f"『❌�
 userPermEmoji.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
 botPermEmoji = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar emojis`", color = 0xFF0000)
 botPermEmoji.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+
+userPermRole = discord.Embed(title = f"Sem permissão", description = f"『❌』Você não tem as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar cargos`", color = 0xFF0000)
+userPermRole.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+botPermRole = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar cargos`", color = 0xFF0000)
+botPermRole.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+
+userPermMsg = discord.Embed(title = f"Sem permissão", description = f"『❌』Você não tem as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar mensagens`", color = 0xFF0000)
+userPermMsg.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+botPermMsg = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar mensagens`", color = 0xFF0000)
+botPermMsg.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
 
 bot.ses = aiohttp.ClientSession()
 class cog_mod(commands.Cog):
@@ -120,49 +131,78 @@ class cog_mod(commands.Cog):
             await ctx.reply(embed=embed)
 
     @commands.command(name="addrole", aliases=["createrole"])
+    @bot_has_permissions(manage_roles = True)
+    @has_permissions(manage_roles = True)
     @cooldown(1,3, type = commands.BucketType.user)
-    async def addrole(self, ctx, *, name = None):
-        if name == None:
-            return await ctx.send(f"❌| {ctx.author.mention}, informe o nome do cargo.")
+    async def addrole(self, ctx, *, name):
         if ctx.author.guild_permissions.manage_roles:
-            #await open_account(ctx.author)
-            #users = await get_bank_data()
-            #user = ctx.author
-            #earnings = 1
-            #users[str(user.id)]["wallet"] += earnings
-            #with open("mainbank.json","w") as f:
-            #    json.dump(users,f)
-            await ctx.guild.create_role(name=name, colour=discord.Colour(0x4050ff))
-            role = discord.utils.get(ctx.guild.roles, name=name)
-            await ctx.send(f'✅| {ctx.author.mention}, o cargo foi criado com sucesso: {role.mention}\n**<:anicoin:919293624850727022>|**')
-        else:
-            await ctx.send(f"❌| {ctx.author.mention}, você não tem permissão para criar cargos neste servidor! Permissões necessárias: `Gerenciar cargos`")
+            await ctx.guild.create_role(name = name)
+            role = discord.utils.get(ctx.guild.roles, name = name)
+            createdRole = discord.Embed(title = f"Emoji criado", description = f"『✅』O cargo foi criado com sucesso!\n『➡️』Cargo: {role.mention}", color = 0x40ffb0)
+            createdRole.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
+            createdRole.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            await ctx.reply(embed = createdRole)
+
+    @addrole.error
+    async def addrole_error(self, ctx, error):
+        if isinstance(error, BotMissingPermissions):
+            await ctx.reply(embed = botPermRole)
+        elif isinstance(error, commands.MissingPermissions):
+            await ctx.reply(embed = userPermRole)
+        elif isinstance(error, commands.MissingRequiredArgument):
+            now = datetime.datetime.now()
+            now = now.strftime("%d/%m/%Y - %H:%M:%S")
+            embed = discord.Embed(title = f"『+💼』{command_prefix}addrole", color = 0x4070ff)
+            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
+            embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Cria um cargo para o servidor.`", inline = False)
+            embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}createrole`", inline = False)
+            embed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}addrole <nome>`", inline = False)
+            embed.add_field(name = f"『💬』Exemplo:", value = f"`{command_prefix}addrole Novo cargo`", inline = False)
+            embed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Gerenciar cargos`", inline = False)
+            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            embed.set_thumbnail(url="https://i.imgur.com/FEp8F1G.gif")
+            await ctx.reply(embed=embed)
 
     @commands.command(name='clear', aliases= ['purge','delete'])
+    @bot_has_permissions(manage_messages = True)
+    @has_permissions(manage_messages = True)
     @cooldown(1,3, type = commands.BucketType.user)
-    async def clear(self, ctx, amount : int = 0):
+    async def clear(self, ctx, amount):
         if ctx.author.guild_permissions.manage_messages:
-            #await open_account(ctx.author)
-            #users = await get_bank_data()
-            #user = ctx.author
-            #earnings = 2
-            #users[str(user.id)]["wallet"] += earnings
-            #with open("mainbank.json","w") as f:
-            #    json.dump(users,f)
-            if amount == None:
-                await ctx.channel.purge(limit=1000)
+            try:
+                int(amount)
+            except:
+                NaN = discord.Embed(title = f"Valor inválido", description = f"『❌』{ctx.author.mention}, `{amount}` não é um valor válido!\n『🔢』Informe um valor entre 1 e 1000!", color = 0xFF0000)
+                NaN.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+                return await ctx.reply(embed = NaN)
             else:
-                try:
-                    int(amount)
-                except: # Error handler
-                    await ctx.send('Digite uma quantidade entre 1 e 1000!')
-                else:
-                    await ctx.channel.purge(limit=amount + 1)
-            del_msg = await ctx.send(f"『<:ab_intAzul:911068022075179098>』O chat teve {amount} mensagens apagadas por {ctx.author.mention}!\n<:anicoin:919293624850727022>|")
-            await asyncio.sleep(5)
-            await del_msg.delete()
-        else:
-            await ctx.send(f"❌| {ctx.author.mention}, você não tem permissão para apagar mensagens. Permissões necessárias: `Gerenciar mensagens`")
+                await ctx.channel.purge(limit=int(amount) + 1)
+                clearedMsg = discord.Embed(title = f"Mensagens apagadas!", description = f"『🧹』O canal teve {int(amount)} mensagens apagadas!", color = 0x40ffb0)
+                clearedMsg.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
+                clearedMsg.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+                del_msg = await ctx.send(embed = clearedMsg)
+                await asyncio.sleep(5)
+                return await del_msg.delete()
+
+    @clear.error
+    async def clear_error(self, ctx, error):
+        if isinstance(error, BotMissingPermissions):
+            await ctx.reply(embed = botPermMsg)
+        elif isinstance(error, commands.MissingPermissions):
+            await ctx.reply(embed = userPermMsg)
+        elif isinstance(error, commands.MissingRequiredArgument):
+            now = datetime.datetime.now()
+            now = now.strftime("%d/%m/%Y - %H:%M:%S")
+            embed = discord.Embed(title = f"『🧹』{command_prefix}clear", color = 0x4070ff)
+            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
+            embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Apaga uma quantidade de mensagens.`", inline = False)
+            embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}delete, {command_prefix}purge`", inline = False)
+            embed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}clear <número>`", inline = False)
+            embed.add_field(name = f"『💬』Exemplo:", value = f"`{command_prefix}clear 10`", inline = False)
+            embed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Gerenciar mensagens`", inline = False)
+            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            embed.set_thumbnail(url="https://i.imgur.com/FEp8F1G.gif")
+            await ctx.reply(embed=embed)
 
     @commands.command(name="color", aliases=["rgb","rbg","grb","gbr","brg","bgr"])
     @cooldown(1,3, type = commands.BucketType.user)

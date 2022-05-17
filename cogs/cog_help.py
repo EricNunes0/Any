@@ -1,7 +1,11 @@
+import imp
 import discord
 from discord.ext import commands
+from discord import ActionRow, Button, ButtonStyle
 import datetime
 import json
+
+from setuptools import Command
 
 intents = discord.Intents.default()
 intents.members = True
@@ -13,7 +17,7 @@ now = now.strftime("%d/%m/%Y - %H:%M:%S")
 #        prefixes = json.load(f)
 #    return prefixes[str(message.guild.id)]
 command_prefix = "a!"
-bot = commands.Bot(command_prefix = "a!", intents=intents,  case_insensitive = True)
+bot = commands.Bot(command_prefix = "a!", intents = discord.Intents.all(),  case_insensitive = True)
 
 def cooldown(rate, per_sec=0, per_min=0, per_hour=0, type=commands.BucketType.default):
     return commands.cooldown(rate, per_sec + 60 * per_min + 3600 * per_hour, type)
@@ -28,15 +32,17 @@ Dpink = "<a:ab_PinkDiamond:938882959472205874>"
 Dpurple = "<a:ab_PurpleDiamond:938883672717787196>"
 Dgray = "<a:ab_GrayDiamond:938884683771543572>"
 
+components = [ActionRow(
+            Button(label='Moderação',custom_id='mod',emoji="🆒",style=ButtonStyle.green),
+            Button(label='Diversão',custom_id='fun',emoji="🆗",style=ButtonStyle.green)),
+]
+
 class cog_div(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.group(invoke_without_command=True)
-    async def help(self, ctx):
-        #with open('prefixes.json', 'r') as f:
-        #    prefixes = json.load(f)
-        #prefix = prefixes[str(ctx.guild.id)]
+    async def help(self, ctx: commands.Context):
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
         embed = discord.Embed(description = f"<:NarutoPaint:819963300389453874> • Oi {ctx.author.mention}, eu sou o **AnyBot**. Estou aqui para divertir você(s). Meu prefixo padrão é `a!`, e meu prefixo neste servidor é `{command_prefix}`\n<:SakuraPaint:820513193260089365> • Gostaria de sugerir algum comando para mim? Entre em contato com o meu criador: `Eric2605#9133`\n<:ShikamaruPaint:820479198211997716> • Atualmente eu tenho **125** comandos. Digite `{command_prefix}comandos` para ver os meus comandos.",color = 0x2dffe7)
@@ -45,7 +51,9 @@ class cog_div(commands.Cog):
         embed.add_field(name="Categorias:", value="```fix\nMod - Fun - NSFW - Util - Photoshop - Diversos - Jogos\n```", inline=True)
         embed.add_field(name="Extras:", value="**[Meu servidor](https://discord.gg/77ax3PyXgn) | [Canal YT](https://www.youtube.com/channel/UCoo5WAMn4tMl-b0lW0KL9Ug) | [Vote](https://top.gg/bot/900346730237820939/vote)**", inline=False)
         embed.set_thumbnail(url=self.bot.user.avatar_url)
-        await ctx.reply(embed=embed)
+        print('10')
+        await ctx.reply(embed = embed)
+
     @help.command()
     async def mod(self, ctx):
         now = datetime.datetime.now()
