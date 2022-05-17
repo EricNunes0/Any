@@ -1,4 +1,5 @@
 discord.py
+dotenv
 requests
 datetime
 aiohttp
@@ -6,10 +7,13 @@ animec
 asyncio
 components
 discord
+discord.ext
 discord-components
 discord-py-slash-command
 googletrans
 nextcord
+os
+PIL
 Pillow
 PyNaCl
 python-dotenv
