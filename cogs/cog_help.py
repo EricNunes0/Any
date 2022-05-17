@@ -32,11 +32,6 @@ Dpink = "<a:ab_PinkDiamond:938882959472205874>"
 Dpurple = "<a:ab_PurpleDiamond:938883672717787196>"
 Dgray = "<a:ab_GrayDiamond:938884683771543572>"
 
-components = [discord.ActionRow(
-            discord.Button(label='Moderação',custom_id='mod',emoji="🆒",style=ButtonStyle.green),
-            discord.Button(label='Diversão',custom_id='fun',emoji="🆗",style=ButtonStyle.green)),
-]
-
 class cog_div(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
