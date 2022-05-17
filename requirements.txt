@@ -10,7 +10,6 @@ discord-components
 discord-py-slash-command
 googletrans
 nextcord
-PIL
 Pillow
 PyNaCl
 python-dotenv
