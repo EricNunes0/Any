@@ -38,12 +38,6 @@ for filename in os.listdir('./cogs'):
 
 #os.chdir("./images")
 
-@bot.event
-async def on_ready():
-    activity = discord.Game(name=f"a!help", type=3)
-    await bot.change_presence(status=discord.Status.online, activity=activity)
-    print(f"Estou pronto! Eu sou o {bot.user}")
-    DiscordComponents(client)
 
 
 
