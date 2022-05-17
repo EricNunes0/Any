@@ -38,27 +38,12 @@ for filename in os.listdir('./cogs'):
 
 #os.chdir("./images")
 
-async def statuschange():
-    activity1 = discord.Game(name=f"120 comandos no AnyBot!", type=3)
-    activity2 = discord.Activity(name=f"a!help", type=3)
-    activity3 = discord.Game(name=f"Comandos slash em breve...", type=3)
-    
-    while True:
-        await asyncio.sleep(10)
-        await bot.change_presence(status=discord.Status.online, activity=activity1)
-        await asyncio.sleep(20)
-        await bot.change_presence(status=discord.Status.online, activity=activity2)
-        await asyncio.sleep(20)
-        await bot.change_presence(status=discord.Status.online, activity=activity3)
-        await asyncio.sleep(20)
-
 @bot.event
 async def on_ready():
     activity = discord.Game(name=f"a!help", type=3)
     await bot.change_presence(status=discord.Status.online, activity=activity)
     print(f"Estou pronto! Eu sou o {bot.user}")
     DiscordComponents(client)
-    bot.loop.create_task(statuschange())
 
 @bot.event
 async def on_command_error(ctx, error):
