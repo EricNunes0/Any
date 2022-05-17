@@ -6,7 +6,6 @@ animec
 asyncio
 components
 discord
-discord.ext
 discord-components
 discord-py-slash-command
 googletrans
