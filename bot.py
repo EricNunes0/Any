@@ -36,7 +36,7 @@ for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         bot.load_extension(f'cogs.{filename[:-3]}')
 
-#os.chdir("./images")
+os.chdir("./images")
 
 async def statuschange():
     activity1 = discord.Game(name=f"120 comandos no AnyBot!", type=3)
