@@ -76,9 +76,6 @@ class cog_mod(commands.Cog):
     @commands.command(name="mod", aliases = ["⚙️"])
     @cooldown(1,3, type = commands.BucketType.user)
     async def mod(self, ctx):
-        #with open('prefixes.json', 'r') as f:
-        #    prefixes = json.load(f)
-        #prefix = prefixes[str(ctx.guild.id)]
         embed = discord.Embed(title = f"『⚙』Moderação [28]『<a:ab_GemBlue:936824926671892530>』",description = f"**`addemoji - addrole - ban - clear - clone - createchannel - createinvite - deletechannel - deleteinvites - invites - kick - listban - lock - mute - nuke - removeemoji - removerole - renamechannel - say - sayembed - setguildicon - setguildname - setnick - setprefix - slowmode - unban - unlock - unmute`**",color = 0x0055c5)
         embed.set_footer(text=f"• Para obter informações de cada comando, digite {command_prefix}help <comando>", icon_url=self.bot.user.avatar_url)
         embed.set_thumbnail(url="https://i.imgur.com/Zyaj8U0.gif")
