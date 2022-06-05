@@ -53,10 +53,20 @@ def cooldown(rate, per_sec=0, per_min=0, per_hour=0, type=commands.BucketType.de
 #    bal = [users[str(user.id)]["wallet"],users[str(user.id)]["bank"]]
 #    return bal
 
+userPermChannel = discord.Embed(title = f"Sem permissão", description = f"『❌』Você não tem as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar canais`", color = 0xFF0000)
+userPermChannel.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+botPermChannel = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar canais`", color = 0xFF0000)
+botPermChannel.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+
 userPermEmoji = discord.Embed(title = f"Sem permissão", description = f"『❌』Você não tem as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar emojis`", color = 0xFF0000)
 userPermEmoji.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
 botPermEmoji = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar emojis`", color = 0xFF0000)
 botPermEmoji.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+
+userPermInvite = discord.Embed(title = f"Sem permissão", description = f"『❌』Você não tem as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Criar convites`", color = 0xFF0000)
+userPermInvite.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+botPermInvite = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Criar convites`", color = 0xFF0000)
+botPermInvite.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
 
 userPermRole = discord.Embed(title = f"Sem permissão", description = f"『❌』Você não tem as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar cargos`", color = 0xFF0000)
 userPermRole.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
@@ -169,12 +179,19 @@ class cog_mod(commands.Cog):
             try:
                 int(amount)
             except:
-                NaN = discord.Embed(title = f"Valor inválido", description = f"『❌』{ctx.author.mention}, `{amount}` não é um valor válido!\n『🔢』Informe um valor entre 1 e 1000!", color = 0xFF0000)
+                NaN = discord.Embed(title = f"Valor inválido", description = f"『❌』{ctx.author.mention}, `{amount}` não é um valor válido!\n『🔢』Informe um valor entre 1 e 100!", color = 0xFF0000)
                 NaN.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
                 return await ctx.reply(embed = NaN)
             else:
-                await ctx.channel.purge(limit=int(amount) + 1)
-                clearedMsg = discord.Embed(title = f"Mensagens apagadas!", description = f"『🧹』O canal teve {int(amount)} mensagens apagadas!", color = 0x40ffb0)
+                total = int(amount) + 1
+                if total >= 100:
+                    total = 100
+                if total <= 0:
+                    NaN = discord.Embed(title = f"Valor inválido", description = f"『❌』{ctx.author.mention}, `{amount}` não é um valor válido!\n『🔢』Informe um valor entre 1 e 100!", color = 0xFF0000)
+                    NaN.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+                    return await ctx.reply(embed = NaN)
+                await ctx.channel.purge(limit=int(total))
+                clearedMsg = discord.Embed(title = f"Mensagens apagadas!", description = f"『🧹』O canal teve {int(total)} mensagens apagadas!", color = 0x40ffb0)
                 clearedMsg.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
                 clearedMsg.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
                 del_msg = await ctx.send(embed = clearedMsg)
@@ -236,39 +253,55 @@ class cog_mod(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(name="createchannel", aliases = ["channelcreate","addchannel","channeladd"])
+    @bot_has_permissions(manage_channels = True)
+    @has_permissions(manage_channels = True)
     @cooldown(1,30, type = commands.BucketType.user)
-    async def createchannel(self, ctx, *, channel_name = None):
+    async def createchannel(self, ctx, *, channel_name):
         if ctx.author.guild_permissions.manage_channels:
-            if channel_name == None: 
-                return await ctx.send(f"**❌| {ctx.author.mention}**, informe o nome do novo canal.\n**⁉|** Para mais informações sobre o comando, digite `a!help createchannel`")
-            #await open_account(ctx.author)
-            #users = await get_bank_data()
-            #earnings = 2
-            #users[str(ctx.author.id)]["wallet"] += earnings
-            #with open("mainbank.json","w") as f:
-            #    json.dump(users,f)
             new_channel = await ctx.guild.create_text_channel(channel_name)
             await new_channel.send(f"**👶| {ctx.author.mention}**, este canal foi criado com sucesso!\n**<:anicoin:919293624850727022>|**")
-            await ctx.send(f"**✅| {ctx.author.mention}**, o canal {new_channel.name} foi criado com sucesso!")
+            createdRole = discord.Embed(title = f"Canal criado", description = f"『✅』O canal de texto foi criado com sucesso!\n『📕』Canal: {new_channel.mention}", color = 0x40ffb0)
+            createdRole.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
+            createdRole.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            await ctx.reply(embed = createdRole)
         else:
-            await ctx.send(f"❌| {ctx.author.mention}, você não tem a permissão para criar canais! Permissões necessárias: `Gerenciar canais`")
+            await ctx.send(f"『❌』 {ctx.author.mention}, você não tem a permissão para criar canais! Permissões necessárias: `Gerenciar canais`")
+
+    @createchannel.error
+    async def createchannel_error(self, ctx, error):
+        if isinstance(error, BotMissingPermissions):
+            await ctx.reply(embed = botPermChannel)
+        elif isinstance(error, commands.MissingPermissions):
+            await ctx.reply(embed = userPermChannel)
+        elif isinstance(error, commands.MissingRequiredArgument):
+            now = datetime.datetime.now()
+            now = now.strftime("%d/%m/%Y - %H:%M:%S")
+            embed = discord.Embed(title = f"『📕』{command_prefix}createchannel", color = 0x4070ff)
+            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
+            embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Cria um canal de texto.`", inline = False)
+            embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}channelcreate, {command_prefix}addchannel, {command_prefix}channeladd`", inline = False)
+            embed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}createchannel <nome>`", inline = False)
+            embed.add_field(name = f"『💬』Exemplo:", value = f"`{command_prefix}createchannel Novo canal`", inline = False)
+            embed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Gerenciar canais`", inline = False)
+            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            embed.set_thumbnail(url="https://i.imgur.com/FEp8F1G.gif")
+            await ctx.reply(embed=embed)
+
 
     @commands.command(name='createinvite', aliases = ["invite","convite"])
+    @bot_has_permissions(create_instant_invite = True)
+    @has_permissions(create_instant_invite = True)
     @cooldown(1,5, type = commands.BucketType.user)
-    async def createinvite(self, ctx, time = None):
-        #with open('prefixes.json', 'r') as f:
-        #    prefixes = json.load(f)
-        #prefix = prefixes[str(ctx.guild.id)]
+    async def createinvite(self, ctx, time):
         if ctx.author.guild_permissions.create_instant_invite:
-            if time == None:
-                await ctx.send(f"⏰| {ctx.author.mention}, você precisa informar o tempo de convite.\n🔸| Tempos disponíveis: `s (segundos) - m (minutos) - h (horas) - d (dias)`\n🔹| Exemplo: `{command_prefix}createinvite 1m`\n♾️| OBS: Caso queira que o convite nunca expire, use `{command_prefix}createinvite 0s`")
-                return
             try:
                 seconds = time[:-1]
                 duration = time[-1]
                 minutes = int(seconds) * 60
                 hours = int(seconds) * 3600
                 days = int(seconds) * 86400
+                if seconds < 0: 
+                    return await ctx.send(f"⏱| {ctx.author.mention}, duração de convite inválido.\n🔸| Durações disponíveis: `s (segundos) - m (minutos) - h (horas) - d (dias)`\n🔹| Exemplo: `{command_prefix}createinvite 1m`")
                 if duration.lower() == "s":
                     seconds = seconds * 1
                 elif duration.lower() == "m":
@@ -278,30 +311,52 @@ class cog_mod(commands.Cog):
                 elif duration.lower() == "d":
                     seconds = int(days)
                 else:
-                    await ctx.send(f"⏱| {ctx.author.mention}, duração de convite inválido.\n🔸| Durações disponíveis: `s (segundos) - m (minutos) - h (horas) - d (dias)`\n🔹| Exemplo: `{command_prefix}createinvite 1m`")
-                    return
+                    return await ctx.send(f"⏱| {ctx.author.mention}, duração de convite inválido.\n🔸| Durações disponíveis: `s (segundos) - m (minutos) - h (horas) - d (dias)`\n🔹| Exemplo: `{command_prefix}createinvite 1m`")
             except Exception as e:
                 print(e)
                 await ctx.send(f"⏱| {ctx.author.mention}, tempo de convite inválido.\n🔸| Durações disponíveis: `s (segundos) - m (minutos) - h (horas) - d (dias)`\n🔹| Exemplo: `{command_prefix}createinvite 1m`")
                 return
             invitelink = await ctx.channel.create_invite(max_age=seconds)
-            embed = discord.Embed(
-                title="✉️| Convite criado com sucesso!",
-                description=f"**Link do convite:** {invitelink}",
-                color = 0x0055c5
-            )
-            embed.set_footer(text="Criado por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
+            createdInvite = discord.Embed( title="『✉️』 Convite criado com sucesso!", description=f"**Link do convite:** {invitelink}", color = 0x40ffb0)
+            createdInvite.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
+            createdInvite.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            
+            await ctx.send(embed=createdInvite)
             print(invitelink)
         else:
             await ctx.send(f"❌| {ctx.author.mention}, você não tem a permissão para usar este comando! Permissões necessárias: `Criar convites`")
+
+    @createinvite.error
+    async def createinvite_error(self, ctx, error):
+        if isinstance(error, BotMissingPermissions):
+            await ctx.reply(embed = botPermInvite)
+        elif isinstance(error, commands.MissingPermissions):
+            await ctx.reply(embed = userPermInvite)
+        elif isinstance(error, commands.MissingRequiredArgument):
+            now = datetime.datetime.now()
+            now = now.strftime("%d/%m/%Y - %H:%M:%S")
+            embed = discord.Embed(title = f"『✉️』{command_prefix}createinvite", color = 0x4070ff)
+            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
+            embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Cria um convite para o servidor.`", inline = False)
+            embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}invite, {command_prefix}convite`", inline = False)
+            embed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}createinvite <tempo><s/m/h/d>`", inline = False)
+            embed.add_field(name = f"『💬』Exemplos¹ (60 segundos):", value = f"`{command_prefix}createinvite 60s`", inline = False)
+            embed.add_field(name = f"『💬』Exemplos² (30 minutos):", value = f"`{command_prefix}createinvite 30m`", inline = False)
+            embed.add_field(name = f"『💬』Exemplos³ (24 horas):", value = f"`{command_prefix}createinvite 24h`", inline = False)
+            embed.add_field(name = f"『💬』Exemplos⁴ (7 dias):", value = f"`{command_prefix}createinvite 7d`", inline = False)
+            embed.add_field(name = f"『💬』Exemplos⁵ (Ilimitado):", value = f"`{command_prefix}createinvite 0s`", inline = False)
+            embed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Criar convites`", inline = False)
+            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            embed.set_thumbnail(url="https://i.imgur.com/FEp8F1G.gif")
+            await ctx.reply(embed=embed)
+
 
     @commands.command(name='invites', aliases = ["allinvites","invitesall","convites"])
     @cooldown(1,5, type = commands.BucketType.user)
     async def invites(self, ctx):
         if ctx.author.guild_permissions.manage_guild:
             embed = discord.Embed(
-                title = f"📧| Todos os convites de {ctx.guild.name}:",
+                title = f"『📧』Todos os convites de {ctx.guild.name}:",
                 color = 0x0055c5
             )
             loop = [f"**{invite}**" for invite in await ctx.guild.invites()]
@@ -309,7 +364,7 @@ class cog_mod(commands.Cog):
             convites = f"{_list}"
             embed.add_field(name = f"Convites:", value = f"{convites}", inline = False)
             embed.set_thumbnail(url=ctx.guild.icon_url)
-            embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now + f"| 💰", icon_url=ctx.author.avatar_url)
+            embed.set_footer(text = f"Pedido por {ctx.author.name} em {now}", icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
         else:
             await ctx.send(f"❌| {ctx.author.mention}, você não tem a permissão para ver convites! Permissões necessárias: `Gerenciar servidor`")

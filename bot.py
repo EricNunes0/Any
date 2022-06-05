@@ -4,8 +4,6 @@ import dotenv
 import datetime
 from pprint import pprint
 from discord_slash import SlashCommand
-import random
-from random import randint
 from discord.ext import commands, tasks
 import os
 import requests
@@ -13,7 +11,6 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 from io import BytesIO
 from discord_components import *
 import re
-import textwrap
 import json
 import asyncio
 
@@ -59,6 +56,12 @@ async def on_ready():
     print(f"Estou pronto! Eu sou o {bot.user}")
     DiscordComponents(client)
     bot.loop.create_task(statuschange())
+
+@bot.event
+async def on_message(message):
+    if bot.user.mention in message.content:
+        await message.channel.send(f"Oi, meu prefixo é `{command_prefix}`. Digite {command_prefix}help para ver os meus comandos!")
+    await bot.process_commands(message)  
 
 @bot.event
 async def on_command_error(ctx, error):
