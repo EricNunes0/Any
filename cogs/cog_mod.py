@@ -53,6 +53,11 @@ def cooldown(rate, per_sec=0, per_min=0, per_hour=0, type=commands.BucketType.de
 #    bal = [users[str(user.id)]["wallet"],users[str(user.id)]["bank"]]
 #    return bal
 
+userPermBans = discord.Embed(title = f"Sem permissão", description = f"『❌』Você não tem as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Banir membros`", color = 0xFF0000)
+userPermBans.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+botPermBans = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Banir membros`", color = 0xFF0000)
+botPermBans.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+
 userPermChannel = discord.Embed(title = f"Sem permissão", description = f"『❌』Você não tem as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar canais`", color = 0xFF0000)
 userPermChannel.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
 botPermChannel = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar canais`", color = 0xFF0000)
@@ -350,7 +355,6 @@ class cog_mod(commands.Cog):
             embed.set_thumbnail(url="https://i.imgur.com/FEp8F1G.gif")
             await ctx.reply(embed=embed)
 
-
     @commands.command(name='invites', aliases = ["allinvites","invitesall","convites"])
     @cooldown(1,5, type = commands.BucketType.user)
     async def invites(self, ctx):
@@ -371,22 +375,25 @@ class cog_mod(commands.Cog):
 
     @commands.command(name="listban", aliases = ["banlist"])
     @cooldown(1,3, type = commands.BucketType.user)
-    async def banlist(self, ctx):
-        if ctx.author.guild_permissions.manage_guild:
-            embed = discord.Embed(
-                title = f"Usuários banidos em {ctx.guild.name}:",
-                color = 0x0055c5
-            )
-            bans = await ctx.guild.bans()
-            loop = [f"Tag: **{u[1]}** - ID:`{u[1].id}`" for u in bans]
-            _list = "\r\n".join([f"『{str(num).zfill(2)}』 {data}" for num, data in enumerate(loop, start=1)])
-            banimentos = f"{_list}"
-            embed.set_author(name=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
-            embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now + f"| 💰", icon_url=ctx.author.avatar_url)
-            embed.add_field(name="Bans:", value=banimentos, inline=False)
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send(f"❌| {ctx.author.mention}, você não tem permissão para ver a lista de banimentos! Permissões necessárias: `Gerenciar servidor`")
+    async def listban(self, ctx):
+        embed = discord.Embed(title = f"Usuários banidos em {ctx.guild.name}:", color = 0x0055c5)
+        bans = await ctx.guild.bans()
+        if not bans:
+            return await ctx.send(f"『⛔』{ctx.author.mention}, não há nenhum usuário banido neste servidor.")
+        loop = [f"Tag: **{u[1]}** - ID: `{u[1].id}`" for u in bans]
+        _list = "\r\n".join([f"『{str(num).zfill(2)}』 {data}" for num, data in enumerate(loop, start=1)])
+        banimentos = f"{_list}"
+        embed.set_author(name=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+        embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now + f"| 💰", icon_url=ctx.author.avatar_url)
+        embed.add_field(name="Bans:", value=banimentos, inline=False)
+        await ctx.send(embed=embed)
+
+    @listban.error
+    async def listban_error(self, ctx, error):
+        if isinstance(error, BotMissingPermissions):
+            await ctx.reply(embed = botPermBans)
+        elif isinstance(error, commands.MissingPermissions):
+            await ctx.reply(embed = userPermBans)
 
     @commands.command(name="lock")
     @cooldown(1,5, type = commands.BucketType.user)
