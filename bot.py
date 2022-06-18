@@ -1,23 +1,26 @@
 import discord
 from discord import *
+from discord.ext import commands, tasks
+from discord.ext.commands import has_permissions, bot_has_permissions, BotMissingPermissions, MissingPermissions
 import dotenv
 import datetime
 from pprint import pprint
 from discord_slash import SlashCommand
-from discord.ext import commands, tasks
 import os
 import requests
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 from io import BytesIO
-from discord_components import *
+from discord_components import DiscordComponents, ActionRow, ComponentsBot, Button, ButtonStyle, Select, SelectOption
 import re
 import json
 import asyncio
+#from discord.ui import Select, View
 
 intents = discord.Intents.default()
 intents.members = True
 bot = discord.Client()
 bot = commands.Bot(command_prefix = "a!", case_insensitive = True,  intents = intents)
+DiscordComponents(bot)
 command_prefix = "a!"
 bot.remove_command("help")
 
@@ -54,14 +57,18 @@ async def on_ready():
     activity = discord.Game(name=f"a!help", type=3)
     await bot.change_presence(status=discord.Status.online, activity=activity)
     print(f"Estou pronto! Eu sou o {bot.user}")
-    DiscordComponents(client)
     bot.loop.create_task(statuschange())
 
 @bot.event
+@bot_has_permissions(read_message_history = True)
 async def on_message(message):
     if bot.user.mention in message.content:
         await message.channel.send(f"Oi, meu prefixo é `{command_prefix}`. Digite {command_prefix}help para ver os meus comandos!")
-    await bot.process_commands(message)  
+    await bot.process_commands(message)
+
+botPermBans = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Banir membros`", color = 0xFF0000)
+botPermBans.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -78,19 +85,29 @@ async def on_command_error(ctx, error):
 @bot.command(name = "cmds", aliases = ["comandos", "commands"])
 async def cmds(ctx):
         options = [ActionRow(
-            Button(custom_id='mod',emoji="⚙️",style=ButtonStyle.gray),
-            Button(custom_id='fun',emoji="🤣",style=ButtonStyle.gray)),
+            Button(custom_id='mod',emoji="⚙️",style=ButtonStyle.blue),
+            Button(custom_id='fun',emoji="🤣",style=ButtonStyle.blue),
+            Button(custom_id='util',emoji="🔑",style=ButtonStyle.blue),
+            Button(custom_id='ps',emoji="🖼️",style=ButtonStyle.blue),
+            Button(custom_id='misc',emoji="🗃️",style=ButtonStyle.blue)),
         ]
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
-        embed = discord.Embed(description = f"<:NarutoPaint:819963300389453874> • Oi {ctx.author.mention}, eu sou o **AnyBot**. Estou aqui para divertir você(s). Meu prefixo padrão é `a!`, e meu prefixo neste servidor é `{command_prefix}`\n<:SakuraPaint:820513193260089365> • Gostaria de sugerir algum comando para mim? Entre em contato com o meu criador: `Eric2605#9133`\n<:ShikamaruPaint:820479198211997716> • Atualmente eu tenho **125** comandos. Digite `{command_prefix}comandos` para ver os meus comandos.",color = 0x2dffe7)
+        embed = discord.Embed(description = f"😀 • Oi {ctx.author.mention}, eu sou o **{bot.user.name}**. Estou aqui para divertir você(s). Meu prefixo padrão é `a!`, e meu prefixo neste servidor é `{command_prefix}`\n<:SakuraPaint:820513193260089365> • Gostaria de sugerir algum comando para mim? Entre em contato com o meu criador: `Eric2605#9133`\n<:ShikamaruPaint:820479198211997716> • Atualmente eu tenho **125** comandos. Digite `{command_prefix}comandos` para ver os meus comandos.",color = 0xffbb00)
         embed.set_author(name = f"Central de Ajuda do {bot.user.name}", icon_url=bot.user.avatar_url)
         embed.set_footer(text="• Para obter informações de cada comando, digite a!help <comando>")
-        embed.add_field(name="Categorias:", value="```fix\nMod - Fun - NSFW - Util - Photoshop - Diversos - Jogos\n```", inline=True)
+        embed.add_field(name="Categorias:", value="```fix\nMod - Fun - Util - Photoshop - Diversos - Jogos\n```", inline=True)
         embed.add_field(name="Extras:", value="**[Meu servidor](https://discord.gg/77ax3PyXgn) | [Canal YT](https://www.youtube.com/channel/UCoo5WAMn4tMl-b0lW0KL9Ug) | [Vote](https://top.gg/bot/900346730237820939/vote)**", inline=False)
         embed.set_thumbnail(url=bot.user.avatar_url)
-        print(f'{command_prefix}cmds')
         await ctx.reply(embed = embed, components = options)
+
+@bot.command(name = "join")
+async def join(ctx):
+    channel = ctx.author.voice.channel
+    await channel.connect()
+@bot.command(name = "leave")
+async def leave(ctx):
+    await ctx.voice_client.disconnect()
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")

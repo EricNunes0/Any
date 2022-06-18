@@ -41,7 +41,7 @@ class cog_div(commands.Cog):
         embed = discord.Embed(description = f"<:NarutoPaint:819963300389453874> • Oi {ctx.author.mention}, eu sou o **AnyBot**. Estou aqui para divertir você(s). Meu prefixo padrão é `a!`, e meu prefixo neste servidor é `{command_prefix}`\n<:SakuraPaint:820513193260089365> • Gostaria de sugerir algum comando para mim? Entre em contato com o meu criador: `Eric2605#9133`\n<:ShikamaruPaint:820479198211997716> • Atualmente eu tenho **125** comandos. Digite `{command_prefix}comandos` para ver os meus comandos.",color = 0x2dffe7)
         embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url=self.bot.user.avatar_url)
         embed.set_footer(text="• Para obter informações de cada comando, digite a!help <comando>")
-        embed.add_field(name="Categorias:", value="```fix\nMod - Fun - NSFW - Util - Photoshop - Diversos - Jogos\n```", inline=True)
+        embed.add_field(name="Categorias:", value="```fix\na!mod - a!fun - a!util - a!photoshop - a!diversos - a!jogos\n```", inline=True)
         embed.add_field(name="Extras:", value="**[Meu servidor](https://discord.gg/77ax3PyXgn) | [Canal YT](https://www.youtube.com/channel/UCoo5WAMn4tMl-b0lW0KL9Ug) | [Vote](https://top.gg/bot/900346730237820939/vote)**", inline=False)
         embed.set_thumbnail(url=self.bot.user.avatar_url)
         print('10')

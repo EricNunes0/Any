@@ -325,7 +325,6 @@ class cog_mod(commands.Cog):
             createdInvite = discord.Embed( title="『✉️』 Convite criado com sucesso!", description=f"**Link do convite:** {invitelink}", color = 0x40ffb0)
             createdInvite.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
             createdInvite.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
-            
             await ctx.send(embed=createdInvite)
             print(invitelink)
         else:
@@ -396,13 +395,25 @@ class cog_mod(commands.Cog):
             await ctx.reply(embed = userPermBans)
 
     @commands.command(name="lock")
+    @bot_has_permissions(manage_roles = True)
+    @has_permissions(manage_roles = True)
     @cooldown(1,5, type = commands.BucketType.user)
     async def lock(self, ctx):
-        if ctx.author.guild_permissions.manage_channels:
-            await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
-            await ctx.send(f"{ctx.channel.mention} **foi bloqueado com sucesso! Para desbloquear, use `a!unlock`!**\n<:anicoin:919293624850727022>|")
-        else:
-            await ctx.send(f"❌| {ctx.author.mention}, você não tem permissão para bloquear canais. Permissões necessárias: `Gerenciar canais`")
+        await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False, view_channel = False)
+        lockEmbed = discord.Embed( title="『🔑』 Canal fechado!", description=f"『✅』{ctx.author.mention}, o canal {ctx.channel.mention} foi fechado com sucesso! Para abri-lo, use `{command_prefix}unlock`", color = 0x40ffb0)
+        lockEmbed.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
+        lockEmbed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+        await ctx.send(embed = lockEmbed)
+        print("lock")
+
+    @lock.error
+    async def lock_error(self, ctx, error):
+        if isinstance(error, BotMissingPermissions):
+            print(error)
+            await ctx.reply(embed = botPermRole)
+        elif isinstance(error, commands.MissingPermissions):
+            await ctx.reply(embed = userPermRole)
+
 
     @commands.command(name="mute", aliases=['mutar','silenciar'])
     @cooldown(1,5, type = commands.BucketType.user)

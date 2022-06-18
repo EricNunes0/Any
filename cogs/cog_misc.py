@@ -47,7 +47,7 @@ def cooldown(rate, per_sec=0, per_min=0, per_hour=0, type=commands.BucketType.de
 #    bal = [users[str(user.id)]["wallet"],users[str(user.id)]["bank"]]
 #    return bal
 
-class cog_div(commands.Cog):
+class cog_misc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -87,4 +87,4 @@ class cog_div(commands.Cog):
         await ctx.send(embed = pingEmbed)
 
 def setup(bot):
-    bot.add_cog(cog_div(bot))
+    bot.add_cog(cog_misc(bot))
