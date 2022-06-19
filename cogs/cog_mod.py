@@ -83,6 +83,11 @@ userPermMsg.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
 botPermMsg = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar mensagens`", color = 0xFF0000)
 botPermMsg.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
 
+userPermChannelRole = discord.Embed(title = f"Sem permissão", description = f"『❌』Você não tem as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar canais` e `Gerenciar cargos`", color = 0xFF0000)
+userPermChannelRole.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+botPermChannelRole = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Gerenciar canais` e `Gerenciar cargos`", color = 0xFF0000)
+botPermChannelRole.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
+
 bot.ses = aiohttp.ClientSession()
 class cog_mod(commands.Cog):
     def __init__(self, bot):
@@ -91,7 +96,7 @@ class cog_mod(commands.Cog):
     @commands.command(name="mod", aliases = ["⚙️"])
     @cooldown(1,3, type = commands.BucketType.user)
     async def mod(self, ctx):
-        embed = discord.Embed(title = f"『⚙』Moderação [28]『<a:ab_GemBlue:936824926671892530>』",description = f"**`addemoji - addrole - ban - clear - clone - createchannel - createinvite - deletechannel - deleteinvites - invites - kick - listban - lock - mute - nuke - removeemoji - removerole - renamechannel - say - sayembed - setguildicon - setguildname - setnick - setprefix - slowmode - unban - unlock - unmute`**",color = 0x0055c5)
+        embed = discord.Embed(title = f"『⚙』Moderação [28]『<a:ab_BlueDiamond:938850305083314207>』",description = f"**`addemoji - addrole - ban - clear - clone - createchannel - createinvite - deletechannel - deleteinvites - invites - kick - listban - lock - mute - nuke - removeemoji - removerole - renamechannel - say - sayembed - setguildicon - setguildname - setnick - setprefix - slowmode - unban - unlock - unmute`**",color = 0x0055c5)
         embed.set_footer(text=f"• Para obter informações de cada comando, digite {command_prefix}help <comando>", icon_url=self.bot.user.avatar_url)
         embed.set_thumbnail(url="https://i.imgur.com/Zyaj8U0.gif")
         await ctx.reply(embed=embed)
@@ -227,18 +232,18 @@ class cog_mod(commands.Cog):
     @cooldown(1,3, type = commands.BucketType.user)
     async def color(self, ctx, color1 : int = None, color2 : int = None, color3 : int = None):
         if color1 == None:
-            return await ctx.send(f"❌| {ctx.author.mention}, informe a cor em RBG.")
+            return await ctx.send(f"『❌』{ctx.author.mention}, informe a cor em RBG.")
         if color2 == None:
-            return await ctx.send(f"❌| {ctx.author.mention}, informe a cor em RBG.")
+            return await ctx.send(f"『❌』{ctx.author.mention}, informe a cor em RBG.")
         if color3 == None:
-            return await ctx.send(f"❌| {ctx.author.mention}, informe a cor em RBG.")
+            return await ctx.send(f"『❌』{ctx.author.mention}, informe a cor em RBG.")
         
         if color1 > 255 or color1 < 0:
-            return await ctx.send(f"❌| {ctx.author.mention}, informe um valor de 0 a 255.")
+            return await ctx.send(f"『❌』{ctx.author.mention}, informe um valor de 0 a 255.")
         if color2 > 255 or color1 < 0:
-            return await ctx.send(f"❌| {ctx.author.mention}, informe um valor de 0 a 255.")
+            return await ctx.send(f"『❌』{ctx.author.mention}, informe um valor de 0 a 255.")
         if color3 > 255 or color1 < 0:
-            return await ctx.send(f"❌| {ctx.author.mention}, informe um valor de 0 a 255.")
+            return await ctx.send(f"『❌』{ctx.author.mention}, informe um valor de 0 a 255.")
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
         #await open_account(ctx.author)
@@ -264,7 +269,7 @@ class cog_mod(commands.Cog):
     async def createchannel(self, ctx, *, channel_name):
         if ctx.author.guild_permissions.manage_channels:
             new_channel = await ctx.guild.create_text_channel(channel_name)
-            await new_channel.send(f"**👶| {ctx.author.mention}**, este canal foi criado com sucesso!\n**<:anicoin:919293624850727022>|**")
+            await new_channel.send(f"**『👶』{ctx.author.mention}**, este canal foi criado com sucesso!")
             createdRole = discord.Embed(title = f"Canal criado", description = f"『✅』O canal de texto foi criado com sucesso!\n『📕』Canal: {new_channel.mention}", color = 0x40ffb0)
             createdRole.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
             createdRole.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
@@ -306,7 +311,7 @@ class cog_mod(commands.Cog):
                 hours = int(seconds) * 3600
                 days = int(seconds) * 86400
                 if seconds < 0: 
-                    return await ctx.send(f"⏱| {ctx.author.mention}, duração de convite inválido.\n🔸| Durações disponíveis: `s (segundos) - m (minutos) - h (horas) - d (dias)`\n🔹| Exemplo: `{command_prefix}createinvite 1m`")
+                    return await ctx.send(f"『⏱』{ctx.author.mention}, duração de convite inválido.\n『🔸』Durações disponíveis: `s (segundos) - m (minutos) - h (horas) - d (dias)`\n『🔹』Exemplo: `{command_prefix}createinvite 1m`")
                 if duration.lower() == "s":
                     seconds = seconds * 1
                 elif duration.lower() == "m":
@@ -316,10 +321,10 @@ class cog_mod(commands.Cog):
                 elif duration.lower() == "d":
                     seconds = int(days)
                 else:
-                    return await ctx.send(f"⏱| {ctx.author.mention}, duração de convite inválido.\n🔸| Durações disponíveis: `s (segundos) - m (minutos) - h (horas) - d (dias)`\n🔹| Exemplo: `{command_prefix}createinvite 1m`")
+                    return await ctx.send(f"『⏱』{ctx.author.mention}, duração de convite inválido.\n『🔸』Durações disponíveis: `s (segundos) - m (minutos) - h (horas) - d (dias)`\n『🔹』Exemplo: `{command_prefix}createinvite 1m`")
             except Exception as e:
                 print(e)
-                await ctx.send(f"⏱| {ctx.author.mention}, tempo de convite inválido.\n🔸| Durações disponíveis: `s (segundos) - m (minutos) - h (horas) - d (dias)`\n🔹| Exemplo: `{command_prefix}createinvite 1m`")
+                await ctx.send(f"『⏱』{ctx.author.mention}, tempo de convite inválido.\n『🔸』Durações disponíveis: `s (segundos) - m (minutos) - h (horas) - d (dias)`\n『🔹』Exemplo: `{command_prefix}createinvite 1m`")
                 return
             invitelink = await ctx.channel.create_invite(max_age=seconds)
             createdInvite = discord.Embed( title="『✉️』 Convite criado com sucesso!", description=f"**Link do convite:** {invitelink}", color = 0x40ffb0)
@@ -328,7 +333,7 @@ class cog_mod(commands.Cog):
             await ctx.send(embed=createdInvite)
             print(invitelink)
         else:
-            await ctx.send(f"❌| {ctx.author.mention}, você não tem a permissão para usar este comando! Permissões necessárias: `Criar convites`")
+            await ctx.send(f"『❌』{ctx.author.mention}, você não tem a permissão para usar este comando! Permissões necessárias: `Criar convites`")
 
     @createinvite.error
     async def createinvite_error(self, ctx, error):
@@ -370,7 +375,7 @@ class cog_mod(commands.Cog):
             embed.set_footer(text = f"Pedido por {ctx.author.name} em {now}", icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
         else:
-            await ctx.send(f"❌| {ctx.author.mention}, você não tem a permissão para ver convites! Permissões necessárias: `Gerenciar servidor`")
+            await ctx.send(f"『❌』{ctx.author.mention}, você não tem a permissão para ver convites! Permissões necessárias: `Gerenciar servidor`")
 
     @commands.command(name="listban", aliases = ["banlist"])
     @cooldown(1,3, type = commands.BucketType.user)
@@ -383,7 +388,7 @@ class cog_mod(commands.Cog):
         _list = "\r\n".join([f"『{str(num).zfill(2)}』 {data}" for num, data in enumerate(loop, start=1)])
         banimentos = f"{_list}"
         embed.set_author(name=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
-        embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now + f"| 💰", icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now, icon_url=ctx.author.avatar_url)
         embed.add_field(name="Bans:", value=banimentos, inline=False)
         await ctx.send(embed=embed)
 
@@ -414,66 +419,70 @@ class cog_mod(commands.Cog):
         elif isinstance(error, commands.MissingPermissions):
             await ctx.reply(embed = userPermRole)
 
-
     @commands.command(name="mute", aliases=['mutar','silenciar'])
+    @bot_has_permissions(manage_roles = True, manage_channels = True)
+    @has_permissions(manage_roles = True, manage_channels = True)
     @cooldown(1,5, type = commands.BucketType.user)
-    async def mute(self, ctx, member: discord.Member=None, time=None, *, reason=None):
-        if ctx.author.guild_permissions.mute_members:
-            #with open('prefixes.json', 'r') as f:
-            #    prefixes = json.load(f)
-            #prefix = prefixes[str(ctx.guild.id)]
-            if member == None:
-                await ctx.send(f"❌| {ctx.author.mention}, você precisa mencionar um usuário.\n⁉| Para mais informações sobre o comando, digite `{command_prefix}help mute`")
-                return
-            elif member == ctx.message.author:
-                await ctx.send(f"❌| {ctx.author.mention}, você não pode se silenciar.")
-                return
-            elif time == None:
-                await ctx.send(f"⏰| {ctx.author.mention}, você precisa informar o tempo de mute.\n🔸| Tempos disponíveis: `s (segundos) - m (minutos) - h (horas)`\n🔹| Exemplo: `{command_prefix}mute <usuário> 1m`")
-                return
+    async def mute(self, ctx, member: discord.Member, time:int, dur, *, reason=None):
+        if member == ctx.message.author:
+            return await ctx.send(f"『❌』{ctx.author.mention}, você não pode se silenciar.")
+        if not reason:
+            reason = "Não informado"
+        try:
+            if dur.lower() == "s" or dur.lower() == "segundos" or dur.lower() == "seconds" or dur.lower() == "segundo" or dur.lower() == "second":
+                seconds = int(time)
+            elif dur.lower() == "m" or dur.lower() == "minutos" or dur.lower() == "minutes" or dur.lower() == "minuto" or dur.lower() == "minute":
+                seconds = int(time) * 60
+            elif dur.lower() == "h" or dur.lower() == "horas" or dur.lower() == "hours" or dur.lower() == "hora" or dur.lower() == "hour":
+                seconds = int(time) * 3600
             else:
-                if not reason:
-                    reason="não informado"
-                try:
-                    seconds = time[:-1]
-                    duration = time[-1]
-                    minutes = int(seconds) * 60
-                    print(int(minutes))
-                    hours = int(seconds) * 3600
-                    print(int(hours))
-                    if duration.lower() == "s":
-                        seconds = seconds * 1
-                    elif duration.lower() == "m":
-                        seconds = int(minutes)
-                    elif duration.lower() == "h":
-                        seconds = int(hours)
-                    else:
-                        await ctx.send(f"⏰| {ctx.author.mention}, duração de mute inválido.\n🔸| Durações disponíveis: `s (segundos) - m (minutos) - h (horas)`\n🔹| Exemplo: `{command_prefix}mute <usuário> 1m`")
-                        return
-                except Exception as e:
-                    print(e)
-                    await ctx.send(f"⏰| {ctx.author.mention}, tempo de mute inválido.\n🔸| Durações disponíveis: `s (segundos) - m (minutos) - h (horas)`\n🔹| Exemplo: `{command_prefix}mute <usuário> 1m`")
-                    return
-                guild = ctx.guild
-                Muted = discord.utils.get(guild.roles, name="Muted")
-                if not Muted:
-                    Muted = await guild.create_role(name="Muted")
-                    for channel in guild.channels:
-                        await channel.set_permissions(Muted, speak=False, send_messages=False, read_message_history=True)
-                await member.add_roles(Muted, reason=reason)
-                muted_embed = discord.Embed(
-                    title="⏳| Usuário mutado",
-                    description=f"**Silenciado por:** {ctx.author.mention}\n**Motivo:** `{reason}`\n**Tempo:** `{time}`",
-                    color = 0x0055c5
-                )
-                await ctx.send(embed=muted_embed)
-                print(int(seconds))
-                await asyncio.sleep(int(seconds))
-                print("Fim do mute")
-                await member.remove_roles(Muted)
-                await ctx.send(f"⌛| {member.mention}, seu mute acabou.")
-        else:
-            await ctx.send(f"❌| {ctx.author.mention}, você não tem permissão para silenciar usuários. Permissões necessárias: `Silenciar membros`")
+                return await ctx.send(f"『⏰』{ctx.author.mention}, duração de mute inválido.\n『🔸』Durações disponíveis: `s (segundos) - m (minutos) - h (horas)`\n『🔹』Exemplo: `{command_prefix}mute <usuário> 1m`")
+        except Exception as e:
+            return await ctx.send(f"『⏰』{ctx.author.mention}, tempo de mute inválido.\n『🔸』Durações disponíveis: `s (segundos) - m (minutos) - h (horas)`\n『🔹』Exemplo: `{command_prefix}mute <usuário> 1m`")
+        guild = ctx.guild
+        Muted = discord.utils.get(guild.roles, name="Muted")
+        if not Muted:
+            Muted = await guild.create_role(name="Muted")
+            for channel in guild.channels:
+                await channel.set_permissions(Muted, speak=False, send_messages=False, read_message_history=True)
+        await member.add_roles(Muted, reason=reason)
+        muted_embed = discord.Embed(
+            title="『⏳』Usuário mutado",
+            description=f"**Silenciado por:** {ctx.author.mention}\n**Motivo:** `{reason}`\n**Tempo:** `{time}`",
+            color = 0x0055c5
+        )
+        await ctx.send(embed=muted_embed)
+        print(int(seconds))
+        await asyncio.sleep(int(seconds))
+        print("Fim do mute")
+        await member.remove_roles(Muted)
+        await ctx.send(f"『⌛』{member.mention}, seu mute acabou.")
+
+    @mute.error
+    async def lock_error(self, ctx, error):
+        if isinstance(error, BotMissingPermissions):
+            print(error)
+            await ctx.reply(embed = botPermChannelRole)
+        elif isinstance(error, commands.MissingPermissions):
+            await ctx.reply(embed = userPermChannelRole)
+        elif isinstance(error, commands.MissingRequiredArgument):
+            now = datetime.datetime.now()
+            now = now.strftime("%d/%m/%Y - %H:%M:%S")
+            embed = discord.Embed(title = f"『🤫』{command_prefix}mute", color = 0x4070ff)
+            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
+            embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Silencia um usuário no servidor.`", inline = False)
+            embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}mutar, {command_prefix}silenciar`", inline = False)
+            embed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}mute <@usuário> <tempo><s/m/h>`", inline = False)
+            embed.add_field(name = f"『💬』Exemplo¹ (60 segundos):", value = f"`{command_prefix}mute` {ctx.author.mention} `60s`", inline = False)
+            embed.add_field(name = f"『💬』Exemplo² (30 minutos):", value = f"`{command_prefix}mute` {ctx.author.mention} `30m`", inline = False)
+            embed.add_field(name = f"『💬』Exemplo³ (24 horas):", value = f"`{command_prefix}mute` {ctx.author.mention} `24h`", inline = False)
+            #embed.add_field(name = f"『💬』Exemplos⁴ (7 dias):", value = f"`{command_prefix}createinvite 7d`", inline = False)
+            #embed.add_field(name = f"『💬』Exemplos⁵ (Ilimitado):", value = f"`{command_prefix}createinvite 0s`", inline = False)
+            embed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Gerenciar canais` e `Gerenciar cargos`", inline = False)
+            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            embed.set_thumbnail(url="https://i.imgur.com/FEp8F1G.gif")
+            await ctx.reply(embed=embed)
+
 
     @commands.command(name="unmute", aliases = ["desmutar","desilenciar"])
     @cooldown(1,5, type = commands.BucketType.user)

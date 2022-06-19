@@ -4,6 +4,7 @@ from discord.ext import commands, tasks
 from discord.ext.commands import has_permissions, bot_has_permissions, BotMissingPermissions, MissingPermissions
 import dotenv
 import datetime
+import random
 from pprint import pprint
 from discord_slash import SlashCommand
 import os
@@ -60,15 +61,10 @@ async def on_ready():
     bot.loop.create_task(statuschange())
 
 @bot.event
-@bot_has_permissions(read_message_history = True)
 async def on_message(message):
     if bot.user.mention in message.content:
         await message.channel.send(f"Oi, meu prefixo é `{command_prefix}`. Digite {command_prefix}help para ver os meus comandos!")
     await bot.process_commands(message)
-
-botPermBans = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Banir membros`", color = 0xFF0000)
-botPermBans.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
-
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -82,24 +78,73 @@ async def on_command_error(ctx, error):
         await asyncio.sleep(5)
         await message.delete()
 
-@bot.command(name = "cmds", aliases = ["comandos", "commands"])
-async def cmds(ctx):
-        options = [ActionRow(
-            Button(custom_id='mod',emoji="⚙️",style=ButtonStyle.blue),
-            Button(custom_id='fun',emoji="🤣",style=ButtonStyle.blue),
-            Button(custom_id='util',emoji="🔑",style=ButtonStyle.blue),
-            Button(custom_id='ps',emoji="🖼️",style=ButtonStyle.blue),
-            Button(custom_id='misc',emoji="🗃️",style=ButtonStyle.blue)),
-        ]
-        now = datetime.datetime.now()
-        now = now.strftime("%d/%m/%Y - %H:%M:%S")
-        embed = discord.Embed(description = f"😀 • Oi {ctx.author.mention}, eu sou o **{bot.user.name}**. Estou aqui para divertir você(s). Meu prefixo padrão é `a!`, e meu prefixo neste servidor é `{command_prefix}`\n<:SakuraPaint:820513193260089365> • Gostaria de sugerir algum comando para mim? Entre em contato com o meu criador: `Eric2605#9133`\n<:ShikamaruPaint:820479198211997716> • Atualmente eu tenho **125** comandos. Digite `{command_prefix}comandos` para ver os meus comandos.",color = 0xffbb00)
-        embed.set_author(name = f"Central de Ajuda do {bot.user.name}", icon_url=bot.user.avatar_url)
-        embed.set_footer(text="• Para obter informações de cada comando, digite a!help <comando>")
-        embed.add_field(name="Categorias:", value="```fix\nMod - Fun - Util - Photoshop - Diversos - Jogos\n```", inline=True)
-        embed.add_field(name="Extras:", value="**[Meu servidor](https://discord.gg/77ax3PyXgn) | [Canal YT](https://www.youtube.com/channel/UCoo5WAMn4tMl-b0lW0KL9Ug) | [Vote](https://top.gg/bot/900346730237820939/vote)**", inline=False)
-        embed.set_thumbnail(url=bot.user.avatar_url)
-        await ctx.reply(embed = embed, components = options)
+@bot.event
+async def on_member_join(member):
+    if member.guild.id == 710506024489976028:
+        welEmjs = ["<a:ab_8bitLaserDance:908674226288988230>", "<a:ab_AnimeDance:908671238451396618>", "<a:ab_BarriguinhaMole:908669226758340659>", "<a:ab_BobDance:908669712664256562>", "<a:ab_CyanDance:908673970503553047>", "<a:ab_Caverinha:960384154900500490>"]
+        e = random.choice(welEmjs)
+        guildMemberAdd = discord.Embed(title = f"{e} Membro novo!", color = 0xffbb00)
+        guildMemberAdd.set_author(name = f"{member.name}#{member.discriminator}", icon_url = member.avatar_url)
+        guildMemberAdd.add_field(name = "『<a:ab_BlueDiamond:938850305083314207>』Regras:", value = "<#736658586012483594>", inline = True)
+        guildMemberAdd.add_field(name = "『<a:ab_YellowDiamond:938857668888645673>』Registre-se:", value = "<#770250817684635658>", inline = True)
+        guildMemberAdd.add_field(name = "『<a:ab_GreenDiamond:938880803692240927>』Mapa:", value = "<#710506024964063316>", inline = True)
+        guildMemberAdd.set_thumbnail(url = member.avatar_url)
+        guildMemberAdd.set_footer(text = f"ID: {member.id}", icon_url = member.avatar_url)
+        welcomeChannel = bot.get_channel(723155037332832296)
+        userAvatar = member.avatar_url
+        url = requests.get(userAvatar)
+        avatar = Image.open(BytesIO(url.content))
+        avatar = avatar.resize((206,206))
+        bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
+        mascara = Image.new('L', bigavatar, 0)
+        recortar = ImageDraw.Draw(mascara)
+        recortar.ellipse((0, 0) + bigavatar, fill=255)
+        mascara = mascara.resize(avatar.size, Image.ANTIALIAS)
+        avatar.putalpha(mascara)
+        saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
+        saida.putalpha(mascara)
+        saida.save('img_avatar.png')
+        img = Image.open("img_background(1).png")
+        img.paste(avatar, (190, 61), avatar)
+        img.save('img_background.png')
+        file = discord.File("img_background.png")
+        guildMemberAdd.set_image(url="attachment://img_background.png")
+        message = await welcomeChannel.send(content = member.mention, embed = guildMemberAdd, file = file)
+
+@bot.command(name = "welcome")
+async def welcome(ctx):
+    member = ctx.author
+    if member.guild.id == 710506024489976028:
+        welEmjs = ["<a:ab_8bitLaserDance:908674226288988230>", "<a:ab_AnimeDance:908671238451396618>", "<a:ab_BarriguinhaMole:908669226758340659>", "<a:ab_BobDance:908669712664256562>", "<a:ab_CyanDance:908673970503553047>", "<a:ab_Caverinha:960384154900500490>"]
+        e = random.choice(welEmjs)
+        guildMemberAdd = discord.Embed(title = f"{e} Membro novo!", color = 0xffbb00)
+        guildMemberAdd.set_author(name = f"{member.name}#{member.discriminator}", icon_url = member.avatar_url)
+        guildMemberAdd.add_field(name = "『<a:ab_BlueDiamond:938850305083314207>』Regras:", value = "<#736658586012483594>", inline = True)
+        guildMemberAdd.add_field(name = "『<a:ab_YellowDiamond:938857668888645673>』Registre-se:", value = "<#770250817684635658>", inline = True)
+        guildMemberAdd.add_field(name = "『<a:ab_GreenDiamond:938880803692240927>』Mapa:", value = "<#710506024964063316>", inline = True)
+        guildMemberAdd.set_thumbnail(url = member.avatar_url)
+        guildMemberAdd.set_footer(text = f"ID: {member.id}", icon_url = member.avatar_url)
+        welcomeChannel = bot.get_channel(740760158098948097)
+        #welcomeChannel = bot.get_channel(723155037332832296)
+        userAvatar = member.avatar_url
+        url = requests.get(userAvatar)
+        avatar = Image.open(BytesIO(url.content))
+        avatar = avatar.resize((206,206))
+        bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
+        mascara = Image.new('L', bigavatar, 0)
+        recortar = ImageDraw.Draw(mascara)
+        recortar.ellipse((0, 0) + bigavatar, fill=255)
+        mascara = mascara.resize(avatar.size, Image.ANTIALIAS)
+        avatar.putalpha(mascara)
+        saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
+        saida.putalpha(mascara)
+        saida.save('img_avatar.png')
+        img = Image.open("img_background(1).png")
+        img.paste(avatar, (190, 61), avatar)
+        img.save('img_background.png')
+        file = discord.File("img_background.png")
+        guildMemberAdd.set_image(url="attachment://img_background.png")
+        message = await welcomeChannel.send(content = member.mention, embed = guildMemberAdd, file = file)
 
 @bot.command(name = "join")
 async def join(ctx):
