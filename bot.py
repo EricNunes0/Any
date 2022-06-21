@@ -43,6 +43,8 @@ async def statuschange():
     activity1 = discord.Game(name=f"120 comandos no AnyBot!", type=3)
     activity2 = discord.Activity(name=f"a!help", type=3)
     activity3 = discord.Game(name=f"Comandos slash em breve...", type=3)
+    activity4 = discord.Game(name=f"Janny City Adventures", type=3)
+    activity5 = discord.Activity(name=f"vocês :)", type = 3)
     
     while True:
         await asyncio.sleep(10)
@@ -52,6 +54,10 @@ async def statuschange():
         await asyncio.sleep(20)
         await bot.change_presence(status=discord.Status.online, activity=activity3)
         await asyncio.sleep(20)
+        await bot.change_presence(status=discord.Status.online, activity=activity4)
+        await asyncio.sleep(20)
+        await bot.change_presence(status=discord.Status.online, activity=activity5)
+        await asyncio.sleep(10)
 
 @bot.event
 async def on_ready():
@@ -81,6 +87,10 @@ async def on_command_error(ctx, error):
 @bot.event
 async def on_member_join(member):
     if member.guild.id == 710506024489976028:
+        rankRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908721298086166568)
+        colorRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908721809883537458)
+        registerRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908728253513080833)
+        await member.add_roles(rankRole, colorRole, registerRole)
         welEmjs = ["<a:ab_8bitLaserDance:908674226288988230>", "<a:ab_AnimeDance:908671238451396618>", "<a:ab_BarriguinhaMole:908669226758340659>", "<a:ab_BobDance:908669712664256562>", "<a:ab_CyanDance:908673970503553047>", "<a:ab_Caverinha:960384154900500490>"]
         e = random.choice(welEmjs)
         guildMemberAdd = discord.Embed(title = f"{e} Membro novo!", color = 0xffbb00)
@@ -115,6 +125,10 @@ async def on_member_join(member):
 async def welcome(ctx):
     member = ctx.author
     if member.guild.id == 710506024489976028:
+        rankRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908721298086166568)
+        colorRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908721809883537458)
+        registerRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908728253513080833)
+        await member.add_roles(rankRole, colorRole, registerRole)
         welEmjs = ["<a:ab_8bitLaserDance:908674226288988230>", "<a:ab_AnimeDance:908671238451396618>", "<a:ab_BarriguinhaMole:908669226758340659>", "<a:ab_BobDance:908669712664256562>", "<a:ab_CyanDance:908673970503553047>", "<a:ab_Caverinha:960384154900500490>"]
         e = random.choice(welEmjs)
         guildMemberAdd = discord.Embed(title = f"{e} Membro novo!", color = 0xffbb00)
@@ -147,9 +161,15 @@ async def welcome(ctx):
         message = await welcomeChannel.send(content = member.mention, embed = guildMemberAdd, file = file)
 
 @bot.command(name = "join")
+@bot_has_permissions(add_reactions = True)
 async def join(ctx):
     channel = ctx.author.voice.channel
     await channel.connect()
+
+@join.error
+async def join_error(ctx, error):
+    if isinstance(error, BotMissingPermissions):
+        await ctx.send("Não tenho perm")
 @bot.command(name = "leave")
 async def leave(ctx):
     await ctx.voice_client.disconnect()

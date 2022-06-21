@@ -7,6 +7,12 @@ import datetime
 from io import BytesIO
 import json
 import aiohttp
+from discord_slash.model import ButtonStyle
+from discord_slash.utils.manage_components import (
+    ComponentContext,
+    create_actionrow,
+    create_button,
+)
 
 now = datetime.datetime.now()
 now = now.strftime("%d/%m/%Y - %H:%M:%S")
