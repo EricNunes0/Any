@@ -38,7 +38,7 @@ class cog_div(commands.Cog):
     async def help(self, ctx: commands.Context):
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
-        embed = discord.Embed(description = f"😎 • Oi {ctx.author.mention}, eu sou o **AnyBot**. Estou aqui para divertir você(s). Meu prefixo padrão é `a!`, e meu prefixo neste servidor é `{command_prefix}`\n<:SakuraPaint:820513193260089365> • Gostaria de sugerir algum comando para mim? Entre em contato com o meu criador: `Eric2605#9133`\n<:ShikamaruPaint:820479198211997716> • Atualmente eu tenho **125** comandos. Digite uma das minhas categorias abaixo para ver os meus comandos.",color = 0xffbb00)
+        embed = discord.Embed(description = f"😎 • Oi {ctx.author.mention}, eu sou o **AnyBot**, o bot exclusivo da **Janny City**. Estou aqui para divertir você(s). Meu prefixo padrão é `a!`, e meu prefixo neste servidor é `{command_prefix}`\n<:SakuraPaint:820513193260089365> • Gostaria de sugerir algum comando para mim? Entre em contato com o meu criador: `Eric2605#9133`\n<:ShikamaruPaint:820479198211997716> • Atualmente eu tenho **125** comandos. Digite uma das minhas categorias abaixo para ver os meus comandos.",color = 0xffbb00)
         embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url=self.bot.user.avatar_url)
         embed.set_footer(text="• Para obter informações de cada comando, digite a!help <comando>")
         embed.add_field(name="Categorias:", value="```fix\na!mod - a!fun - a!util - a!photoshop - a!diversos - a!jogos\n```", inline=True)

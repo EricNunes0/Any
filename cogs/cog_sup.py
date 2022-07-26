@@ -30,5 +30,15 @@ class cog_sup(commands.Cog):
         embed.set_thumbnail(url="https://i.imgur.com/djyLLS5.gif")
         await ctx.reply(embed=embed)
 
+    @commands.command(name = "botguilds")
+    @cooldown(1,3, type = commands.BucketType.user)
+    async def botguilds(self, ctx):
+        if ctx.author.id == 656295512219058196:
+            guildsEmbed = discord.Embed(description = f"Estou em {len(self.bot.guilds)} servidores!", color = 0xc8c8c8)
+            guildsEmbed.set_author(name = f"Contagem do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
+            await ctx.send(embed = guildsEmbed)
+        else:
+            await ctx.send(f"Você não permissão para usar este comando!")
+
 def setup(bot):
     bot.add_cog(cog_sup(bot))
