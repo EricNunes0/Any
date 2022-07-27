@@ -15,7 +15,6 @@ from discord_components import DiscordComponents, ActionRow, ComponentsBot, Butt
 import re
 import json
 import asyncio
-#from discord.ui import Select, View
 
 intents = discord.Intents.default()
 intents.members = True
@@ -24,6 +23,7 @@ bot = commands.Bot(command_prefix = "a!", case_insensitive = True,  intents = in
 DiscordComponents(bot)
 command_prefix = "a!"
 bot.remove_command("help")
+slash = SlashCommand(bot, sync_commands = True)
 
 @bot.command()
 async def load(ctx, extension):
