@@ -7,7 +7,7 @@ asyncio
 components
 discord
 discord-py-interactions
-discord-py-components
+discord-components
 discord-py-slash-command
 discord_ui
 googletrans
