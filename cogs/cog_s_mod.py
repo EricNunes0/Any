@@ -225,27 +225,37 @@ class cog_s_mod(commands.Cog):
 
     @cog_ext.cog_slash(name="embedcreator", description="『💭』Cria uma mensagem embed customizada.")
     @cooldown(1,3, type = commands.BucketType.user)
-    async def _embedcreator(self, ctx:SlashContext, title = None, description = None, col = None,  autor:discord.Member = None, thumbnail:str = None, image:str = None, footer = None):
+    async def _embedcreator(self, ctx:SlashContext, title = None, description = None, r:int = None, g:int = None, b:int = None,  autor:discord.Member = None, thumbnail:str = None, image:str = None, footer = None):
 #        if ctx.author.guild_permissions.manage_messages:
-            if title == None:
-                title = ""
-            if description == None:
-                description = ""
-            embed = discord.Embed(title = title, description = description, color = ctx.author.colour)
-            if autor != None:
-                embed.set_author(name=autor.name, icon_url=autor.avatar_url)
-            if thumbnail != None:
-                embed.set_thumbnail(url=thumbnail)
-            if image != None:
-                embed.set_image(url=image)
-            if footer != None:
-                embed.set_footer(text="\u200b" + now, icon_url=ctx.guild.icon_url)
             if title == None and description == None and autor == None and thumbnail == None and image == None and footer == None:
                 noneEmbed = discord.Embed(title = "Embed inexistente", description = "Não é possível criar um embed vazio.", color = 0xff3030)
                 noneEmbed.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")
                 await ctx.channel.send(embed = noneEmbed)
             else:
-                await ctx.channel.send("Cadê o embed? 🤔")
+                if title == None:
+                    title = ""
+                if description == None:
+                    description = ""
+                if r == None and g == None and b == None:
+                    hex = 0x2090FF
+                else:
+                    if r == None or r > 255 or r < 0:
+                        r = 0
+                    if g == None or g > 255 or g < 0:
+                        g = 0
+                    if b == None or b > 255 or b < 0:
+                        b = 0
+                    hex = discord.Colour.from_rgb(r, g, b)
+                embed = discord.Embed(title = title, description = description, color = hex)
+                if autor != None:
+                    embed.set_author(name=autor.name, icon_url=autor.avatar_url)
+                if thumbnail != None:
+                    embed.set_thumbnail(url=thumbnail)
+                if image != None:
+                    embed.set_image(url=image)
+                if footer != None:
+                    embed.set_footer(text="\u200b" + now, icon_url=ctx.guild.icon_url)
+                await ctx.send(embed = embed)
 #        else:
 #            await ctx.send(f"❌| {ctx.author.mention}, você não tem a permissão para usar este comando! Permissões necessárias: `Gerenciar mensagens`")
 
