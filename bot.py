@@ -160,8 +160,19 @@ async def welcome(ctx, member: discord.Member = None):
         guildMemberAdd.set_image(url="attachment://img_background.png")
         message = await welcomeChannel.send(content = member.mention, embed = guildMemberAdd, file = file)
 
-@bot.command(name = "heart")
-async def heart(ctx):
+@bot.command(name = "history")
+async def history(ctx):
+    await ctx.reply("BAGUIO É LOKO, EU FICO LOKO MEUS LOKÕES E LOKONAS")
+    c_channel = discord.utils.get(ctx.guild.text_channels, id = ctx.channel.id)
+    messages = await c_channel.history(limit=10).flatten()
+    for x in range(0, 9):
+        print(x)
+        if not messages[x].attachments[0]:
+            print("『❌』")
+        else:
+            print(messages[x].attachments[0])
+            return await ctx.reply(messages[x].attachments[0])
+    return
     userAvatar = ctx.author.avatar_url
     url = requests.get(userAvatar)
     avatar = Image.open(BytesIO(url.content))
