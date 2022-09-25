@@ -6,23 +6,24 @@ import dotenv
 import datetime
 import random
 from pprint import pprint
-#import discord_slash
+from discord_slash import SlashCommand
 import os
 import requests
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 from io import BytesIO
-#from discord_components import DiscordComponents, ActionRow, ComponentsBot, Button, ButtonStyle, Select, SelectOption
+from discord_components import DiscordComponents, ActionRow, ComponentsBot, Button, ButtonStyle, Select, SelectOption
 import re
 import json
 import asyncio
+#from discord.ui import Select, View
 
 intents = discord.Intents.default()
 intents.members = True
 bot = discord.Client()
 bot = commands.Bot(command_prefix = "a!", case_insensitive = True,  intents = intents)
+DiscordComponents(bot)
 command_prefix = "a!"
 bot.remove_command("help")
-#slash = discord_slash.SlashCommand(bot, sync_commands = True)
 
 @bot.command()
 async def load(ctx, extension):
@@ -67,7 +68,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if message.content.startswith(bot.user.mention):
+    if bot.user.mention in message.content:
         await message.channel.send(f"Oi, meu prefixo é `{command_prefix}`. Digite {command_prefix}help para ver os meus comandos!")
     await bot.process_commands(message)
 
@@ -102,7 +103,7 @@ async def on_member_join(member):
         welcomeChannel = bot.get_channel(723155037332832296)
         userAvatar = member.avatar_url
         url = requests.get(userAvatar)
-        avatar = Image.open(BytesIO(url.content)).convert('RGB')
+        avatar = Image.open(BytesIO(url.content))
         avatar = avatar.resize((206,206))
         bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
         mascara = Image.new('L', bigavatar, 0)
@@ -112,7 +113,7 @@ async def on_member_join(member):
         avatar.putalpha(mascara)
         saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
         saida.putalpha(mascara)
-        saida.save("img_avatar.png", format="png", lossless=True)
+        saida.save('img_avatar.png')
         img = Image.open("img_background(1).png")
         img.paste(avatar, (190, 61), avatar)
         img.save('img_background.png')
@@ -121,9 +122,8 @@ async def on_member_join(member):
         message = await welcomeChannel.send(content = member.mention, embed = guildMemberAdd, file = file)
 
 @bot.command(name = "welcome")
-async def welcome(ctx, member: discord.Member = None):
-    if member == None:
-        member = ctx.author
+async def welcome(ctx):
+    member = ctx.author
     if member.guild.id == 710506024489976028:
         rankRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908721298086166568)
         colorRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908721809883537458)
@@ -142,7 +142,7 @@ async def welcome(ctx, member: discord.Member = None):
         #welcomeChannel = bot.get_channel(723155037332832296)
         userAvatar = member.avatar_url
         url = requests.get(userAvatar)
-        avatar = Image.open(BytesIO(url.content)).convert('RGB')
+        avatar = Image.open(BytesIO(url.content))
         avatar = avatar.resize((206,206))
         bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
         mascara = Image.new('L', bigavatar, 0)
@@ -152,7 +152,7 @@ async def welcome(ctx, member: discord.Member = None):
         avatar.putalpha(mascara)
         saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
         saida.putalpha(mascara)
-        saida.save("img_avatar.png", format="png", lossless=True)
+        saida.save('img_avatar.png')
         img = Image.open("img_background(1).png")
         img.paste(avatar, (190, 61), avatar)
         img.save('img_background.png')
@@ -160,58 +160,16 @@ async def welcome(ctx, member: discord.Member = None):
         guildMemberAdd.set_image(url="attachment://img_background.png")
         message = await welcomeChannel.send(content = member.mention, embed = guildMemberAdd, file = file)
 
-@bot.command(name = "history")
-async def history(ctx):
-    await ctx.reply("BAGUIO É LOKO, EU FICO LOKO MEUS LOKÕES E LOKONAS")
-    c_channel = discord.utils.get(ctx.guild.text_channels, id = ctx.channel.id)
-    messages = await c_channel.history(limit=10).flatten()
-    for x in range(0, 9):
-        print(x)
-        if not messages[x].attachments[0]:
-            print("『❌』")
-        else:
-            print(messages[x].attachments[0])
-            return await ctx.reply(messages[x].attachments[0])
-    return
-    userAvatar = ctx.author.avatar_url
-    url = requests.get(userAvatar)
-    avatar = Image.open(BytesIO(url.content))
-    avatar = avatar.resize((206,206))
-    bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
-    mascara = Image.new('L', bigavatar, 0)
-    recortar = ImageDraw.Draw(mascara)
-    recortar.ellipse((0, 0) + bigavatar, fill=255)
-    mascara = mascara.resize(avatar.size, Image.ANTIALIAS)
-    avatar.putalpha(mascara)
-    saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
-    saida.putalpha(mascara)
-    saida.save('img_avatar.png')
-    heart = Image.open("img_heart.png")
-    heart = heart.resize((100,100))
-    img = Image.open("img_background(2).png")
-    img.paste(avatar, (190, 61), avatar)
-    img.paste(heart, (50, 50), heart)
-    img.paste(heart, (50, 200), heart)
-    img.paste(heart, (450, 50), heart)
-    img.paste(heart, (450, 200), heart)
-    fonte1 = ImageFont.truetype("font_coolvetica_rg.ttf", 35)
-    fonte2 = ImageFont.truetype("font_coolvetica_rg.ttf", 35)
-    escrever = ImageDraw.Draw(img)
-    escrever.text(xy=(40,300), text=f"R-ROI PRINCESA, LOVE", fill=(0, 0, 0), font=fonte1)
-    escrever.text(xy=(40,301), text=f"R-ROI PRINCESA, LOVE", fill=(255, 255, 255), font=fonte2)
-    img.save('img_background.png')
-    file = discord.File("img_background.png")
-    heartEmbed = discord.Embed(title = f"『❤️』Cidade do Amor!", color = 0xff2020,  timestamp=datetime.datetime.utcnow())
-    heartEmbed.set_footer(text = f"O amor está no ar", icon_url = ctx.author.avatar_url)
-    heartEmbed.set_image(url="attachment://img_background.png")
-    await ctx.reply(content = ctx.author.mention, embed = heartEmbed, file = file)
-
 @bot.command(name = "join")
 @bot_has_permissions(add_reactions = True)
 async def join(ctx):
     channel = ctx.author.voice.channel
     await channel.connect()
 
+@join.error
+async def join_error(ctx, error):
+    if isinstance(error, BotMissingPermissions):
+        await ctx.send("Não tenho perm")
 @bot.command(name = "leave")
 async def leave(ctx):
     await ctx.voice_client.disconnect()

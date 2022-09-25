@@ -6,9 +6,10 @@ animec
 asyncio
 components
 discord
+discord-components
 discord-py-slash-command
-discord_ui
 googletrans
+nextcord
 Pillow
 PyNaCl
 python-dotenv

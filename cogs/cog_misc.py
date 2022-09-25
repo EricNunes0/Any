@@ -51,7 +51,7 @@ class cog_misc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="diversos", aliases = ["🗃️", "misc"])
+    @commands.command(name="diversos", aliases = ["🗃️"])
     @cooldown(1,3, type = commands.BucketType.user)
     async def diversos(self, ctx):
         #with open('prefixes.json', 'r') as f:
@@ -66,9 +66,15 @@ class cog_misc(commands.Cog):
     @cooldown(1,3, type = commands.BucketType.user)
     async def botinfo(self, ctx):
         embed = discord.Embed(title = f"Olá, eu me chamo {self.bot.user.name} 💎",
-            description = f"Olá, meu nome é **{self.bot.user.name}**, e eu sou o primeiro bot desenvolvido pelo meu criador, portanto sou o 'irmão' mais velho da família. Eu sou um dos bots principais do servidor, e hoje trabalho na moderação da **Janny City**, meu servidor de suporte, que posso dizer que é a minha casa! 😊\n\nInicialmente, eu fui criado apenas para divertir um grupo de amigos do meu criador, e nem tinha planos de me tornar o bot que sou hoje. Sendo o irmão mais velho da família, fui e ainda sou o bot que ajudou o meu criador a entender muitas coisas sobre desenvolvimento de bots e programação no geral.\n\nMas não pense que eu sou o único, meu irmão **Janny** também é muito importante nessa história, e hoje nós dois carregamos a responsabilidade de mostrar para as pessoas o quanto um simples desenvolvedor de bots, pode crescer e fazer a sua própria história!\n\nEu fui criado em <:ab_pythonIcon:913931980402483230> **[Python](https://www.python.org/)** utilizando o <:ab_visualCode:913931993895559169> **[Visual Studio Code](https://code.visualstudio.com/)**!\n\n👑 **Dono:** `Eric2605#9133`\n🏓 **Ping:** `{round(self.bot.latency * 1000)}ms`\n👶 **Criado em:** `20/10/2021 às 11:36`", color = 0xe61ec8)
+            description = f"Olá, meu nome é **{self.bot.user.name}**, e eu sou um simples bot criado para testes. No momento, eu estou em desenvolvimento, então sempre estão sendo adicionados novas funções e comandos para mim! 😊\n\nInicialmente, eu fui criado apenas para divertir um grupo de amigos do meu criador, e nem tinha planos de me tornar o bot que sou hoje. Mesmo que eu não esteja pronto, ainda assim quero poder divertir as pessoas, e algum dia (quem sabe...), eu vou ser disponibilizado para convite!\n\nEu fui criado em <:ab_pythonIcon:913931980402483230> **[Python](https://www.python.org/)** utilizando o <:ab_visualCode:913931993895559169> **[Visual Studio Code](https://code.visualstudio.com/)**!\n\n👑 **Dono:** `Eric2605#9133`\n🏓 **Ping:** `{round(self.bot.latency * 1000)}ms`\n👶 **Criado em:** `20/10/2021 às 11:36`", color = 0xe61ec8)
         embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now + "| 💰 +1", icon_url=ctx.author.avatar_url)
         embed.set_thumbnail(url=self.bot.user.avatar_url)
+        #await open_account(ctx.author)
+        #users = await get_bank_data()
+        #earnings = 1
+        #users[str(ctx.author.id)]["wallet"] += earnings
+        #with open("mainbank.json","w") as f:
+        #    json.dump(users,f)
         await ctx.reply(embed=embed)
 
     @commands.command(name="ping", pass_context=True, aliases=["latency", "latencia"])
