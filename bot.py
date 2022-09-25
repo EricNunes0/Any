@@ -18,7 +18,7 @@ import asyncio
 
 intents = discord.Intents.default()
 intents.members = True
-#bot = discord.Client()
+bot = discord.Client()
 bot = commands.Bot(command_prefix = "a!", case_insensitive = True,  intents = intents)
 command_prefix = "a!"
 bot.remove_command("help")
