@@ -6,7 +6,7 @@ import dotenv
 import datetime
 import random
 from pprint import pprint
-import discord_slash
+#import discord_slash
 import os
 import requests
 from PIL import Image, ImageDraw, ImageFont, ImageOps
@@ -22,7 +22,7 @@ bot = discord.Client()
 bot = commands.Bot(command_prefix = "a!", case_insensitive = True,  intents = intents)
 command_prefix = "a!"
 bot.remove_command("help")
-slash = discord_slash.SlashCommand(bot, sync_commands = True)
+#slash = discord_slash.SlashCommand(bot, sync_commands = True)
 
 @bot.command()
 async def load(ctx, extension):
