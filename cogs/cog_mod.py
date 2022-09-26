@@ -7,12 +7,6 @@ import datetime
 from io import BytesIO
 import json
 import aiohttp
-from discord_slash.model import ButtonStyle
-from discord_slash.utils.manage_components import (
-    ComponentContext,
-    create_actionrow,
-    create_button,
-)
 
 now = datetime.datetime.now()
 now = now.strftime("%d/%m/%Y - %H:%M:%S")
@@ -20,44 +14,12 @@ now = now.strftime("%d/%m/%Y - %H:%M:%S")
 intents = discord.Intents.default()
 intents.members = True
 
-#def get_prefix(bot, message):
-#    with open('prefixes.json', 'r') as f:
-#        prefixes = json.load(f)
-#    return prefixes[str(message.guild.id)]
 command_prefix = "a!"
 bot = commands.Bot(command_prefix = "a!", intents=intents,  case_insensitive = True)
 
 def cooldown(rate, per_sec=0, per_min=0, per_hour=0, type=commands.BucketType.default):
     return commands.cooldown(rate, per_sec + 60 * per_min + 3600 * per_hour, type)
 
-#async def open_account(user):
-#    users = await get_bank_data()
-
-#    if str(user.id) in users:
-#        return False
-#    else:
-#        users[str(user.id)] = {}
-#        users[str(user.id)]["wallet"] = 0
-#        users[str(user.id)]["bank"] = 0
-
-#    with open("mainbank.json","w") as f:
-#        json.dump(users, f)
-#    return True
-
-#async def get_bank_data():
-#    with open("mainbank.json","r") as f:
-#        users=json.load(f)
-
-#    return users
-
-#async def update_bank(user, change = 0, mode = "wallet"):
-#    users = await get_bank_data()
-#    users[str(user.id)][mode] += change 
-
-#    with open("mainbank.json","w") as f:
-#        json.dump(users, f)
-#    bal = [users[str(user.id)]["wallet"],users[str(user.id)]["bank"]]
-#    return bal
 
 userPermBans = discord.Embed(title = f"Sem permissão", description = f"『❌』Você não tem as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Banir membros`", color = 0xFF0000)
 userPermBans.set_thumbnail(url="https://i.imgur.com/uBGwDAM.gif")

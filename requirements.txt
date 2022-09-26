@@ -6,6 +6,7 @@ animec
 asyncio
 components
 discord
+discord-py-interactions
 discord.py-message-components
 discord-py-slash-command
 googletrans
