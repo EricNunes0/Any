@@ -6,7 +6,7 @@ animec
 asyncio
 components
 discord
-#discord-components
+discord-components
 discord-py-slash-command
 googletrans
 nextcord
