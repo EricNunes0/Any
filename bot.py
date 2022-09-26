@@ -11,9 +11,6 @@ import os
 import requests
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 from io import BytesIO
-from discord_components import DiscordComponents, ActionRow, ComponentsBot, Button, ButtonStyle, Select, SelectOption
-import re
-import json
 import asyncio
 #from discord.ui import Select, View
 
@@ -21,7 +18,6 @@ intents = discord.Intents.default()
 intents.members = True
 bot = discord.Client()
 bot = commands.Bot(command_prefix = "a!", case_insensitive = True,  intents = intents)
-DiscordComponents(bot)
 command_prefix = "a!"
 bot.remove_command("help")
 
