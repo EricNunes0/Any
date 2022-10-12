@@ -30,5 +30,6 @@ class cog_sup(commands.Cog):
         embed.set_thumbnail(url="https://i.imgur.com/djyLLS5.gif")
         await ctx.reply(embed=embed)
 
-def setup(bot):
-    bot.add_cog(cog_sup(bot))
+async def setup(bot):
+    print("cog_sup.py loaded")
+    await bot.add_cog(cog_sup(bot))

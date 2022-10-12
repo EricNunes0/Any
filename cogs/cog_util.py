@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import animec
 import datetime
 import json
 
@@ -28,50 +27,6 @@ class cog_util(commands.Cog):
         embed.set_footer(text=f"• Para obter informações de cada comando, digite {command_prefix}help <comando>", icon_url=self.bot.user.avatar_url)
         embed.set_thumbnail(url="https://i.imgur.com/heRA5YW.gif")
         await ctx.reply(embed=embed)
-
-    @commands.command(name="anime")
-    @cooldown(1,6, type = commands.BucketType.user)
-    async def anime(self, ctx, *, query):
-        try:
-            anime = animec.Anime(query)
-        except:
-            await ctx.send(embed = discord.Embed(description = "❌| Anime não encontrado", color = 0x308020))
-            return
-        episodios = str(anime.episodes)
-        avaliacao = str(anime.rating)
-        broadcast = str(anime.broadcast)
-        status = str(anime.status)
-        tipo = str(anime.type)
-        nsfw = str(anime.is_nsfw())
-        english = str(anime.title_english)
-        japanese = str(anime.title_jp)
-        alternative = str(anime.alt_titles)
-        rank = str(anime.ranked)
-        popularidade = str(anime.popularity)
-        favorito = str(anime.favorites)
-        estudio = str(anime.producers)
-        generos = anime.genres
-
-        embed = discord.Embed(title = anime.title_english, url = anime.url, description = f"{anime.description[:200]}...", color = 0x308020)
-        embed.add_field(name = "📥| Estreou em:", value = f'`{str(anime.aired)}`')
-        embed.add_field(name = "📡| Transmissão:", value = f'`{broadcast}`')
-        embed.add_field(name = "📇| Tipo:", value = f'`{tipo}`')
-        embed.add_field(name = "🇺🇸| Título Inglês:", value = f'`{english}`')
-        embed.add_field(name = "🇯🇵| Título Japonês:", value = f'`{japanese}`')
-        embed.add_field(name = "🔀| Sinônimos:", value = f'`{alternative}`')
-        embed.add_field(name = "🗃| Episódios:", value = f'`{episodios}`')
-        embed.add_field(name = "⌚| Status:", value = f'`{status}`')
-        embed.add_field(name = "🏭| Estúdios:", value = f'`{estudio}`')
-        embed.add_field(name = "📋| Gêneros:", value = f'`{generos}`')
-        embed.add_field(name = "👨‍👦| Avaliação:", value = f'`{avaliacao}`')
-        embed.add_field(name = "🔞| NSFW status:", value = f'`{nsfw}`')
-        embed.add_field(name = "⭐| Ranking:", value = f'`{rank}`')
-        embed.add_field(name = "👥| Popularidade:", value = f'`{popularidade}`')
-        embed.add_field(name = "🌟| Favorito:", value = f'`{favorito}`')
-        embed.set_thumbnail(url = anime.poster)
-        embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now, icon_url=ctx.author.avatar_url)
-    
-        await ctx.send(embed = embed)
 
     @commands.command(name='avatar')
     @cooldown(1,3, type = commands.BucketType.user)
@@ -316,5 +271,6 @@ class cog_util(commands.Cog):
         embed.set_footer(text="Requisitado por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar_url)
         await ctx.send(embed = embed)
 
-def setup(bot):
-    bot.add_cog(cog_util(bot))
+async def setup(bot):
+    print("cog_util.py loaded")
+    await bot.add_cog(cog_util(bot))

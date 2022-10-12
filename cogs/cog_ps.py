@@ -975,5 +975,6 @@ class cog_ps(commands.Cog):
         zap.save('img_zapmessage.png')
         await ctx.reply(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +{earnings}**", file=discord.File('img_zapmessage.png'))
 
-def setup(bot):
-    bot.add_cog(cog_ps(bot))
+async def setup(bot):
+    print("cog_ps.py loaded")
+    await bot.add_cog(cog_ps(bot))

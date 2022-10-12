@@ -1178,5 +1178,6 @@ class cog_div(commands.Cog):
         embed.set_thumbnail(url="https://i.imgur.com/oQAvwWg.gif")
         await ctx.send(embed=embed)
 
-def setup(bot):
-    bot.add_cog(cog_div(bot))
+async def setup(bot):
+    print("cog_help.py loaded")
+    await bot.add_cog(cog_div(bot))

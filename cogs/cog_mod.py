@@ -846,5 +846,6 @@ class cog_mod(commands.Cog):
             #prefix = prefixes[str(ctx.guild.id)]
             await ctx.send(f"**❌|** {ctx.author.mention}, informe o emoji que deseja excluir!\n**💬| Exemplo:** {command_prefix}removeemoji <emoji>\n**⁉|** Para mais informações sobre o comando, digite `{command_prefix}help removeemoji`!")
 
-def setup(bot):
-    bot.add_cog(cog_mod(bot))
+async def setup(bot):
+    print("cog_mod.py loaded")
+    await bot.add_cog(cog_mod(bot))

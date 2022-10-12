@@ -1,4 +1,3 @@
-from genericpath import commonprefix
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions, bot_has_permissions, BotMissingPermissions, MissingPermissions
@@ -6,63 +5,32 @@ import asyncio
 import datetime
 import random
 import json
-intents = discord.Intents.default()
-intents.members = True
 
 now = datetime.datetime.now()
 now = now.strftime("%d/%m/%Y - %H:%M:%S")
 
-#def get_prefix(bot, message):
-#    with open('prefixes.json', 'r') as f:
-#        prefixes = json.load(f)
-#    return prefixes[str(message.guild.id)]
-command_prefix = "a!"
-bot = commands.Bot(command_prefix = "a!", intents=intents,  case_insensitive = True)
+def prefix():
+    with open("./config.json", "r") as f:
+        config = json.load(f)
+    return config[str("prefix")]
+
+intents = discord.Intents.default()
+bot = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix = prefix, intents=intents,  case_insensitive = True)
 
 def cooldown(rate, per_sec=0, per_min=0, per_hour=0, type=commands.BucketType.default):
     return commands.cooldown(rate, per_sec + 60 * per_min + 3600 * per_hour, type)
 
-#async def open_account(user):
-#    users = await get_bank_data()
-
-#    if str(user.id) in users:
-#        return False
-#    else:
-#        users[str(user.id)] = {}
-#        users[str(user.id)]["wallet"] = 0
-#        users[str(user.id)]["bank"] = 0
-
-#    with open("mainbank.json","w") as f:
-#        json.dump(users, f)
-#    return True
-
-#async def get_bank_data():
-#    with open("mainbank.json","r") as f:
-#        users=json.load(f)
-
-#    return users
-
-#async def update_bank(user, change = 0, mode = "wallet"):
-#    users = await get_bank_data()
-#    users[str(user.id)][mode] += change 
-
-#    with open("mainbank.json","w") as f:
-#        json.dump(users, f)
-#    bal = [users[str(user.id)]["wallet"],users[str(user.id)]["bank"]]
-#    return bal
-
 class cog_fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
+    
     @commands.command(name="fun", aliases = ["diversão","diversao","🤣"])
     @cooldown(1,3, type = commands.BucketType.user)
     async def fun(self, ctx):
-        #with open('prefixes.json', 'r') as f:
-        #    prefixes = json.load(f)
-        #prefix = prefixes[str(ctx.guild.id)]
+        print("VAPO")
         embed = discord.Embed(title = f"『🤣』Diversão [31]",description = f"**`8ball - akumanomi - amogus - angry - attack - baka - bite - bye - cafune - cantada - casar - cheeks - dado - dick - ednaldo - emojify - fake - foto - hack - hug - impostor - jjbattle - kiss - moeda - nitro - punch - raylamm - slap - ship - 🛠️tictactoe - x1`**",color = 0xffbb00)
-        embed.set_footer(text=f"• Para obter informações de cada comando, digite {command_prefix}help <comando>", icon_url=self.bot.user.avatar_url)
+        embed.set_footer(text=f"• Para obter informações de cada comando, digite {prefix}help <comando>", icon_url=self.bot.user.avatar.url)
         embed.set_thumbnail(url="https://i.imgur.com/hEgd2tI.gif")
         await ctx.reply(embed=embed)
 
@@ -76,7 +44,7 @@ class cog_fun(commands.Cog):
         ballEmbed = discord.Embed(color = 0xffbb00)
         ballEmbed.add_field(name = "『❔』Pergunta:", value = f"```{message}```", inline = False)
         ballEmbed.add_field(name = "『🎱』Resposta:", value = f"```{escolha}```", inline = False)
-        ballEmbed.set_footer(text=f"• Pedido por {ctx.author} às {now}", icon_url= ctx.author.avatar_url)
+        ballEmbed.set_footer(text=f"• Pedido por {ctx.author} às {now}", icon_url= ctx.author.avatar.url)
         await ctx.send(embed = ballEmbed)
 
     @ball.error
@@ -84,15 +52,15 @@ class cog_fun(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             now = datetime.datetime.now()
             now = now.strftime("%d/%m/%Y - %H:%M:%S")
-            embed = discord.Embed(title = f"『🎱』{command_prefix}8ball", color = 0xffbb00)
-            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
+            embed = discord.Embed(title = f"『🎱』{prefix}8ball", color = 0xffbb00)
+            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar.url)
             embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Responde qualquer pergunta com 100% de precisão 😎.`", inline = False)
-            embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}ball, {command_prefix}pergunta`", inline = False)
-            embed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}8ball <pergunta>`", inline = False)
-            embed.add_field(name = f"『💬』Exemplos¹ (60 segundos):", value = f"`{command_prefix}8ball Eu vou ganhar na loteria?`", inline = False)
+            embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{prefix}ball, {prefix}pergunta`", inline = False)
+            embed.add_field(name = f"『⚙️』Uso:", value = f"`{prefix}8ball <pergunta>`", inline = False)
+            embed.add_field(name = f"『💬』Exemplos¹ (60 segundos):", value = f"`{prefix}8ball Eu vou ganhar na loteria?`", inline = False)
             embed.add_field(name = f"『🛠️』Permissões do usuário:", value = f"`Nenhuma`", inline = False)
             embed.add_field(name = f"『🛠️』Permissões do bot:", value = f"`Ver canais, Enviar mensagens`", inline = False)
-            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar.url)
             embed.set_thumbnail(url="https://i.imgur.com/2nkTc33.gif")
             await ctx.reply(embed=embed)
 
@@ -178,7 +146,7 @@ class cog_fun(commands.Cog):
             color = 0xffbb00
         )
         akumanomi.set_thumbnail(url=akuma_thumb[num])
-        akumanomi.set_footer(text = f"Pedido por {ctx.author.name} em {now}", icon_url=ctx.author.avatar_url)
+        akumanomi.set_footer(text = f"Pedido por {ctx.author.name} em {now}", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=akumanomi)
 
     @commands.command(name="amogus", aliases = ["sus","amongus"])
@@ -243,7 +211,7 @@ class cog_fun(commands.Cog):
             color = 0xffbb00,
         )
         angry_image.set_image(url=angry)
-        angry_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar_url)
+        angry_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar.url)
         await ctx.send(embed=angry_image)
 
     @commands.command(name="attack", aliases = ["atacar"])
@@ -281,7 +249,7 @@ class cog_fun(commands.Cog):
             color = 0xffbb00,
         )
         attack_image.set_image(url=attack)
-        attack_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar_url)
+        attack_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar.url)
         await ctx.send(embed=attack_image)
 
     @commands.command(name="baka")
@@ -293,7 +261,7 @@ class cog_fun(commands.Cog):
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
         if member == None:
-            await ctx.send(f"**❌| {ctx.author.mention}**, mencione um usuário.\n⁉| Para mais informações sobre o comando, digite `{command_prefix}help baka`")
+            await ctx.send(f"**❌| {ctx.author.mention}**, mencione um usuário.\n⁉| Para mais informações sobre o comando, digite `{prefix}help baka`")
             return
         url_image = ["https://c.tenor.com/OyIYV1OjcjQAAAAM/anime-fiduka.gif",
         "https://c.tenor.com/REgUMZiMpf8AAAAC/anime-baka.gif",
@@ -323,7 +291,7 @@ class cog_fun(commands.Cog):
             color = 0xffbb00,
         )
         embed_image.set_image(url=url_imagem)
-        embed_image.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar_url)
+        embed_image.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed_image)
 
     @commands.command(name="bater", aliases = ["punch"])
@@ -335,7 +303,7 @@ class cog_fun(commands.Cog):
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
         if member == None:
-            await ctx.send(f"❌| Por favor {ctx.author.mention}, mencione um usuário.\n⁉| Para mais informações sobre o comando, digite `{command_prefix}help bater`")
+            await ctx.send(f"❌| Por favor {ctx.author.mention}, mencione um usuário.\n⁉| Para mais informações sobre o comando, digite `{prefix}help bater`")
             return
         url_image = ["https://pa1.narvii.com/6457/ef21d3fe6324b364aa23f0d398aec3190dda0b6a_hq.gif",
         "https://pa1.narvii.com/6317/dea3687e9b3869453fc5742ccc085286c56dfae3_hq.gif",
@@ -364,7 +332,7 @@ class cog_fun(commands.Cog):
             color = 0xffbb00,
         )
         embed_image.set_image(url=url_imagem)
-        embed_image.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar_url)
+        embed_image.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed_image)
 
     @commands.command(name="beijar", aliases = ["kiss"])
@@ -376,7 +344,7 @@ class cog_fun(commands.Cog):
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
         if member == None:
-            return await ctx.send(f"❌| Por favor {ctx.author.mention}, mencione um usuário.\n⁉| Para mais informações sobre o comando, digite `{command_prefix}help beijar`")
+            return await ctx.send(f"❌| Por favor {ctx.author.mention}, mencione um usuário.\n⁉| Para mais informações sobre o comando, digite `{prefix}help beijar`")
         url_image = ["https://i.imgur.com/Rtu2JyU.gif",
         "https://i.pinimg.com/originals/02/e7/8c/02e78c4b46d02a713e4d5054252a2c28.gif",
         "https://acegif.com/wp-content/uploads/anime-kissin-2.gif",
@@ -400,7 +368,7 @@ class cog_fun(commands.Cog):
             color = 0xffbb00,
         )
         embed_image.set_image(url=url_imagem)
-        embed_image.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=member.avatar_url)
+        embed_image.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=member.avatar.url)
         await ctx.send(embed=embed_image)
 
     @commands.command(name="bite", aliases = ["morder","mordida"])
@@ -447,7 +415,7 @@ class cog_fun(commands.Cog):
                 color = 0xffbb00,
             )
             bite_image.set_image(url=bite)
-            bite_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar_url)
+            bite_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar.url)
             await ctx.send(embed=bite_image)
         else:
             bite_image = discord.Embed(
@@ -455,7 +423,7 @@ class cog_fun(commands.Cog):
                 color = 0xffbb00,
             )
             bite_image.set_image(url=bite)
-            bite_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar_url)
+            bite_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar.url)
             await ctx.send(embed=bite_image)
 
     @commands.command(name="bye", aliases = ["tchau"])
@@ -502,7 +470,7 @@ class cog_fun(commands.Cog):
             color = 0xffbb00,
         )
         bye_image.set_image(url=bye)
-        bye_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar_url)
+        bye_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar.url)
         await ctx.send(embed=bye_image)
 
     @commands.command(name="cafune", aliases = ["pat"])
@@ -514,7 +482,7 @@ class cog_fun(commands.Cog):
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
         if member == None:
-            await ctx.send(f"❌| Por favor {ctx.author.mention}, mencione um usuário.\n⁉| Para mais informações sobre o comando, digite `{command_prefix}help cafune`")
+            await ctx.send(f"❌| Por favor {ctx.author.mention}, mencione um usuário.\n⁉| Para mais informações sobre o comando, digite `{prefix}help cafune`")
             return
         url_image = ["https://images-ext-2.discordapp.net/external/Cb7mlYet51c8t5iGzi-Jkqzt1cKax6eRo23Tffr92EI/https/cdn.nekos.life/pat/pat_068.gif",
         "https://images-ext-2.discordapp.net/external/p0CFRRlbWeVBxqO-LKd8f1z0MuftV9CVEngViadX7OI/https/cdn.nekos.life/pat/pat_023.gif",
@@ -537,7 +505,7 @@ class cog_fun(commands.Cog):
             color = 0xffbb00,
         )
         embed_image.set_image(url=url_imagem)
-        embed_image.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar_url)
+        embed_image.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed_image)
 
     @commands.command(name="cantada")
@@ -613,7 +581,7 @@ class cog_fun(commands.Cog):
             color = 0xffbb00,
         )
         cheek_image.set_image(url=cheek)
-        cheek_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar_url)
+        cheek_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar.url)
         await ctx.send(embed=cheek_image)
 
     @commands.command(name="dado")
@@ -627,7 +595,7 @@ class cog_fun(commands.Cog):
             description = f"{ctx.author.mention} rolou 1 dado, e conseguiu {dado}",
             color = 0xffbb00,
         )
-        embed.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)
 
     @commands.command(name="dado2")
@@ -646,7 +614,7 @@ class cog_fun(commands.Cog):
             description = f"{ctx.author.mention} rolou 2 dados, e conseguiu **{num_soma}**! {dado1}{dado2}",
             color = 0xffbb00,
         )
-        embed.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)
 
     @commands.command(name="dick")
@@ -662,7 +630,7 @@ class cog_fun(commands.Cog):
         )
 
         embed.set_thumbnail(url="https://images.emojiterra.com/google/android-11/512px/1f423.png")
-        embed.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Pedido por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)
 
     @commands.command(name="hack", pass_context = True)
@@ -672,7 +640,7 @@ class cog_fun(commands.Cog):
         #    prefixes = json.load(f)
         #prefix = prefixes[str(ctx.guild.id)]
         if member == None:
-            await ctx.send(f"**❌| {ctx.author.mention}**, mencione um usuário.\n**⁉|** Para mais informações sobre o comando, digite `{command_prefix}help hack`")
+            await ctx.send(f"**❌| {ctx.author.mention}**, mencione um usuário.\n**⁉|** Para mais informações sobre o comando, digite `{prefix}help hack`")
             return
         msgs = ["Boku no pico é mt bom","O Anibot é muito brabo","Quer namorar cmg?","Quanto é o pack do pé?"]
         words = ["cavalo","pinto","gf","hentai","gay","delícia","webnamorar","gado","sarrada","linda","boi","amor","webnamoro","Claudia","Julia","Ana","Bea","Luana","Laura","Samanta","Larissa","Leticia","Giovanna","Manuela","mentira","ah é","jojo","jojofag","otaku","fedido","meme"]
@@ -764,7 +732,7 @@ class cog_fun(commands.Cog):
                 color = 0xffbb00,
             )
             attack_image.set_image(url=attack)
-            attack_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar_url)
+            attack_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar.url)
             await ctx.send(embed=attack_image)
         else:
             attack_image = discord.Embed(
@@ -772,7 +740,7 @@ class cog_fun(commands.Cog):
                 color = 0xffbb00,
             )
             attack_image.set_image(url=attack)
-            attack_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar_url)
+            attack_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar.url)
             await ctx.send(embed=attack_image)
 
     @commands.command(name="impostor")
@@ -857,7 +825,7 @@ class cog_fun(commands.Cog):
             description = f"{ctx.author.mention} jogou a moeda, e caiu: {moeda}",
             color = 0xffbb00,
         )
-        embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now + f"| 💰", icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now + f"| 💰", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)
 
     @commands.command(name="slap", aliases = ["tapa"])
@@ -902,7 +870,7 @@ class cog_fun(commands.Cog):
                 color = 0xffbb00,
             )
             bite_image.set_image(url=bite)
-            bite_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar_url)
+            bite_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar.url)
             await ctx.send(embed=bite_image)
         else:
             bite_image = discord.Embed(
@@ -910,8 +878,9 @@ class cog_fun(commands.Cog):
                 color = 0xffbb00,
             )
             bite_image.set_image(url=bite)
-            bite_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar_url)
+            bite_image.set_footer(text=f"{ctx.author.name} | " + now, icon_url=ctx.author.avatar.url)
             await ctx.send(embed=bite_image)
 
-def setup(bot):
-    bot.add_cog(cog_fun(bot))
+async def setup(bot):
+    print("cog_fun.py loaded")
+    await bot.add_cog(cog_fun(bot))

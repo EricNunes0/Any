@@ -86,5 +86,6 @@ class cog_misc(commands.Cog):
         pingEmbed.set_footer(text = f"Pedido por {ctx.author} às {now}")
         await ctx.send(embed = pingEmbed)
 
-def setup(bot):
-    bot.add_cog(cog_misc(bot))
+async def setup(bot):
+    print("cog_misc.py loaded")
+    await bot.add_cog(cog_misc(bot))
