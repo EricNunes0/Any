@@ -97,13 +97,13 @@ async def on_member_join(member):
             await member.add_roles(rankRole, colorRole, registerRole)
             welEmjs = ["<a:ab_8bitLaserDance:908674226288988230>", "<a:ab_AnimeDance:908671238451396618>", "<a:ab_BarriguinhaMole:908669226758340659>", "<a:ab_BobDance:908669712664256562>", "<a:ab_CyanDance:908673970503553047>", "<a:ab_Caverinha:960384154900500490>"]
             e = random.choice(welEmjs)
-            guildMemberAdd = discord.Embed(color = 0xf08120)
-            guildMemberAdd.set_author(name = f"{member.name}#{member.discriminator}", icon_url = member.avatar.url)
-            guildMemberAdd.add_field(name = f"『{e}』 Membro novo!", value = f"**『{link['orangeDiamond']}』Regras:** <#1026231571776294942>\n**『{link['yellowDiamond']}』Registre-se:** <#770250817684635658>\n**『{link['purpleDiamond']}』F.A.Q.:** <#710506024964063316>")
-            guildMemberAdd.set_thumbnail(url = member.avatar.url)
-            guildMemberAdd.set_footer(text = f"ID: {member.id}", icon_url = member.avatar.url)
+            guildMemberAdd = discord.Embed(color = 0x400070)
+            guildMemberAdd.set_author(name = f"{member.name}#{member.discriminator}", icon_url = member.display_avatar.url)
+            guildMemberAdd.add_field(name = f"『{e}』 Membro novo!", value = f"**『{link['grayDiamond']}』Regras:** <#1026231571776294942>\n**『{link['yellowDiamond']}』Registre-se:** <#770250817684635658>\n**『{link['purpleDiamond']}』F.A.Q.:** <#710506024964063316>")
+            guildMemberAdd.set_thumbnail(url = member.display_avatar.url)
+            guildMemberAdd.set_footer(text = f"ID: {member.id}", icon_url = member.display_avatar.url)
             welcomeChannel = bot.get_channel(723155037332832296)
-            userAvatar = member.avatar.url
+            userAvatar = member.display_avatar.url
             url = requests.get(userAvatar)
             avatar = Image.open(BytesIO(url.content))
             avatar = avatar.resize((206,206))
@@ -116,19 +116,20 @@ async def on_member_join(member):
             saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
             saida.putalpha(mascara)
             saida.save("img_avatar.png")
-            img = Image.open("img_background(1).png")
+            img = Image.open("img_entrance(1).png")
             img.paste(avatar, (190, 61), avatar)
-            img.save("img_background.png")
-            file = discord.File("img_background.png")
-            guildMemberAdd.set_image(url="attachment://img_background.png")
+            img.save("img_entrance.png")
+            file = discord.File("img_entrance.png")
+            guildMemberAdd.set_image(url="attachment://img_entrance.png")
             message = await welcomeChannel.send(content = member.mention, embed = guildMemberAdd, file = file)
     except Exception as e:
         print(e)
 
 @bot.command(name = "welcome", aliases = ["wlcm", "wlmc", "wlc"])
-async def welcome(ctx):
+async def welcome(ctx, member: discord.Member):
     try:
-        member = ctx.author
+        if not member:
+            member = ctx.author
         if member.guild.id == 710506024489976028:
             rankRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908721298086166568)
             colorRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908721809883537458)
@@ -136,15 +137,16 @@ async def welcome(ctx):
             await member.add_roles(rankRole, colorRole, registerRole)
             welEmjs = ["<a:ab_8bitLaserDance:908674226288988230>", "<a:ab_AnimeDance:908671238451396618>", "<a:ab_BarriguinhaMole:908669226758340659>", "<a:ab_BobDance:908669712664256562>", "<a:ab_CyanDance:908673970503553047>", "<a:ab_Caverinha:960384154900500490>"]
             e = random.choice(welEmjs)
-            guildMemberAdd = discord.Embed(color = 0xf08120)
-            guildMemberAdd.set_author(name = f"{member.name}#{member.discriminator}", icon_url = member.avatar.url)
-            guildMemberAdd.add_field(name = f"『{e}』 Membro novo!", value = f"**『{link['orangeDiamond']}』Regras:** <#1026231571776294942>\n**『{link['yellowDiamond']}』Registre-se:** <#770250817684635658>\n**『{link['purpleDiamond']}』F.A.Q.:** <#710506024964063316>")
-            guildMemberAdd.set_thumbnail(url = member.avatar.url)
-            guildMemberAdd.set_footer(text = f"ID: {member.id}", icon_url = member.avatar.url)
+            userAvatar = member.display_avatar.url
+            guildMemberAdd = discord.Embed(color = 0x400070)
+            guildMemberAdd.set_author(name = f"{member.name}#{member.discriminator}", icon_url = userAvatar)
+            guildMemberAdd.add_field(name = f"『{e}』 Membro novo!", value = f"**『{link['grayDiamond']}』Regras:** <#1026231571776294942>\n**『{link['yellowDiamond']}』Registre-se:** <#770250817684635658>\n**『{link['purpleDiamond']}』F.A.Q.:** <#710506024964063316>")
+            guildMemberAdd.set_thumbnail(url = userAvatar)
+            guildMemberAdd.set_footer(text = f"ID: {member.id}", icon_url = userAvatar)
             welcomeChannel = bot.get_channel(740760158098948097)
-            userAvatar = member.avatar.url
+            print(userAvatar)
             url = requests.get(userAvatar)
-            avatar = Image.open(BytesIO(url.content))
+            avatar = Image.open(BytesIO(url.content)).convert('RGB')
             avatar = avatar.resize((206,206))
             bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
             mascara = Image.new("L", bigavatar, 0)
@@ -155,11 +157,11 @@ async def welcome(ctx):
             saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
             saida.putalpha(mascara)
             saida.save("img_avatar.png")
-            img = Image.open("img_background(1).png")
+            img = Image.open("img_entrance(1).png")
             img.paste(avatar, (190, 61), avatar)
-            img.save("img_background.png")
-            file = discord.File("img_background.png")
-            guildMemberAdd.set_image(url="attachment://img_background.png")
+            img.save("img_entrance.png")
+            file = discord.File("img_entrance.png")
+            guildMemberAdd.set_image(url="attachment://img_entrance.png")
             message = await welcomeChannel.send(content = member.mention, embed = guildMemberAdd, file = file)
     except Exception as e:
         print(e)
