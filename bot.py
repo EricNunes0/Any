@@ -91,6 +91,10 @@ async def on_command_error(ctx, error):
 async def on_member_join(member):
     try:
         if member.guild.id == 710506024489976028:
+            print(f"『📤』Um usuário entrou no servidor! {member}")
+            joinGuild = bot.get_guild(member.guild.id)
+            channelGet = discord.utils.get(joinGuild.channels, id = 983902645272059964)
+            await channelGet.edit(name=f"『🌟』Membros: {joinGuild.member_count}")
             rankRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908721298086166568)
             colorRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908721809883537458)
             registerRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908728253513080833)
@@ -105,7 +109,7 @@ async def on_member_join(member):
             welcomeChannel = bot.get_channel(723155037332832296)
             userAvatar = member.display_avatar.url
             url = requests.get(userAvatar)
-            avatar = Image.open(BytesIO(url.content))
+            avatar = Image.open(BytesIO(url.content)).convert('RGB')
             avatar = avatar.resize((206,206))
             bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
             mascara = Image.new("L", bigavatar, 0)
@@ -125,10 +129,22 @@ async def on_member_join(member):
     except Exception as e:
         print(e)
 
-@bot.command(name = "welcome", aliases = ["wlcm", "wlmc", "wlc"])
-async def welcome(ctx, member: discord.Member):
+@bot.event
+async def on_member_remove(member):
     try:
-        if not member:
+        if member.guild.id == 710506024489976028:
+            print(f"『📤』Um usuário saiu do servidor! {member}")
+            joinGuild = bot.get_guild(member.guild.id)
+            channelGet = discord.utils.get(joinGuild.channels, id = 983902645272059964)
+            await channelGet.edit(name=f"『⭐』Membros: {joinGuild.member_count}")
+    except Exception as e:
+        print(e)
+
+@bot.command(name = "welcome", aliases = ["wlcm", "wlmc", "wlc"])
+async def welcome(ctx, member: discord.Member = None):
+    try:
+        print(member)
+        if member == None:
             member = ctx.author
         if member.guild.id == 710506024489976028:
             rankRole = discord.utils.get(bot.get_guild(member.guild.id).roles, id = 908721298086166568)
