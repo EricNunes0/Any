@@ -89,6 +89,7 @@ async def on_command_error(ctx, error):
 
 @bot.event
 async def on_member_join(member):
+    return
     try:
         if member.guild.id == 710506024489976028:
             print(f"『📤』Um usuário entrou no servidor! {member}")
@@ -126,19 +127,24 @@ async def on_member_join(member):
             file = discord.File("img_entrance.png")
             guildMemberAdd.set_image(url="attachment://img_entrance.png")
             message = await welcomeChannel.send(content = member.mention, embed = guildMemberAdd, file = file)
+            return
     except Exception as e:
         print(e)
+        return
 
 @bot.event
 async def on_member_remove(member):
     try:
+        return
         if member.guild.id == 710506024489976028:
             print(f"『📤』Um usuário saiu do servidor! {member}")
             joinGuild = bot.get_guild(member.guild.id)
             channelGet = discord.utils.get(joinGuild.channels, id = 983902645272059964)
             await channelGet.edit(name=f"『⭐』Membros: {joinGuild.member_count}")
+        return
     except Exception as e:
         print(e)
+        return
 
 @bot.command(name = "welcome", aliases = ["wlcm", "wlmc", "wlc"])
 async def welcome(ctx, member: discord.Member = None):
@@ -154,9 +160,9 @@ async def welcome(ctx, member: discord.Member = None):
             welEmjs = ["<a:ab_8bitLaserDance:908674226288988230>", "<a:ab_AnimeDance:908671238451396618>", "<a:ab_BarriguinhaMole:908669226758340659>", "<a:ab_BobDance:908669712664256562>", "<a:ab_CyanDance:908673970503553047>", "<a:ab_Caverinha:960384154900500490>"]
             e = random.choice(welEmjs)
             userAvatar = member.display_avatar.url
-            guildMemberAdd = discord.Embed(color = 0x400070)
+            guildMemberAdd = discord.Embed(color = 0x40e0d0)
             guildMemberAdd.set_author(name = f"{member.name}#{member.discriminator}", icon_url = userAvatar)
-            guildMemberAdd.add_field(name = f"『{e}』 Membro novo!", value = f"**『{link['grayDiamond']}』Regras:** <#1026231571776294942>\n**『{link['yellowDiamond']}』Registre-se:** <#770250817684635658>\n**『{link['purpleDiamond']}』F.A.Q.:** <#710506024964063316>")
+            guildMemberAdd.add_field(name = f"『{e}』 Membro novo!", value = f"**『{link['grayDiamond']}』Regras:** <#1026231571776294942>\n**『{link['greenDiamond']}』Registre-se:** <#770250817684635658>\n**『{link['redDiamond']}』Use o Janny:** <#970038786908127273>")
             guildMemberAdd.set_thumbnail(url = userAvatar)
             guildMemberAdd.set_footer(text = f"ID: {member.id}", icon_url = userAvatar)
             welcomeChannel = bot.get_channel(740760158098948097)
