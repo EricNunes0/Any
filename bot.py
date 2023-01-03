@@ -17,6 +17,8 @@ with open("config.json", "r") as f:
     config = json.load(f)
 l = open("link.json")
 link = json.load(l)
+afkOpen = open("jsons/afk.json")
+afkJson = json.load(afkOpen)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -27,11 +29,16 @@ print(prefix)
 bot = commands.Bot(command_prefix = prefix, case_insensitive = True, intents = intents)
 bot.remove_command("help")
 
+cogsPaths = []
 cogs = os.listdir("./cogs")
-async def loadExtensions():
-    for filename in cogs:
+for folder in cogs:
+    for filename in os.listdir(f"./cogs/{folder}"):
         if filename.endswith(".py"):
-            await bot.load_extension(f"cogs.{filename[:-3]}")
+            cogsPaths.append(f"cogs.{folder}.{filename[:-3]}")
+
+async def loadExtensions():
+    for cogFile in cogsPaths:
+        await bot.load_extension(cogFile)
 
 os.chdir("./images")
 
@@ -66,11 +73,22 @@ async def statuschange():
 
 @bot.event
 async def on_message(message):
+    if message.author.bot:
+        return
+    with open("../jsons/afk.json", "r") as f:
+        users = json.load(f)
+    for user in users:
+        if f"<@{user}>" in message.content:
+            print("Encontrei alguém afk:", user, users[user]['afk'])
+            if users[user]['afk'] == True:
+                await message.reply(f"**『🔕』Este usuário está AFK!\n『💬』Motivo:** `{users[user]['reason']}`")
+                return
     await bot.process_commands(message)
     if message[0] == prefix:
         return
     if message.author == bot.user:
         return
+    print(message.content)
     if bot.user.mention in message.content:
         print("on_message()")
         return await message.channel.send(f"Oi, meu prefixo é `{prefix}`. Digite {prefix}help para ver os meus comandos!")
