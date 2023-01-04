@@ -121,8 +121,10 @@ async def on_message(message):
     for user in users:
         if int(message.author.id) == int(user):
             if users[user]['afk'] == True:
-                await message.reply(f"『🔔』Seu AFK foi desativado!")
+                afkDisableMsg = await message.reply(f"『🔔』Seu AFK foi desativado!")
                 await update_afk(int(message.author.id), False, None, None)
+                await asyncio.sleep(10)
+                await afkDisableMsg.delete()
 
         elif f"<@{user}>" in message.content:
             print("Encontrei alguém afk:", user, users[user]['afk'])
