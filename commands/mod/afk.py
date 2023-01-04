@@ -1,25 +1,26 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions, bot_has_permissions, BotMissingPermissions, MissingPermissions
-import asyncio
 import datetime
-from io import BytesIO
 import json
 import aiohttp
 
-with open("config.json", "r") as f:
-    config = json.load(f)
+now = datetime.datetime.now()
+date = now.strftime("%d/%m/%Y - %H:%M:%S")
+ts = now.timestamp()
+print(ts)
+
+c = open("../config.json")
+config = json.load(c)
+
 l = open("../link.json")
 link = json.load(l)
-
-now = datetime.datetime.now()
-now = now.strftime("%d/%m/%Y - %H:%M:%S")
 
 intents = discord.Intents.default()
 intents.members = True
 
-command_prefix = "a!"
-bot = commands.Bot(command_prefix = "a!", intents=intents,  case_insensitive = True)
+prefix = config["prefix"]
+bot = commands.Bot(command_prefix = prefix, intents=intents,  case_insensitive = True)
 
 def cooldown(rate, per_sec = 0, per_min = 0, per_hour = 0, type = commands.BucketType.default):
     return commands.cooldown(rate, per_sec + 60 * per_min + 3600 * per_hour, type)
@@ -32,6 +33,7 @@ async def create_afk(userId):
         users[str(userId)] = {}
         users[str(userId)]["afk"] = False
         users[str(userId)]["reason"] = "Não informado"
+        users[str(userId)]["time"] = "Não definido"
 
     with open("../jsons/afk.json","w") as f:
         json.dump(users, f)
@@ -42,13 +44,15 @@ async def get_afk_users():
         users = json.load(f)
     return users
 
-async def update_afk(userId, status, reason):
+async def update_afk(userId, status, reason, time):
     users = await get_afk_users()
     users[str(userId)]["afk"] = status
     if reason == None:
         users[str(userId)]["reason"] = "Não informado"
     else:
         users[str(userId)]["reason"] = reason
+    if time != None:
+        users[str(userId)]["time"] = time
     with open("../jsons/afk.json","w") as f:
         json.dump(users, f)
     stats = users[str(userId)]["afk"]
@@ -69,48 +73,52 @@ class cog_afk(commands.Cog):
     @cooldown(1, 3, type = commands.BucketType.user)
     async def afk(self, ctx, option: str = None, *, reason: str = None):
         try:
-            afkHelpEmbed = discord.Embed(title = f"『🔕』{command_prefix}afk", color = discord.Color.from_rgb(20, 90, 255))
+            afkHelpEmbed = discord.Embed(title = f"『🔕』{prefix}afk", color = discord.Color.from_rgb(20, 90, 255))
             afkHelpEmbed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.display_avatar.url)
             afkHelpEmbed.add_field(name = f"『ℹ️』Descrição:", value = f"`Ative o modo AFK para que todos saibam que você não pode responder mensagens no momento!`", inline = False)
-            afkHelpEmbed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}awayfromkeyboard`", inline = False)
-            afkHelpEmbed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}afk <on/off> (motivo)`", inline = False)
-            afkHelpEmbed.add_field(name = f"『🟢』Ligar:", value = f"`{command_prefix}afk on Estou trabalhando`", inline = False)
-            afkHelpEmbed.add_field(name = f"『🔴』Desligar:", value = f"`{command_prefix}afk off`", inline = False)
+            afkHelpEmbed.add_field(name = f"『🔀』Sinônimos:", value = f"`{prefix}awayfromkeyboard`", inline = False)
+            afkHelpEmbed.add_field(name = f"『⚙️』Uso:", value = f"`{prefix}afk <on/off> (motivo)`", inline = False)
+            afkHelpEmbed.add_field(name = f"『🟢』Ligar:", value = f"`{prefix}afk on Estou trabalhando`", inline = False)
+            afkHelpEmbed.add_field(name = f"『🔴』Desligar:", value = f"`{prefix}afk off`", inline = False)
             afkHelpEmbed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Administrador`", inline = False)
             afkHelpEmbed.set_footer(text=f"Pedido por {ctx.author.name}", icon_url= ctx.author.display_avatar.url)
             afkHelpEmbed.set_thumbnail(url = link["blueHelp"])
             if option == None:
                 await ctx.reply(embed = afkHelpEmbed)
                 return
+            dateTimeNow = datetime.datetime.now()
+            timeStamp = dateTimeNow.timestamp()
             if option.lower() == "on":
                 await create_afk(ctx.author.id)
                 if reason == None:
                     reason = "Não informado"
-                await update_afk(ctx.author.id, True, reason)
+                await update_afk(ctx.author.id, True, reason, int(timeStamp))
                 afkOnEmbed = discord.Embed(
-                    title = f"AFK Ligado!",
-                    description = f"Seu afk foi ativado! Para sua **in**conveniência, o afk não será desativado quando você enviar uma mensagem. Não gostou? Reclama com o dono 😎",
+                    title = f"AFK ligado!",
+                    description = f"O afk será desativado assim que você enviar uma mensagem.",
                     color = discord.Color.from_rgb(50, 100, 255)
                 )
                 afkOnEmbed.set_author(name = f"『🔕』AFK:", icon_url = self.bot.user.display_avatar.url)
-                afkOnEmbed.add_field(name = f"『💬』Mensagem:", value = f"`{reason}`")
+                afkOnEmbed.add_field(name = f"『👤』Usuário:", value = f"{ctx.author.mention} `({ctx.author.id})`", inline = True)
+                afkOnEmbed.add_field(name = f"『⏰』Definido em:", value = f"<t:{int(timeStamp)}> (<t:{int(timeStamp)}:R>)", inline = True)
+                afkOnEmbed.add_field(name = f"『💬』Mensagem:", value = f"`{reason}`", inline = False)
                 afkOnEmbed.set_footer(text = f"Pedido por {ctx.author.name}", icon_url = ctx.author.display_avatar.url)
-                afkOnEmbed.set_thumbnail(url="https://i.imgur.com/Zyaj8U0.gif")
+                afkOnEmbed.set_thumbnail(url = link["blueChecked"])
                 await ctx.reply(embed = afkOnEmbed)
                 return
             elif option.lower() == "off":
                 await create_afk(ctx.author.id)
                 if reason == None:
                     reason = "Não informado"
-                await update_afk(ctx.author.id, False, reason)
+                await update_afk(ctx.author.id, False, reason, None)
                 afkOnEmbed = discord.Embed(
-                    title = f"AFK Desligado!",
+                    title = f"AFK desligado!",
                     description = f"Seu afk foi desativado com sucesso!",
                     color = discord.Color.from_rgb(50, 100, 255)
                 )
-                afkOnEmbed.set_author(name = f"『🔕』AFK:", icon_url = self.bot.user.display_avatar.url)
+                afkOnEmbed.set_author(name = f"『🔔』AFK:", icon_url = self.bot.user.display_avatar.url)
                 afkOnEmbed.set_footer(text = f"Pedido por {ctx.author.name}", icon_url = ctx.author.display_avatar.url)
-                afkOnEmbed.set_thumbnail(url="https://i.imgur.com/Zyaj8U0.gif")
+                afkOnEmbed.set_thumbnail(url = link["blueChecked"])
                 await ctx.reply(embed = afkOnEmbed)
                 return
             else:

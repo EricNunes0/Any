@@ -30,11 +30,16 @@ bot = commands.Bot(command_prefix = prefix, case_insensitive = True, intents = i
 bot.remove_command("help")
 
 cogsPaths = []
-cogs = os.listdir("./cogs")
+cogs = os.listdir("commands")
 for folder in cogs:
-    for filename in os.listdir(f"./cogs/{folder}"):
-        if filename.endswith(".py"):
-            cogsPaths.append(f"cogs.{folder}.{filename[:-3]}")
+    print(cogs)
+    print(folder)
+    try:
+        for filename in os.listdir(f"commands/{folder}"):
+            if filename.endswith(".py"):
+                cogsPaths.append(f"commands.{folder}.{filename[:-3]}")
+    except Exception as e:
+        print(f"commands/{folder} não encontrado")
 
 async def loadExtensions():
     for cogFile in cogsPaths:
@@ -71,18 +76,65 @@ async def statuschange():
         await bot.change_presence(status=discord.Status.online, activity=activity5)
         await asyncio.sleep(10)
 
+#AFK
+async def create_afk(userId):
+    users = await get_afk_users()
+    if str(userId) in users:
+        return False
+    else:
+        users[str(userId)] = {}
+        users[str(userId)]["afk"] = False
+        users[str(userId)]["reason"] = "Não informado"
+        users[str(userId)]["time"] = "Não definido"
+
+    with open("../jsons/afk.json","w") as f:
+        json.dump(users, f)
+    return True
+
+async def get_afk_users():
+    with open("../jsons/afk.json", "r") as f:
+        users = json.load(f)
+    return users
+
+async def update_afk(userId, status, reason, time):
+    users = await get_afk_users()
+    users[str(userId)]["afk"] = status
+    if reason == None:
+        users[str(userId)]["reason"] = "Não informado"
+    else:
+        users[str(userId)]["reason"] = reason
+    if time != None:
+        users[str(userId)]["time"] = time
+    with open("../jsons/afk.json","w") as f:
+        json.dump(users, f)
+    stats = users[str(userId)]["afk"]
+    return stats
+#AFK ACIMA
+
 @bot.event
 async def on_message(message):
     if message.author.bot:
         return
+    print(message.type)
     with open("../jsons/afk.json", "r") as f:
         users = json.load(f)
     for user in users:
-        if f"<@{user}>" in message.content:
+        if int(message.author.id) == int(user):
+            if users[user]['afk'] == True:
+                await message.reply(f"『🔔』Seu AFK foi desativado!")
+                await update_afk(int(message.author.id), False, None, None)
+
+        elif f"<@{user}>" in message.content:
             print("Encontrei alguém afk:", user, users[user]['afk'])
             if users[user]['afk'] == True:
-                await message.reply(f"**『🔕』Este usuário está AFK!\n『💬』Motivo:** `{users[user]['reason']}`")
-                return
+                await message.reply(f"『🔕』Este usuário está AFK!\n『💬』Motivo: `{users[user]['reason']}`")
+        else:
+            repliedMsg = await message.channel.fetch_message(message.reference.message_id)
+            if int(repliedMsg.author.id) == int(user):
+                if users[user]['afk'] == True:
+                    await message.reply(f"『🔕』Este usuário está AFK!\n『💬』Motivo: `{users[user]['reason']}`")
+        
+
     await bot.process_commands(message)
     if message[0] == prefix:
         return
