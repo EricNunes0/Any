@@ -115,7 +115,6 @@ async def update_afk(userId, status, reason, time):
 async def on_message(message):
     if message.author.bot:
         return
-    print(message.type)
     with open("../jsons/afk.json", "r") as f:
         users = json.load(f)
     for user in users:
@@ -123,7 +122,7 @@ async def on_message(message):
             if users[user]['afk'] == True:
                 afkDisableMsg = await message.reply(f"『🔔』Seu AFK foi desativado!")
                 await update_afk(int(message.author.id), False, None, None)
-                await asyncio.sleep(10)
+                await asyncio.sleep(5)
                 await afkDisableMsg.delete()
 
         elif f"<@{user}>" in message.content:

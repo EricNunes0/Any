@@ -79,19 +79,6 @@ class cog_misc(commands.Cog):
         except Exception as e:
             print(e)
 
-    @commands.command(name="ping", pass_context=True, aliases=["latency", "latencia"])
-    @cooldown(1,3, type = commands.BucketType.user)
-    async def ping(self, ctx):
-        l = open("..\\link.json")
-        link = json.load(l)
-        now = datetime.datetime.now()
-        now = now.strftime("%d/%m/%Y - %H:%M:%S")
-        pingEmbed = discord.Embed(title = f"**『{link['pinkDiamond']}』Pinguim?**", color = 0xf020d0)
-        pingEmbed.add_field(name = "『⏲️』Latência:", value = f"**`{round(self.bot.latency * 1000)}ms`**", inline = True)
-        pingEmbed.set_thumbnail(url = "https://i.imgur.com/rqZKRFx.png")
-        pingEmbed.set_footer(text = f"Pedido por {ctx.author.name}", icon_url = ctx.author.display_avatar.url)
-        await ctx.reply(embed = pingEmbed)
-
 async def setup(bot):
     print("cog_misc.py loaded")
     await bot.add_cog(cog_misc(bot))
