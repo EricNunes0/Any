@@ -26,7 +26,11 @@ class cog_ping(commands.Cog):
     @cooldown(1,3, type = commands.BucketType.user)
     async def ping(self, ctx):
         try:
-            pingEmbed = discord.Embed(title = f"**『{link['pinkDiamond']}』Pinguim?**", color = discord.Color.from_rgb(240, 60, 200))
+            pingEmbed = discord.Embed(
+                title = f"**Pinguim?**",
+                color = discord.Color.from_rgb(240, 60, 200)
+            )
+            pingEmbed.set_author(name = f"『🐧』Ping:", icon_url = self.bot.user.display_avatar.url)
             pingEmbed.add_field(name = "『⏲️』Latência:", value = f"**`{round(self.bot.latency * 1000)}ms`**", inline = True)
             pingEmbed.set_thumbnail(url = "https://i.imgur.com/rqZKRFx.png")
             pingEmbed.set_footer(text = f"Pedido por {ctx.author.name}", icon_url = ctx.author.display_avatar.url)
