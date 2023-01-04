@@ -1032,7 +1032,7 @@ class cog_div(commands.Cog):
         await ctx.send(embed=embed)
 #DIVERSOS - Diversos - diversos
     @help.command()
-    async def botinfo(self, ctx):
+    async def _botinfo(self, ctx):
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
         embed = discord.Embed(title = f"Central de Ajuda - Botinfo 『{Dpink}』",description = f"#️⃣ **• Nome:** `botinfo`\n🔍 **• Descrição:** `Mostra as informações sobre o bot e o seu desenvolvimento`\n⚙ **• Uso:** `{command_prefix}botinfo`",color = 0xe61ec8)

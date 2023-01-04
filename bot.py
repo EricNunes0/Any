@@ -32,7 +32,7 @@ bot.remove_command("help")
 cogsPaths = []
 cogs = os.listdir("commands")
 for folder in cogs:
-    #print(cogs)
+    print(cogs)
     print(folder)
     try:
         for filename in os.listdir(f"commands/{folder}"):
