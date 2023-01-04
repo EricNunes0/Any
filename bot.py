@@ -127,12 +127,16 @@ async def on_message(message):
         elif f"<@{user}>" in message.content:
             print("Encontrei alguém afk:", user, users[user]['afk'])
             if users[user]['afk'] == True:
-                await message.reply(f"『🔕』Este usuário está AFK!\n『💬』Motivo: `{users[user]['reason']}`")
+                afkWarnMsg = await message.reply(f"『🔕』Este usuário está AFK!\n『💬』Motivo: `{users[user]['reason']}`")
+                await asyncio.sleep(10)
+                await afkWarnMsg.delete()
         else:
             repliedMsg = await message.channel.fetch_message(message.reference.message_id)
             if int(repliedMsg.author.id) == int(user):
                 if users[user]['afk'] == True:
-                    await message.reply(f"『🔕』Este usuário está AFK!\n『💬』Motivo: `{users[user]['reason']}`")
+                    afkWarnMsg = await message.reply(f"『🔕』Este usuário está AFK!\n『💬』Motivo: `{users[user]['reason']}`")
+                    await asyncio.sleep(10)
+                    await afkWarnMsg.delete()
         
 
     await bot.process_commands(message)
