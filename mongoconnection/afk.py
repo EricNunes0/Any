@@ -1,0 +1,72 @@
+import pymongo
+from mongoconnection.connect import getDatabase
+
+def createNewAfk(userId, active, reason, time):
+    dbname = getDatabase()
+    collectionName = dbname["afk"]
+    if reason == None:
+        reason = "Não informado"
+    newAfk = {
+        "userId": userId,
+        "active": active,
+        "reason": reason,
+        "time": time
+    }
+    collectionName.insert_one(newAfk)
+
+async def searchForAfk(message):
+    try:
+        dbname = getDatabase()
+        collectionName = dbname["afk"]
+        afkUsers = collectionName.find({})
+        for afkUser in afkUsers:
+            if int(message.author.id) == int(afkUser["userId"]):
+                if afkUser["active"] == True:
+                    collectionName.find_one_and_update({"userId": message.author.id}, {"$set": {"active": False, "reason": "Não informado"}}, return_document = pymongo.ReturnDocument.AFTER)
+                    return 0
+            elif f"<@{afkUser['userId']}>" in message.content:
+                if afkUser["active"] == True:
+                    return afkUser["reason"]
+            else:
+                if message.reference != None:
+                    repliedMsg = await message.channel.fetch_message(message.reference.message_id)
+                    if int(repliedMsg.author.id) == int(afkUser["userId"]):
+                        if afkUser["active"] == True:
+                            return afkUser["reason"]
+        return 1
+    except Exception as e:
+        print(e)
+
+def findOneAfkAndUpdate(userId, active, reason, time):
+    dbname = getDatabase()
+    collectionName = dbname["afk"]
+    if reason == None:
+        reason = "Não informado"
+    foundProfile = collectionName.find_one({"userId": userId})
+    if foundProfile == None:
+        createNewAfk(userId, active, reason, time)
+    else:
+        collectionName.find_one_and_update({"userId": userId}, {"$set": {"active": active, "reason": reason, "time": time}}, return_document = pymongo.ReturnDocument.AFTER)
+
+def insertOne():
+    dbname = getDatabase()
+    collectionName = dbname["user_1_items"]
+
+    item_1 = {
+    "_id" : "U1IT00001",
+    "item_name" : "Blender",
+    "max_discount" : "10%",
+    "batch_number" : "RR450020FRG",
+    "price" : 340,
+    "category" : "kitchen appliance"
+    }
+
+    item_2 = {
+    "_id" : "U1IT00002",
+    "item_name" : "Egg",
+    "category" : "food",
+    "quantity" : 12,
+    "price" : 36,
+    "item_description" : "brown country eggs"
+    }
+    #collectionName.insert_many([item_1,item_2])

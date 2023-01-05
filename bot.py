@@ -9,6 +9,8 @@ import asyncio
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 from io import BytesIO
 import json
+from mongoconnection.connect import getDatabase
+from mongoconnection.afk import searchForAfk
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -32,8 +34,6 @@ bot.remove_command("help")
 cogsPaths = []
 cogs = os.listdir("commands")
 for folder in cogs:
-    print(cogs)
-    print(folder)
     try:
         for filename in os.listdir(f"commands/{folder}"):
             if filename.endswith(".py"):
@@ -76,79 +76,66 @@ async def statuschange():
         await bot.change_presence(status=discord.Status.online, activity=activity5)
         await asyncio.sleep(10)
 
-#AFK
-async def create_afk(userId):
-    users = await get_afk_users()
-    if str(userId) in users:
-        return False
-    else:
-        users[str(userId)] = {}
-        users[str(userId)]["afk"] = False
-        users[str(userId)]["reason"] = "Não informado"
-        users[str(userId)]["time"] = "Não definido"
-
-    with open("../jsons/afk.json","w") as f:
-        json.dump(users, f)
-    return True
-
-async def get_afk_users():
-    with open("../jsons/afk.json", "r") as f:
-        users = json.load(f)
-    return users
-
-async def update_afk(userId, status, reason, time):
-    users = await get_afk_users()
-    users[str(userId)]["afk"] = status
-    if reason == None:
-        users[str(userId)]["reason"] = "Não informado"
-    else:
-        users[str(userId)]["reason"] = reason
-    if time != None:
-        users[str(userId)]["time"] = time
-    with open("../jsons/afk.json","w") as f:
-        json.dump(users, f)
-    stats = users[str(userId)]["afk"]
-    return stats
-#AFK ACIMA
-
 @bot.event
 async def on_message(message):
     if message.author.bot:
         return
-    with open("../jsons/afk.json", "r") as f:
-        users = json.load(f)
-    for user in users:
-        if int(message.author.id) == int(user):
-            if users[user]['afk'] == True:
-                afkDisableMsg = await message.reply(f"『🔔』Seu AFK foi desativado!")
-                await update_afk(int(message.author.id), False, None, None)
-                await asyncio.sleep(5)
-                await afkDisableMsg.delete()
-
-        elif f"<@{user}>" in message.content:
-            print("Encontrei alguém afk:", user, users[user]['afk'])
-            if users[user]['afk'] == True:
-                afkWarnMsg = await message.reply(f"『🔕』Este usuário está AFK!\n『💬』Motivo: `{users[user]['reason']}`")
-                await asyncio.sleep(10)
-                await afkWarnMsg.delete()
-        else:
-            repliedMsg = await message.channel.fetch_message(message.reference.message_id)
-            if int(repliedMsg.author.id) == int(user):
-                if users[user]['afk'] == True:
-                    afkWarnMsg = await message.reply(f"『🔕』Este usuário está AFK!\n『💬』Motivo: `{users[user]['reason']}`")
-                    await asyncio.sleep(10)
-                    await afkWarnMsg.delete()
-        
-
-    await bot.process_commands(message)
-    if message[0] == prefix:
-        return
     if message.author == bot.user:
         return
-    print(message.content)
-    if bot.user.mention in message.content:
-        print("on_message()")
-        return await message.channel.send(f"Oi, meu prefixo é `{prefix}`. Digite {prefix}help para ver os meus comandos!")
+    afk = await searchForAfk(message)
+    #print(afk == 1, afk)
+    if afk == 0:
+        afkEmbed = discord.Embed(title = "Seu AFK foi desativado!",
+        color = discord.Color.from_rgb(50, 100, 255))
+        afkEmbed.set_author(name = "『🔔』AFK:", icon_url = bot.user.display_avatar.url)
+        afkEmbed.set_thumbnail(url = link["afkOffThumb"])
+        afkDisableMsg = await message.reply(embed = afkEmbed)
+        await asyncio.sleep(5)
+        await afkDisableMsg.delete()
+    elif afk != 1:
+        afkEmbed = discord.Embed(title = "Este usuário está AFK!", description = f"**『💬』Motivo:** {afk}",
+        color = discord.Color.from_rgb(50, 100, 255))
+        afkEmbed.set_author(name = "『🔕』AFK:", icon_url = bot.user.display_avatar.url)
+        afkEmbed.set_thumbnail(url = link["afkOnThumb"])
+        afkWarnMsg = await message.reply(embed = afkEmbed)
+        await asyncio.sleep(10)
+        await afkWarnMsg.delete()
+    try:
+        await bot.process_commands(message)
+        if bot.user.mention in message.content:
+            return await message.channel.send(f"Oi, meu prefixo é `{prefix}`. Digite {prefix}help para ver os meus comandos!")
+    except Exception as e:
+        print(e)
+
+@bot.event
+async def on_message_edit(before, after):
+    try:
+        if before.author.bot:
+            return
+        if before.author == bot.user:
+            return
+        afk = await searchForAfk(before)
+        print(afk == 1, afk)
+        if afk == 0:
+            afkEmbed = discord.Embed(title = "Seu AFK foi desativado!",
+            color = discord.Color.from_rgb(50, 100, 255))
+            afkEmbed.set_author(name = "『🔔』AFK:", icon_url = bot.user.display_avatar.url)
+            afkEmbed.set_thumbnail(url = link["afkOffThumb"])
+            afkDisableMsg = await before.reply(embed = afkEmbed)
+            await asyncio.sleep(5)
+            await afkDisableMsg.delete()
+        elif afk != 1:
+            afkEmbed = discord.Embed(title = "Este usuário está AFK!", description = f"**『💬』Motivo:** {afk}",
+            color = discord.Color.from_rgb(50, 100, 255))
+            afkEmbed.set_author(name = "『🔕』AFK:", icon_url = bot.user.display_avatar.url)
+            afkEmbed.set_thumbnail(url = link["afkOnThumb"])
+            afkWarnMsg = await before.reply(embed = afkEmbed)
+            await asyncio.sleep(10)
+            await afkWarnMsg.delete()
+        return
+    except Exception as e:
+        print(e)
+
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -249,6 +236,9 @@ async def welcome(ctx, member: discord.Member = None):
             message = await welcomeChannel.send(content = member.mention, embed = guildMemberAdd, file = file)
     except Exception as e:
         print(e)
+
+getDatabase()
+
 async def main():
     async with bot:
         await loadExtensions()

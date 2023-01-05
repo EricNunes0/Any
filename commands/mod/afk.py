@@ -4,6 +4,7 @@ from discord.ext.commands import has_permissions, bot_has_permissions, BotMissin
 import datetime
 import json
 import aiohttp
+from mongoconnection.afk import *
 
 c = open("../config.json")
 config = json.load(c)
@@ -19,39 +20,6 @@ bot = commands.Bot(command_prefix = prefix, intents=intents,  case_insensitive =
 
 def cooldown(rate, per_sec = 0, per_min = 0, per_hour = 0, type = commands.BucketType.default):
     return commands.cooldown(rate, per_sec + 60 * per_min + 3600 * per_hour, type)
-
-async def create_afk(userId):
-    users = await get_afk_users()
-    if str(userId) in users:
-        return False
-    else:
-        users[str(userId)] = {}
-        users[str(userId)]["afk"] = False
-        users[str(userId)]["reason"] = "Não informado"
-        users[str(userId)]["time"] = "Não definido"
-
-    with open("../jsons/afk.json","w") as f:
-        json.dump(users, f)
-    return True
-
-async def get_afk_users():
-    with open("../jsons/afk.json", "r") as f:
-        users = json.load(f)
-    return users
-
-async def update_afk(userId, status, reason, time):
-    users = await get_afk_users()
-    users[str(userId)]["afk"] = status
-    if reason == None:
-        users[str(userId)]["reason"] = "Não informado"
-    else:
-        users[str(userId)]["reason"] = reason
-    if time != None:
-        users[str(userId)]["time"] = time
-    with open("../jsons/afk.json","w") as f:
-        json.dump(users, f)
-    stats = users[str(userId)]["afk"]
-    return stats
 
 userPermAdmin = discord.Embed(title = f"Sem permissão", description = f"『❌』Você não tem as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Administrador`", color = 0xFF0000)
 userPermAdmin.set_thumbnail(url = link["error"])
@@ -76,28 +44,25 @@ class cog_afk(commands.Cog):
             afkHelpEmbed.add_field(name = f"『🔔』Como ligar:", value = f"`{prefix}afk Estou trabalhando`", inline = False)
             afkHelpEmbed.add_field(name = f"『🔕』Como desligar:", value = f"`O AFK será desativado automaticamente assim que você enviar uma mensagem.`", inline = False)
             afkHelpEmbed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Administrador`", inline = False)
-            afkHelpEmbed.set_footer(text=f"Pedido por {ctx.author.name}", icon_url= ctx.author.display_avatar.url)
+            afkHelpEmbed.set_footer(text = f"Pedido por {ctx.author.name}", icon_url= ctx.author.display_avatar.url)
             afkHelpEmbed.set_thumbnail(url = link["blueHelp"])
             dateTimeNow = datetime.datetime.now()
             timeStamp = dateTimeNow.timestamp()
-            await create_afk(ctx.author.id)
             if reason == None:
                 reason = "Não informado"
             if reason.lower() == "help":
                 await ctx.reply(embed = afkHelpEmbed)
                 return
-            await update_afk(ctx.author.id, True, reason, int(timeStamp))
+            findOneAfkAndUpdate(ctx.author.id, True, reason, int(timeStamp))
             afkOnEmbed = discord.Embed(
                 title = f"AFK ligado!",
-                description = f"O afk será desativado assim que você enviar uma mensagem.",
                 color = discord.Color.from_rgb(50, 100, 255)
             )
             afkOnEmbed.set_author(name = f"『🔕』AFK:", icon_url = self.bot.user.display_avatar.url)
-            afkOnEmbed.add_field(name = f"『👤』Usuário:", value = f"{ctx.author.mention} `({ctx.author.id})`", inline = True)
             afkOnEmbed.add_field(name = f"『⏰』Definido em:", value = f"<t:{int(timeStamp)}> (<t:{int(timeStamp)}:R>)", inline = True)
             afkOnEmbed.add_field(name = f"『💬』Mensagem:", value = f"`{reason}`", inline = False)
             afkOnEmbed.set_footer(text = f"Pedido por {ctx.author.name}", icon_url = ctx.author.display_avatar.url)
-            afkOnEmbed.set_thumbnail(url = link["blueChecked"])
+            afkOnEmbed.set_thumbnail(url = link["afkOnThumb"])
             await ctx.reply(embed = afkOnEmbed)
             return
         except Exception as e:
