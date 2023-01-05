@@ -136,6 +136,8 @@ async def on_message_edit(before, after):
     except Exception as e:
         print(e)
 
+#@bot.command(name = "button", aliases = ["bt"])
+#async def welcome(ctx, member: discord.Member = None):
 
 @bot.event
 async def on_command_error(ctx, error):

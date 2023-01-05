@@ -48,6 +48,18 @@ def findOneAfkAndUpdate(userId, active, reason, time):
     else:
         collectionName.find_one_and_update({"userId": userId}, {"$set": {"active": active, "reason": reason, "time": time}}, return_document = pymongo.ReturnDocument.AFTER)
 
+def disableAfk(userId):
+    dbname = getDatabase()
+    collectionName = dbname["afk"]
+    foundProfile = collectionName.find_one({"userId": userId})
+    if foundProfile == None:
+        print("disableAfk() - Usuário não encontrado: ", userId)
+        return
+    else:
+        print("disableAfk() - Usuário encontrado: ", userId)
+        collectionName.find_one_and_update({"userId": userId}, {"$set": {"active": False}}, return_document = pymongo.ReturnDocument.AFTER)
+
+
 def insertOne():
     dbname = getDatabase()
     collectionName = dbname["user_1_items"]
