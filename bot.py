@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 from io import BytesIO
 import json
 from mongoconnection.connect import getDatabase
-from mongoconnection.afk import searchForAfk
+from mongoconnection.afk import searchForAfk, reactionSearchForAfk
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -136,8 +136,22 @@ async def on_message_edit(before, after):
     except Exception as e:
         print(e)
 
-#@bot.command(name = "button", aliases = ["bt"])
-#async def welcome(ctx, member: discord.Member = None):
+@bot.event
+async def on_reaction_add(reaction, user):
+    try:
+        afk = await reactionSearchForAfk(user.id)
+        if afk == 1:
+            afkEmbed = discord.Embed(title = "Seu AFK foi desativado!",
+            color = discord.Color.from_rgb(50, 100, 255))
+            afkEmbed.set_author(name = f"『🔔』AFK de {user.name}:", icon_url = user.display_avatar.url)
+            afkEmbed.set_thumbnail(url = link["afkOffThumb"])
+            afkDisableMsg = await reaction.message.channel.send(embed = afkEmbed)
+            await asyncio.sleep(5)
+            await afkDisableMsg.delete()
+        return
+    except Exception as e:
+        print(e)
+
 
 @bot.event
 async def on_command_error(ctx, error):

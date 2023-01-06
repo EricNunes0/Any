@@ -33,8 +33,8 @@ class afkButtons(discord.ui.View):
         self.bot = bot
         self.userId = userId
     
-    @discord.ui.button(label = f"Desativar", style = discord.ButtonStyle.blurple, emoji = "🔔")
-    async def buttonInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
+    @discord.ui.button(label = f"Desativar", style = discord.ButtonStyle.blurple, emoji = f"{link['afkOffEmj']}")
+    async def afkDisableButton(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
             
             if int(interaction.user.id) == int(self.userId):

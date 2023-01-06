@@ -37,6 +37,23 @@ async def searchForAfk(message):
     except Exception as e:
         print(e)
 
+async def reactionSearchForAfk(userId):
+    try:
+        print(userId)
+        dbname = getDatabase()
+        collectionName = dbname["afk"]
+        foundProfile = collectionName.find_one({"userId": userId})
+        if foundProfile == None:
+            print("reactionSearchForAfk() -> profile not found")
+            return 0
+        if foundProfile["active"] == True:
+            collectionName.find_one_and_update({"userId": userId}, {"$set": {"active": False}}, return_document = pymongo.ReturnDocument.AFTER)
+            return 1
+        return 0
+    except Exception as e:
+        print(e)
+
+
 def findOneAfkAndUpdate(userId, active, reason, time):
     dbname = getDatabase()
     collectionName = dbname["afk"]
