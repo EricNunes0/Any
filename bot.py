@@ -11,6 +11,7 @@ from io import BytesIO
 import json
 from mongoconnection.connect import getDatabase
 from mongoconnection.afk import searchForAfk, reactionSearchForAfk
+from mongoconnection.star import *
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -19,8 +20,8 @@ with open("config.json", "r") as f:
     config = json.load(f)
 l = open("link.json")
 link = json.load(l)
-afkOpen = open("jsons/afk.json")
-afkJson = json.load(afkOpen)
+#afkOpen = open("jsons/afk.json")
+#afkJson = json.load(afkOpen)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -83,7 +84,6 @@ async def on_message(message):
     if message.author == bot.user:
         return
     afk = await searchForAfk(message)
-    #print(afk == 1, afk)
     if afk == 0:
         afkEmbed = discord.Embed(title = "Seu AFK foi desativado!",
         color = discord.Color.from_rgb(50, 100, 255))
@@ -102,8 +102,11 @@ async def on_message(message):
         await afkWarnMsg.delete()
     try:
         await bot.process_commands(message)
-        if bot.user.mention in message.content:
-            return await message.channel.send(f"Oi, meu prefixo é `{prefix}`. Digite {prefix}help para ver os meus comandos!")
+        emj = random.randint(0, 50)
+        if emj >= 0 and emj <= 4:
+            await message.add_reaction(link["stars"]["emjs"][f"{emj}"])
+        #if bot.user.mention in message.content:
+        #    return await message.channel.send(f"Oi, meu prefixo é `{prefix}`. Digite {prefix}help para ver os meus comandos!")
     except Exception as e:
         print(e)
 
@@ -139,6 +142,23 @@ async def on_message_edit(before, after):
 @bot.event
 async def on_reaction_add(reaction, user):
     try:
+        if user.bot:
+            return
+        for i in range(5):
+            if str(reaction) == link["stars"]["emjs"][f"{i}"]:
+                starEmbed = discord.Embed(
+                    description = f"『{link['stars']['emjs'][f'{i}']}』Parabéns {user.mention}, você conseguiu encontrar uma estrela!",
+                    color = discord.Color.from_rgb(link["stars"]["colors"][f"{i}"][0], link["stars"]["colors"][f"{i}"][1], link["stars"]["colors"][f"{i}"][2])
+                )
+                starEmbed.set_author(name = f"『⭐』Caça as estrelas:", icon_url = user.display_avatar.url)
+                starEmbed.set_thumbnail(url = link["stars"]["thumbs"][f"{i}"])
+                starEmbed.set_footer(text = f"Use \"{prefix}stars\" para ver o seu total de estrelas!")
+                await reaction.message.clear_reactions()
+                await reaction.message.channel.send(embed = starEmbed)
+                await updateStar(user.id, i)
+                print("Estrela desativada")
+                return
+
         afk = await reactionSearchForAfk(user.id)
         if afk == 1:
             afkEmbed = discord.Embed(title = "Seu AFK foi desativado!",
