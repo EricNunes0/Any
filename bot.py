@@ -20,8 +20,8 @@ with open("config.json", "r") as f:
     config = json.load(f)
 l = open("link.json")
 link = json.load(l)
-#afkOpen = open("jsons/afk.json")
-#afkJson = json.load(afkOpen)
+starOpen = open("jsons/stars.json")
+starJson = json.load(starOpen)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -102,11 +102,21 @@ async def on_message(message):
         await afkWarnMsg.delete()
     try:
         await bot.process_commands(message)
-        emj = random.randint(0, 50)
-        if emj >= 0 and emj <= 4:
-            await message.add_reaction(link["stars"]["emjs"][f"{emj}"])
-        #if bot.user.mention in message.content:
-        #    return await message.channel.send(f"Oi, meu prefixo é `{prefix}`. Digite {prefix}help para ver os meus comandos!")
+        if message.channel.id in starJson["starsChannels"]:
+            emj = random.randint(0, 1000)
+            print(emj)
+            if emj >= 0 and emj <= 30:
+                emj = 0
+            elif emj >= 30 and emj <= 55:
+                emj = 1
+            elif emj >= 55 and emj <= 75:
+                emj = 2
+            elif emj >= 75 and emj <= 90:
+                emj = 3
+            elif emj >= 90 and emj <= 100:
+                emj = 4
+            if emj >= 0 and emj <= 4:
+                await message.add_reaction(link["stars"]["emjs"][f"{emj}"])
     except Exception as e:
         print(e)
 
@@ -152,10 +162,12 @@ async def on_reaction_add(reaction, user):
                 )
                 starEmbed.set_author(name = f"『⭐』Caça as estrelas:", icon_url = user.display_avatar.url)
                 starEmbed.set_thumbnail(url = link["stars"]["thumbs"][f"{i}"])
-                starEmbed.set_footer(text = f"Use \"{prefix}stars\" para ver o seu total de estrelas!")
+                starEmbed.set_footer(text = f"{user.name}, use \"{prefix}stars\" para ver o seu total de estrelas!", icon_url = user.display_avatar.url)
                 await reaction.message.clear_reactions()
-                await reaction.message.channel.send(embed = starEmbed)
-                await updateStar(user.id, i)
+                reactReply = await reaction.message.channel.send(embed = starEmbed)
+                updateStar(user.id, i)
+                await asyncio.sleep(10)
+                await reactReply.delete()
                 print("Estrela desativada")
                 return
 
