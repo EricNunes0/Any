@@ -69,52 +69,6 @@ class cog_mod(commands.Cog):
         embed.set_thumbnail(url="https://i.imgur.com/Zyaj8U0.gif")
         await ctx.reply(embed=embed)
 
-    @commands.command(name='addemoji', aliases=['createemoji','criaremoji'], pass_context = True)
-    @bot_has_permissions(manage_emojis = True)
-    @has_permissions(manage_emojis = True)
-    @cooldown(1,5, type = commands.BucketType.user)
-    async def addemoji(self, ctx, url: str, name):
-        now = datetime.datetime.now()
-        now = now.strftime("%d/%m/%Y - %H:%M:%S")
-        if ctx.author.guild_permissions.manage_emojis:
-            async with aiohttp.ClientSession() as ses:
-                async with ses.get(url) as r:
-                    try:
-                        img_or_gif = BytesIO(await r.read())
-                        b_value = img_or_gif.getvalue()
-                        if r.status in range(200,299):
-                            emoji = await ctx.guild.create_custom_emoji(image=b_value, name = name)
-                            createdEmoji = discord.Embed(title = f"Emoji criado", description = f"『✅』O emoji foi criado com sucesso!\n『➡️』Emoji: {emoji}", color = 0x40ffb0)
-                            createdEmoji.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
-                            createdEmoji.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
-                            await ctx.reply(embed = createdEmoji)
-                            await ses.close()
-                        else:
-                            await ctx.send(f'『❌』{ctx.author.mention}, houve um erro ao criar o emoji! Informe o link da imagem, e o nome do emoji!\n『💬』Exemplo: `{command_prefix}addemoji <link> <nome do emoji>`')
-                            await ses.close()
-                    except discord.HTTPException:
-                        await ctx.send(f'『❌』{ctx.author.mention}, o tamanho do arquivo é muito grande.')
-
-    @addemoji.error
-    async def addemoji_error(self, ctx, error):
-        if isinstance(error, BotMissingPermissions):
-            await ctx.reply(embed = botPermEmoji)
-        elif isinstance(error, commands.MissingPermissions):
-            await ctx.reply(embed = userPermEmoji)
-        elif isinstance(error, commands.MissingRequiredArgument):
-            now = datetime.datetime.now()
-            now = now.strftime("%d/%m/%Y - %H:%M:%S")
-            embed = discord.Embed(title = f"『😀』{command_prefix}addemoji", color = 0x4070ff)
-            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
-            embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Cria um emoji com um link.`", inline = False)
-            embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}createemoji, {command_prefix}criaremoji`", inline = False)
-            embed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}addemoji <URL> <nome>`", inline = False)
-            embed.add_field(name = f"『💬』Exemplo:", value = f"`{command_prefix}addemoji <URL> new_emoji`", inline = False)
-            embed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Gerenciar emojis e figurinhas`", inline = False)
-            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
-            embed.set_thumbnail(url="https://i.imgur.com/FEp8F1G.gif")
-            await ctx.reply(embed=embed)
-
     @commands.command(name="addrole", aliases=["createrole"])
     @bot_has_permissions(manage_roles = True)
     @has_permissions(manage_roles = True)
