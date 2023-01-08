@@ -56,5 +56,5 @@ class cog_stars(commands.Cog):
             print(e)
     
 async def setup(bot):
-    print(f"{prefix}afk")
+    print(f"{prefix}stars")
     await bot.add_cog(cog_stars(bot))

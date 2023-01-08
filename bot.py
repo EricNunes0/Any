@@ -104,7 +104,7 @@ async def on_message(message):
         await bot.process_commands(message)
         if message.channel.id in starJson["starsChannels"]:
             emj = random.randint(0, 1000)
-            print(emj)
+            #print(emj)
             if emj >= 0 and emj <= 30:
                 emj = 0
             elif emj >= 30 and emj <= 55:
@@ -156,16 +156,16 @@ async def on_reaction_add(reaction, user):
             return
         for i in range(5):
             if str(reaction) == link["stars"]["emjs"][f"{i}"]:
+                userStars = updateStar(user.id, i)
+                await reaction.message.clear_reactions()
                 starEmbed = discord.Embed(
-                    description = f"『{link['stars']['emjs'][f'{i}']}』Parabéns {user.mention}, você conseguiu encontrar uma estrela!",
+                    description = f"『{link['stars']['emjs'][f'{i}']}』Parabéns {user.mention}, você conseguiu uma estrela e agora tem **{userStars['total'] + 1}** estrelas!",
                     color = discord.Color.from_rgb(link["stars"]["colors"][f"{i}"][0], link["stars"]["colors"][f"{i}"][1], link["stars"]["colors"][f"{i}"][2])
                 )
                 starEmbed.set_author(name = f"『⭐』Caça as estrelas:", icon_url = user.display_avatar.url)
                 starEmbed.set_thumbnail(url = link["stars"]["thumbs"][f"{i}"])
                 starEmbed.set_footer(text = f"{user.name}, use \"{prefix}stars\" para ver o seu total de estrelas!", icon_url = user.display_avatar.url)
-                await reaction.message.clear_reactions()
                 reactReply = await reaction.message.channel.send(embed = starEmbed)
-                updateStar(user.id, i)
                 await asyncio.sleep(10)
                 await reactReply.delete()
                 print("Estrela desativada")
