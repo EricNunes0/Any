@@ -156,8 +156,8 @@ async def on_reaction_add(reaction, user):
             return
         for i in range(5):
             if str(reaction) == link["stars"]["emjs"][f"{i}"]:
-                userStars = updateStar(user.id, i)
                 await reaction.message.clear_reactions()
+                userStars = updateStar(user.id, i)
                 starEmbed = discord.Embed(
                     description = f"『{link['stars']['emjs'][f'{i}']}』Parabéns {user.mention}, você conseguiu uma estrela e agora tem **{userStars['total'] + 1}** estrelas!",
                     color = discord.Color.from_rgb(link["stars"]["colors"][f"{i}"][0], link["stars"]["colors"][f"{i}"][1], link["stars"]["colors"][f"{i}"][2])
@@ -188,7 +188,7 @@ async def on_reaction_add(reaction, user):
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
-        message = await ctx.send(f"❌| {ctx.author.mention}, este comando não existe, ou foi removido!\n❓| Se quiser ver todos os meus comandos, digite `{prefix}comandos`")
+        message = await ctx.send(f"❌| {ctx.author.mention}, este comando não existe, ou foi removido!")
         await asyncio.sleep(5)
         await message.delete()
     if isinstance(error, commands.CommandOnCooldown):

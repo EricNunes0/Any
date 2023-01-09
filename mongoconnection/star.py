@@ -1,5 +1,6 @@
 import pymongo
 from mongoconnection.connect import getDatabase
+import asyncio
 
 def createNewStar(userId):
     dbname = getDatabase()
@@ -24,7 +25,7 @@ def getStar(userId):
     foundProfile = collectionName.find_one({"userId": userId})
     if foundProfile == None:
         foundProfile = createNewStar(userId)
-    updateStarTotal(userId)
+    foundProfile = collectionName.find_one({"userId": userId})
     return foundProfile
 
 def updateStar(userId, star):

@@ -37,6 +37,7 @@ class cog_stars(commands.Cog):
                 user = ctx.author
             print(user.id)
             userStars = getStar(user.id)
+            print(1, userStars)
             starsList = [userStars['stars']['0'], userStars['stars']['1'], userStars['stars']['2'], userStars['stars']['3'], userStars['stars']['4']]
             starMax = starsList.index(max(starsList))
             starsTotal = 0
@@ -45,7 +46,7 @@ class cog_stars(commands.Cog):
             starsEmbed = discord.Embed(
                 color = discord.Color.from_rgb(link["stars"]["colors"][f"{starMax}"][0], link["stars"]["colors"][f"{starMax}"][1], link["stars"]["colors"][f"{starMax}"][2])
             )
-            starsEmbed.set_author(name = f"『⭐』Estrelas:", icon_url = self.bot.user.display_avatar.url)
+            starsEmbed.set_author(name = f"『⭐』Estrelas de {user.name}:", icon_url = self.bot.user.display_avatar.url)
             starsEmbed.add_field(name = f"『🌠』Total:", value = f"**{starsTotal}**", inline = False)
             starsEmbed.add_field(name = f"『🌌』Cores:", value = f"**『{link['stars']['emjs']['0']}』Vermelhas: `{starsList[0]}`\n『{link['stars']['emjs']['1']}』Laranjas: `{starsList[1]}`\n『{link['stars']['emjs']['2']}』Amarelas: `{starsList[2]}`\n『{link['stars']['emjs']['3']}』Verdes: `{starsList[3]}`\n『{link['stars']['emjs']['4']}』Azuis: `{starsList[4]}`**", inline = False)
             starsEmbed.set_footer(text = f"Pedido por {ctx.author.name}", icon_url = ctx.author.display_avatar.url)
