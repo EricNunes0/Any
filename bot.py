@@ -58,7 +58,7 @@ async def on_ready():
     bot.loop.create_task(statuschange())
 
 async def statuschange():
-    activity1 = discord.Game(name=f"Olá, eu sou o Any!", type=3)
+    activity1 = discord.Game(name=f"Oi, eu sou o Any!", type=3)
     activity2 = discord.Activity(name=f"a!stars", type=3)
     activity3 = discord.Game(name=f"a!topstars", type=3)
     activity4 = discord.Game(name=f"Janny City Adventures", type=3)
