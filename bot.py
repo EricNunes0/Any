@@ -53,6 +53,8 @@ async def on_ready():
     activity = discord.Game(name=f"{prefix}help", type=3)
     await bot.change_presence(status=discord.Status.online, activity=activity)
     welcomeChannel = bot.get_channel(982824719046832188)
+    synced = await bot.tree.sync()
+    print(f"{len(synced)} slash commands")
     await welcomeChannel.send(content = f"**『<a:z_GreenDiamond:938880803692240927>』Olá, eu estou online!**")
     print(f"Estou pronto! Eu sou o {bot.user}")
     bot.loop.create_task(statuschange())
