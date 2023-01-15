@@ -25,15 +25,6 @@ userPermAdmin.set_thumbnail(url = link["error"])
 botPermAdmin = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Administrador`", color = 0xFF0000)
 botPermAdmin.set_thumbnail(url = link["error"])
 
-class rulesClass(discord.ui.View):
-    def __init__(self, text):
-        super().__init__()
-        self.text = text
-    
-    @discord.ui.button(label = f"Regras", style = discord.ButtonStyle.blurple, emoji = "📃")
-    async def ruleInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_message(self.text, ephemeral = True)
-
 bot.ses = aiohttp.ClientSession()
 class cog_rules(commands.Cog):
     def __init__(self, bot):
@@ -44,8 +35,14 @@ class cog_rules(commands.Cog):
     @cooldown(1, 3, type = commands.BucketType.user)
     async def button(self, ctx, message: discord.Message = None):
         try:
-            print(message)
-            await message.edit(view = rulesClass("Não quebre as regras!"))
+            ruleEmbed = discord.Embed(
+                title = "꧁📃 Regras da Janny City 📃꧂",
+                description = "Olá, este é o canal das regras do servidor. É de suma importância que todos os membros sigam as regras, para evitar punições.\n\nO sistema de regras é bem simples: todas as regras do servidor são divididas em níveis, e quanto mais graves forem as infrações, maiores serão as punições. As infrações são dividas em:\n【🟢】Leves\n【🟡】Médias\n【🔴】Graves\n【⚫️】Extremas",
+                color = discord.Color.from_rgb(50, 100, 255)
+            )
+            ruleEmbed.set_image(url = "https://i.imgur.com/u5rTAfS.png")
+            ruleEmbed.set_footer(text = "Regras da Janny City!")
+            await message.edit(content = "", embed = ruleEmbed)
             return
         except Exception as e:
             print(e)

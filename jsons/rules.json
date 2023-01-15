@@ -1,4 +1,114 @@
 {
     "rulesChannel": 1064003850228473876,
-    "rulesMessage": "1064004505097752576"
+    "rulesMessage": "1064004505097752576",
+    "rulesAlert": 1064299452598325258,
+    "rule1": {
+        "ruleTitle": "**▸ 「R.1」Flood/spam de mensagens/emojis:**",
+        "ruleDesc": "> 『💬』Não envie várias mensagens, emojis e/ou figurinhas rápidas e repetidas fora do canal de spam."
+    },
+    "rule2": {
+        "ruleTitle": "**▸ 「R.2」Mensagens desnecessariamente longas:**",
+        "ruleDesc": "> 『🗨』Não envie mensagens longas ou com muitos emojis/figurinhas fora dos canais de spam."
+    },
+    "rule3": {
+        "ruleTitle": "**▸ 「R.3」Marcar a staff desnecessariamente:**",
+        "ruleDesc": "> 『📌』Evite marcar os cargos dos administradores e moderadores sem motivo. Apenas mencione em casos importantes."
+    },
+    "rule4": {
+        "ruleTitle": "**▸ 「R.4」Usar bots incorretamente:**",
+        "ruleDesc": "> 『🤖』Não use os bots do servidor fora dos canais criados para eles. Mesmo os bots exclusivos do servidor, devem ser utilizados em seus devidos canais."
+    },
+    "rule5": {
+        "ruleTitle": "**▸ 「R.5」Exigir cargos para staff:**",
+        "ruleDesc": "> 『🗂』Não peça cargos para a staff excessivamente. Apenas os membros da staff decidem quais membros podem integrar na administração/moderação."
+    },
+    "rule6": {
+        "ruleTitle": "**▸ 「R.6」Atrapalhar conversas:**",
+        "ruleDesc": "> 『🗣』Não envie mensagens com intuito de prejudicar conversas ou algum usuário em específico."
+    },
+    "rule7": {
+        "ruleTitle": "**▸ 「R.7」Atrapalhar chamadas de áudio:**",
+        "ruleDesc": "> 『🔇』Não grite ou faça sons desconfortáveis nas calls apenas para atrapalhar as conversas."
+    },
+    "rule8": {
+        "ruleTitle": "**▸ 「R.8」Off-topic:**",
+        "ruleDesc": "> 『📜』Não desrespeite os propósitos dos canais, usando-os para outros propósitos que não condizem com suas propostas."
+    },
+    "rule9": {
+        "ruleTitle": "**▸ 「R.9」Compartilhamento de links (Youtube):**",
+        "ruleDesc": "> 『🎥』Não divulgue, sem autorização prévia, links do youtube fora do canal de divulgação do Youtube."
+    },
+    "rule10": {
+        "ruleTitle": "**▸ 「R.10」Spam de marcações:**",
+        "ruleDesc": "> 『👥』Não marque a mesma pessoa repetidamente, nem marque várias pessoas simultaneamente em excesso."
+    },
+    "rule11": {
+        "ruleTitle": "**▸ 「R.11」Divulgação de servidores:**",
+        "ruleDesc": "> 『✉️』Proibido divulgar links de outros servidores sem autorização. Apenas donos ou responsáveis de servidores parceiros podem divulgar o servidor nos canais de parcerias."
+    },
+    "rule12": {
+        "ruleTitle": "**▸ 「R.12」Divulgação incorreta dos parceiros:**",
+        "ruleDesc": "> 『🤝』Não divulgue servidores parceiros fora do canal de parceria. Os donos ou responsáveis dos servidores parceiros podem divulgar apenas no canal de parcerias."
+    },
+    "rule13": {
+        "ruleTitle": "**▸ 「R.13」Divulgação de servidores em DMs:**",
+        "ruleDesc": "> 『📧』Proibido divulgar links de outros servidores nas DMs de outros membros, sem autorização prévia. Caso receba alguma divulgação em sua DM, denuncie no canal de denúncias."
+    },
+    "rule14": {
+        "ruleTitle": "**▸ 「R.14」Desrespeitar os membros:**",
+        "ruleDesc": "> 『🗯』Não desrespeite qualquer um dos membros, ofendê-los ou causar desconforto/brigas."
+    },
+    "rule15": {
+        "ruleTitle": "**▸ 「R.15」Nomes ou apelidos inapropriados:**",
+        "ruleDesc": "> 『🗯』Não coloque nomes/apelidos ofensivos, que promovam inimizades ou discursos de ódio.\n『⚠️』Em caso de ser o nome do usuário, será exigido a alteração do mesmo. Recusar-se a alterar o nome resultará em banimento!"
+    },
+    "rule16": {
+        "ruleTitle": "**▸ 「R.16」Assuntos polêmicos:**",
+        "ruleDesc": "> 『↔️』Não promova discussões sobre assuntos polêmicos ou controversos, como política, religião ou quaisquer assuntos que causem desconforto.\n『⚠️』Nosso servidor NÃO foi criado para discutir estes assuntos. Caso queira discutir estes assuntos, retire-se do servidor!"
+    },
+    "rule17": {
+        "ruleTitle": "**▸ 「R.17」Aproveitar-se de falhas:**",
+        "ruleDesc": "> 『🗯』Não aproveite-se de falhas do servidor/bot para benefício próprio."
+    },
+    "rule18": {
+        "ruleTitle": "**▸ 「R.18」NSFW:**",
+        "ruleDesc": "> 『🔞』Não divulgue qualquer tipo de conteúdo NSFW (pornografia)."
+    },
+    "rule19": {
+        "ruleTitle": "**▸ 「R.19」Gore:**",
+        "ruleDesc": "> 『🩸』Não poste conteúdos como Gore e/ou Vore (imagens/vídeos que contenham sangue, violência ou conteúdo repulsivo, perturbador ou nojento)."
+    },
+    "rule20": {
+        "ruleTitle": "**▸ 「R.20」Avatares com NSFW:**",
+        "ruleDesc": "> 『🔞』Proibido avatares que possuem conteúdo de NSFW ou que violem os termos de diretrizes do Discord."
+    },
+    "rule21": {
+        "ruleTitle": "**▸ 「R.21」Divulgação de informações alheias:**",
+        "ruleDesc": "> 『🤳』Nunca divulgue informações privadas dos usuários sem autorização prévia. Isto inclui: fotos/vídeos pessoais, perfis em redes sociais, conversas públicas/privadas do usuário, localizações, e demais informações privadas."
+    },
+    "rule22": {
+        "ruleTitle": "**▸ 「R.22」Ameaças e chantagens:**",
+        "ruleDesc": "> 『😰』Não ameace ou faça chantagens aos outros membros, independente do motivo."
+    },
+    "rule23": {
+        "ruleTitle": "**▸ 「R.23」Vincular materiais prejudiciais ou enganos:**",
+        "ruleDesc": "> 『🖥』Não compartilhe vírus, invasores de IP ou softwares que comprometam a segurança e integridade dos dados dos usuários."
+    },
+    "rule24": {
+        "ruleTitle": "**▸ 「R.24」Preconceito:**",
+        "ruleDesc": "> 『💢』Jamais cometa quaisquer discusos de ódio que promovam a discriminação, ou seja, ideias racistas, homofóbicas, xenofóbicas, anti-religiosas, etc."
+    },
+    "rule25": {
+        "ruleTitle": "**▸ 「R.25」Assédio:**",
+        "ruleDesc": "> 『🗯️』Proibido cometer quaisquer tipos de assédios com outros usuários."
+    },
+    "rule26": {
+        "ruleTitle": "**▸ 「R.26」Contas alternativas:**",
+        "ruleDesc": "> 『👤』Não use contas alternativas para contornar punições."
+    },
+    "rule27": {
+        "ruleTitle": "**▸ 「R.27」Não seguir os termos de serviço do Discord:**",
+        "ruleDesc": "> 『🚫』Não cometa quaisquer violações dos Termos de Serviço do Discord. Você pode ler mais sobre os termos através deste link: https://discordapp.com/tos"
+    }
+    
 }
