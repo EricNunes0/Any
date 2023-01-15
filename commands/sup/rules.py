@@ -25,41 +25,27 @@ userPermAdmin.set_thumbnail(url = link["error"])
 botPermAdmin = discord.Embed(title = f"Eu não tenho permissão", description = f"『❌』Eu não tenho as permissões necessárias para usar este comando!\n『🛠️』Permissões necessárias: `Administrador`", color = 0xFF0000)
 botPermAdmin.set_thumbnail(url = link["error"])
 
-
-
-
-
-class buttonsClass(discord.ui.View):
+class rulesClass(discord.ui.View):
     def __init__(self, text):
         super().__init__()
         self.text = text
     
-    @discord.ui.button(label = f"Botão", style = discord.ButtonStyle.blurple)
-    async def buttonInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_message(self.text)#, ephemeral = True)
+    @discord.ui.button(label = f"Regras", style = discord.ButtonStyle.blurple, emoji = "📃")
+    async def ruleInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_message(self.text, ephemeral = True)
 
 bot.ses = aiohttp.ClientSession()
-class cog_button(commands.Cog):
+class cog_rules(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name = "button", aliases = ["bt"], pass_context = True)
+    @commands.command(name = "rules", aliases = ["rule"], pass_context = True)
     @has_permissions(administrator = True)
     @cooldown(1, 3, type = commands.BucketType.user)
-    async def button(self, ctx, *, reason: str = None):
+    async def button(self, ctx, message: discord.Message = None):
         try:
-            buttonHelpEmbed = discord.Embed(title = f"『🔘』{prefix}button", color = discord.Color.from_rgb(20, 90, 255))
-            buttonHelpEmbed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.display_avatar.url)
-            buttonHelpEmbed.add_field(name = f"『ℹ️』Descrição:", value = f"`Teste de botões`", inline = False)
-            buttonHelpEmbed.add_field(name = f"『🔀』Sinônimos:", value = f"`{prefix}bt`", inline = False)
-            buttonHelpEmbed.add_field(name = f"『⚙️』Uso:", value = f"`{prefix}bt`", inline = False)
-            buttonHelpEmbed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Administrador`", inline = False)
-            buttonHelpEmbed.set_footer(text = f"Pedido por {ctx.author.name}", icon_url= ctx.author.display_avatar.url)
-            buttonHelpEmbed.set_thumbnail(url = link["blueHelp"])
-            dateTimeNow = datetime.datetime.now()
-            timeStamp = dateTimeNow.timestamp()
-
-            await ctx.reply(content = "Botão", view = buttonsClass("AIN"))
+            print(message)
+            await message.edit(view = rulesClass("Não quebre as regras!"))
             return
         except Exception as e:
             print(e)
@@ -70,5 +56,5 @@ class cog_button(commands.Cog):
             await ctx.reply(embed = userPermAdmin)
     
 async def setup(bot):
-    print(f"{prefix}button")
-    await bot.add_cog(cog_button(bot))
+    print(f"{prefix}rules")
+    await bot.add_cog(cog_rules(bot))

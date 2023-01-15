@@ -12,6 +12,7 @@ import json
 from mongoconnection.connect import getDatabase
 from mongoconnection.afk import searchForAfk, reactionSearchForAfk
 from mongoconnection.star import *
+from handlers.rules import *
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -67,6 +68,7 @@ async def statuschange():
     activity5 = discord.Activity(name=f"vocês :)", type = 3)
     
     while True:
+        await getRuleRow(bot = bot)
         await asyncio.sleep(10)
         await bot.change_presence(status=discord.Status.online, activity=activity1)
         await asyncio.sleep(20)
