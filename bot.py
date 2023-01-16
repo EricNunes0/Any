@@ -13,6 +13,7 @@ from mongoconnection.connect import getDatabase
 from mongoconnection.afk import searchForAfk, reactionSearchForAfk
 from mongoconnection.star import *
 from handlers.rules import *
+from handlers.register import *
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -69,6 +70,7 @@ async def statuschange():
     
     while True:
         await getRuleRow(bot = bot)
+        await getRegisterRow(bot = bot)
         await asyncio.sleep(10)
         await bot.change_presence(status=discord.Status.online, activity=activity1)
         await asyncio.sleep(20)
@@ -219,7 +221,7 @@ async def on_member_join(member):
             e = random.choice(welEmjs)
             guildMemberAdd = discord.Embed(title = f"{e} Seja bem-vindo(a)! {e}", color = 0x4070e0)
             guildMemberAdd.set_author(name = f"{member.name}#{member.discriminator}", icon_url = member.display_avatar.url)
-            guildMemberAdd.add_field(name = f"〔⏬〕Confira:", value = f"**『{link['grayDiamond']}』Regras:** <#1026231571776294942>\n**『{link['greenDiamond']}』Registre-se:** <#770250817684635658>\n**『{link['redDiamond']}』Use o Janny:** <#970038786908127273>")
+            guildMemberAdd.add_field(name = f"〔⏬〕Confira:", value = f"**『{link['grayDiamond']}』Regras:** <#1064003850228473876>\n**『{link['greenDiamond']}』Registre-se:** <#770250817684635658>\n**『{link['redDiamond']}』Use o Janny:** <#970038786908127273>")
             guildMemberAdd.set_thumbnail(url = member.display_avatar.url)
             guildMemberAdd.set_footer(text = f"ID: {member.id}", icon_url = member.display_avatar.url)
             welcomeChannel = bot.get_channel(sendWelcomeChannelId)
