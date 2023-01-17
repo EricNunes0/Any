@@ -174,7 +174,6 @@ async def on_reaction_add(reaction, user):
                 reactReply = await reaction.message.channel.send(embed = starEmbed)
                 await asyncio.sleep(10)
                 await reactReply.delete()
-                print("Estrela desativada")
                 return
 
         afk = await reactionSearchForAfk(user.id)
