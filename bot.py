@@ -13,7 +13,10 @@ from mongoconnection.connect import getDatabase
 from mongoconnection.afk import searchForAfk, reactionSearchForAfk
 from mongoconnection.star import *
 from handlers.rules import *
-from handlers.register import *
+from handlers.basicColors import *
+from handlers.brightColors import *
+from handlers.darkColors import *
+from handlers.grayColors import *
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -63,10 +66,13 @@ async def on_ready():
     bot.loop.create_task(statuschange())
 
 async def reloadServerOptions():
-    print("reloadServerOptions()")
     while True:
+        print("reloadServerOptions()")
         await getRuleRow(bot = bot)
-        await getRegisterRow(bot = bot)
+        await getBasicColorsRow(bot = bot)
+        await getBrightColorsRow(bot = bot)
+        await getDarkColorsRow(bot = bot)
+        await getGrayColorsRow(bot = bot)
         await asyncio.sleep(60)
 
 async def statuschange():
