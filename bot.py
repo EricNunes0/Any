@@ -59,7 +59,15 @@ async def on_ready():
     print(f"{len(synced)} slash commands")
     await welcomeChannel.send(content = f"**『<a:z_GreenDiamond:938880803692240927>』Olá, eu estou online!**")
     print(f"Estou pronto! Eu sou o {bot.user}")
+    bot.loop.create_task(reloadServerOptions())
     bot.loop.create_task(statuschange())
+
+async def reloadServerOptions():
+    print("reloadServerOptions()")
+    while True:
+        await getRuleRow(bot = bot)
+        await getRegisterRow(bot = bot)
+        await asyncio.sleep(60)
 
 async def statuschange():
     activity1 = discord.Game(name=f"Oi, eu sou o Any!", type=3)
@@ -69,8 +77,6 @@ async def statuschange():
     activity5 = discord.Activity(name=f"vocês :)", type = 3)
     
     while True:
-        await getRuleRow(bot = bot)
-        await getRegisterRow(bot = bot)
         await asyncio.sleep(10)
         await bot.change_presence(status=discord.Status.online, activity=activity1)
         await asyncio.sleep(20)
