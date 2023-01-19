@@ -1,13 +1,19 @@
 import discord
 import json
+import random
 
 class colorsClass(discord.ui.View):
     def __init__(self, bot, json):
-        super().__init__()
+        super().__init__(timeout = None)
         self.bot = bot
         self.json = json
     
-    @discord.ui.select(custom_id = f"colors_menu", placeholder = f"Escolha uma cor:", options = [
+    async def on_timeout(self):
+        for child in self.children:
+            child.disabled = True
+        print("getBasicColorsRow() disabled")
+
+    @discord.ui.select(custom_id = f"colors_menu_{random.randint(0, 1000)}", placeholder = f"Escolha uma cor:", options = [
         discord.SelectOption(
             label = "Vermelho",
             emoji = "🔴",
@@ -88,6 +94,7 @@ class colorsClass(discord.ui.View):
 
 async def getBasicColorsRow(bot):
     try:
+        print("getBasicColorsRow() started")
         c = open("../jsons/colors.json", encoding = "utf8")
         colorsJson = json.load(c)
         channel = bot.get_channel(colorsJson["colorsChannel"])

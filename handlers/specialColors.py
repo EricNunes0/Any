@@ -3,7 +3,7 @@ import json
 
 class colorsClass(discord.ui.View):
     def __init__(self, bot, json):
-        super().__init__()
+        super().__init__(timeout = None)
         self.bot = bot
         self.json = json
     
