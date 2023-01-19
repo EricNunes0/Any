@@ -17,6 +17,7 @@ from handlers.basicColors import *
 from handlers.brightColors import *
 from handlers.darkColors import *
 from handlers.grayColors import *
+from handlers.specialColors import *
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -73,6 +74,7 @@ async def reloadServerOptions():
         await getBrightColorsRow(bot = bot)
         await getDarkColorsRow(bot = bot)
         await getGrayColorsRow(bot = bot)
+        await getSpecialColorsRow(bot = bot)
         await asyncio.sleep(60)
 
 async def statuschange():

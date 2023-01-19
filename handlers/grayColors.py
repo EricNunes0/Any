@@ -50,6 +50,16 @@ class colorsClass(discord.ui.View):
             rolesIds = []
             for role in interaction.user.roles:
                 rolesIds.append(int(role.id))
+            if not 1047268770504253561 in rolesIds and not 1047268807812595802 in rolesIds:
+                colorsEmbed = discord.Embed(
+                    title = f"꧁🎨 Cores Especiais 🎨꧂",
+                    color = discord.Color.from_rgb(220, 20, 20)
+                )
+                colorsEmbed.add_field(name = "『❌』Erro:", value = f"{interaction.user.mention}, você precisa ter o VIP <@&1047268770504253561> ou superior para usar estas cores!", inline = False)
+                colorsEmbed.add_field(name = "『✳』Comprar VIP:", value = f"Para comprar o VIP, veja mais detalhes do plano em <#1047316824976523354> e abra um ticket!", inline = False)
+                colorsEmbed.set_footer(text = "Cores especiais", icon_url = self.bot.user.display_avatar.url)
+                await interaction.response.send_message(embed = colorsEmbed, ephemeral = True)
+                return
             for color in self.json["roleColors"]:
                     if int(color) in rolesIds:
                         removeColorRole = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(color))
@@ -58,7 +68,7 @@ class colorsClass(discord.ui.View):
                 colorsEmbed = discord.Embed(
                     title = f"꧁🎨 Cores Neutras 🎨꧂",
                     description = f"Você removeu todas as cores!",
-                    color = discord.Color.from_rgb(220, 220, 20)
+                    color = discord.Color.from_rgb(80, 208, 80)
                 )
                 colorsEmbed.set_footer(text = "Cores neutras", icon_url = self.bot.user.display_avatar.url)
                 await interaction.response.send_message(embed = colorsEmbed, ephemeral = True)
@@ -70,7 +80,7 @@ class colorsClass(discord.ui.View):
                 colorsEmbed = discord.Embed(
                     title = f"꧁🎨 Cores Neutras 🎨꧂",
                     description = f"Você escolheu a cor {colorRole.mention}!",
-                    color = discord.Color.from_rgb(220, 220, 20)
+                    color = discord.Color.from_rgb(80, 208, 80)
                 )
                 colorsEmbed.set_footer(text = "Cores neutras", icon_url = self.bot.user.display_avatar.url)
                 await interaction.user.add_roles(colorRole)
@@ -90,10 +100,10 @@ async def getGrayColorsRow(bot):
         colorsEmbed = discord.Embed(
             title = f"꧁🎨 Cores Neutras 🎨꧂",
             description = f"『🤍』<@&800824734526079026>\n『⚪』<@&800825064697626624>\n『⬜』<@&1065310669592866836>\n『🖤』<@&800825175938433036>\n『⚫』<@&1065310983079350332>\n『⬛』<@&800825219651862548>",
-            color = discord.Color.from_rgb(220, 220, 20)
+            color = discord.Color.from_rgb(80, 208, 80)
         )
         colorsEmbed.set_image(url = "https://i.imgur.com/N7ziAww.png")
-        colorsEmbed.set_footer(text = "Escolha 1 cor no menu abaixo", icon_url = bot.user.display_avatar.url)
+        colorsEmbed.set_footer(text = "Exclusivo para VIP'S Jade ou superior ✳!", icon_url = bot.user.display_avatar.url)
         await colorsMsg.edit(content = "", embed = colorsEmbed, view = colorsClass(bot = bot, json = colorsJson))
     except Exception as e:
         print(e)

@@ -43,8 +43,8 @@ class cog_topstars(commands.Cog):
                 color = discord.Color.from_rgb(250, 230, 20)
             )
             starsEmbed.set_author(name = f"『🌟』Top Stars:", icon_url = self.bot.user.display_avatar.url)
-            emjsPos = ["🥇", "🥈", "🥉", "🔸", "🔸"]
-            for i in range(0, 5):
+            emjsPos = ["🥇", "🥈", "🥉", "🔶", "🔶", "🔸", "🔸", "🔸", "🔸", "🔸", "🔸"]
+            for i in range(0, 10):
                 user = await self.bot.fetch_user(usersList[i])
                 print(user)
                 starsEmbed.add_field(name = f"『{emjsPos[i]}』{user.name}:", value = f"**{countList[i]}**", inline = False)
