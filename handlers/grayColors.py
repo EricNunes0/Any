@@ -52,12 +52,12 @@ class colorsClass(discord.ui.View):
                 rolesIds.append(int(role.id))
             if not 1047268770504253561 in rolesIds and not 1047268807812595802 in rolesIds:
                 colorsEmbed = discord.Embed(
-                    title = f"꧁🎨 Cores Especiais 🎨꧂",
+                    title = f"꧁🎨 Cores Neutras 🎨꧂",
                     color = discord.Color.from_rgb(220, 20, 20)
                 )
                 colorsEmbed.add_field(name = "『❌』Erro:", value = f"{interaction.user.mention}, você precisa ter o VIP <@&1047268770504253561> ou superior para usar estas cores!", inline = False)
                 colorsEmbed.add_field(name = "『✳』Comprar VIP:", value = f"Para comprar o VIP, veja mais detalhes do plano em <#1047316824976523354> e abra um ticket!", inline = False)
-                colorsEmbed.set_footer(text = "Cores especiais", icon_url = self.bot.user.display_avatar.url)
+                colorsEmbed.set_footer(text = "Cores neutras", icon_url = self.bot.user.display_avatar.url)
                 await interaction.response.send_message(embed = colorsEmbed, ephemeral = True)
                 return
             for color in self.json["roleColors"]:

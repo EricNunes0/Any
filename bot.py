@@ -18,6 +18,7 @@ from handlers.brightColors import *
 from handlers.darkColors import *
 from handlers.grayColors import *
 from handlers.specialColors import *
+from handlers.ticketVip import *
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -72,6 +73,7 @@ async def reloadServerOptions():
     await getDarkColorsRow(bot = bot)
     await getGrayColorsRow(bot = bot)
     await getSpecialColorsRow(bot = bot)
+    await getTicketVipRow(bot = bot)
     while True:
         print("reloadServerOptions()")
         await getRuleRow(bot = bot)

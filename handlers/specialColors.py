@@ -34,6 +34,11 @@ class colorsClass(discord.ui.View):
             value = 1065397795500081264
         ),
         discord.SelectOption(
+            label = "Azul Marinho",
+            emoji = "🔷",
+            value = 1065629506188083200
+        ),
+        discord.SelectOption(
             label = "Carmesim",
             emoji = "🌺",
             value = 1065397983849496716
@@ -114,7 +119,7 @@ async def getSpecialColorsRow(bot):
         colorsMsg = await channel.fetch_message(colorsJson["specialMessage"])
         colorsEmbed = discord.Embed(
             title = f"꧁🎨 Cores Especiais 🎨꧂",
-            description = f"『🔺️』<@&1065397010624155738>\n『☀️』<@&1065397238911741972>\n『🍋』<@&1065397426552307812>\n『🌊』<@&1065397559264288819>\n『🔹️』<@&1065397795500081264>\n『🌺』<@&1065397983849496716>\n『🍷』<@&1065398133632274563>\n『🤎』<@&1065398310963261500>\n『🟤』<@&800824526384398356>",
+            description = f"『🔺️』<@&1065397010624155738>\n『☀️』<@&1065397238911741972>\n『🍋』<@&1065397426552307812>\n『🌊』<@&1065397559264288819>\n『🔹️』<@&1065397795500081264>\n『🔷』<@&1065629506188083200>\n『🌺』<@&1065397983849496716>\n『🍷』<@&1065398133632274563>\n『🤎』<@&1065398310963261500>\n『🟤』<@&800824526384398356>",
             color = discord.Color.from_rgb(60, 110, 240)
         )
         colorsEmbed.set_image(url = "https://i.imgur.com/oVd0DEa.png")
