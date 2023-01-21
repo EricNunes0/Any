@@ -15,7 +15,7 @@ class ticketClass(discord.ui.View):
         
         ticketEmbed = discord.Embed(
             title = f"꧁💬 Mov-chat 💬꧂",
-            description = "Movimente o chat!",
+            description = "Os <@&1054734844434845726> são os responsáveis por manter a atividade no servidor!",
             color = discord.Color.from_rgb(160, 160, 160)
         )
         ticketEmbed.set_footer(text = "Seja Staff!")
