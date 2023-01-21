@@ -1,6 +1,8 @@
 import discord
 import json
 import random
+import asyncio
+from mongoconnection.ticket import *
 
 class ticketClass(discord.ui.View):
     def __init__(self, bot, json):
@@ -8,30 +10,76 @@ class ticketClass(discord.ui.View):
         self.bot = bot
         self.json = json
     
-    @discord.ui.button(label = f"Comprar VIP", style = discord.ButtonStyle.blurple, emoji = "<a:ab_BlueDiamond:938850305083314207>")
-    async def ticketVipInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
+    @discord.ui.button(label = f"Ametista", style = discord.ButtonStyle.blurple, emoji = "<a:ab_PurpleDiamond:938883672717787196>")
+    async def ticketVipAmetistaInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
         alertChannel = self.bot.get_channel(self.json["ticketAlert"])
-        await alertChannel.send(f"『💎』{interaction.user.mention} `({interaction.user.id})` abriu um ticket para VIP!")
+        await alertChannel.send(f"『💎』{interaction.user.name} `({interaction.user.id})` abriu um ticket para VIP!")
         ticketEmbed = discord.Embed(
             title = f"꧁💎 Seja VIP 💎꧂",
             description = "Você tem certeza que deseja abrir um ticket? Nossos administradores entrarão em contato com você assim que possível!",
             color = discord.Color.from_rgb(50, 30, 200)
         )
+        ticketEmbed.add_field(name = "『<a:ab_PurpleDiamond:938883672717787196>』VIP escolhido:", value = "<@&1051948366461939744>", inline = False)
         ticketEmbed.set_footer(text = "Seja VIP!")
-        await interaction.response.send_message(embed = ticketEmbed, view = ticketCreateConfirm(self.bot, self.json), ephemeral = True)
+        vipRole = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(1051948366461939744))
+        await interaction.response.send_message(embed = ticketEmbed, view = ticketCreateConfirm(self.bot, self.json, vipRole, 1), ephemeral = True)
+
+    @discord.ui.button(label = f"Jade", style = discord.ButtonStyle.blurple, emoji = "<a:ab_GreenDiamond:938880803692240927>")
+    async def ticketVipJadeInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
+        alertChannel = self.bot.get_channel(self.json["ticketAlert"])
+        await alertChannel.send(f"『💎』{interaction.user.name} `({interaction.user.id})` abriu um ticket para VIP!")
+        ticketEmbed = discord.Embed(
+            title = f"꧁💎 Seja VIP 💎꧂",
+            description = "Você tem certeza que deseja abrir um ticket? Nossos administradores entrarão em contato com você assim que possível!",
+            color = discord.Color.from_rgb(50, 30, 200)
+        )
+        ticketEmbed.add_field(name = "『<a:ab_GreenDiamond:938880803692240927>』VIP escolhido:", value = "<@&1047268770504253561>", inline = False)
+        ticketEmbed.set_footer(text = "Seja VIP!")
+        vipRole = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(1047268770504253561))
+        await interaction.response.send_message(embed = ticketEmbed, view = ticketCreateConfirm(self.bot, self.json, vipRole, 2), ephemeral = True)
+
+    @discord.ui.button(label = f"Safira", style = discord.ButtonStyle.blurple, emoji = "<a:ab_BlueDiamond:938850305083314207>")
+    async def ticketVipSaphireInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
+        alertChannel = self.bot.get_channel(self.json["ticketAlert"])
+        await alertChannel.send(f"『💎』{interaction.user.name} `({interaction.user.id})` abriu um ticket para VIP!")
+        ticketEmbed = discord.Embed(
+            title = f"꧁💎 Seja VIP 💎꧂",
+            description = "Você tem certeza que deseja abrir um ticket? Nossos administradores entrarão em contato com você assim que possível!",
+            color = discord.Color.from_rgb(50, 30, 200)
+        )
+        ticketEmbed.add_field(name = "『<a:ab_BlueDiamond:938850305083314207>』VIP escolhido:", value = "<@&1047268807812595802>", inline = False)
+        ticketEmbed.set_footer(text = "Seja VIP!")
+        vipRole = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(1047268807812595802))
+        await interaction.response.send_message(embed = ticketEmbed, view = ticketCreateConfirm(self.bot, self.json, vipRole, 3), ephemeral = True)
 
 class ticketCreateConfirm(discord.ui.View):
-    def __init__(self, bot, json):
+    def __init__(self, bot, json, role, code):
         super().__init__(timeout = None)
         self.bot = bot
         self.json = json
+        self.role = role
+        self.code = code
     
     @discord.ui.button(label = f"Sim", style = discord.ButtonStyle.green, emoji = "✅")
     async def ticketVipYesInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
+            ticketCategorie = discord.utils.get(interaction.guild.categories, id = 1066082691843362917)
+            ticketVipStats = getTicketVipStats()
+            if int(self.code) == 1:
+                vipChannelName = f"『🟣』・✧vip-{int(ticketVipStats['VipAmetista']) + 1}✧"
+                updateTicketVipAmetistaStats()
+            elif int(self.code) == 2:
+                vipChannelName = f"『✳』・✧vip-{int(ticketVipStats['VipJade']) + 1}✧"
+                updateTicketVipJadeStats()
+            elif int(self.code) == 3:
+                vipChannelName = f"『🔷』・✧vip-{int(ticketVipStats['VipSafira']) + 1}✧"
+                updateTicketVipSaphireStats()
+            else:
+                vipChannelName = f"『🎫』・✧vip-{int(ticketVipStats['Total'])}✧"
             ticketChannel = await interaction.guild.create_text_channel(
-                name = f"『💎』・✧vip-{random.randint(0, 10)}✧",
-                topic = f"Pedido de {interaction.user.name} ({interaction.user.id})"
+                name = vipChannelName,
+                topic = f"Pedido de {interaction.user.name} ({interaction.user.id})",
+                category = ticketCategorie
             )
             serverOverwrites = interaction.channel.overwrites_for(interaction.guild.default_role)
             userOverwrites = interaction.channel.overwrites_for(interaction.guild.default_role)
@@ -48,7 +96,7 @@ class ticketCreateConfirm(discord.ui.View):
             await interaction.response.edit_message(embed = ticketOpenedEmbed, view = None)
             ticketEmbed = discord.Embed(
                 title = f"꧁💎 Loja de VIP's 💎꧂",
-                description = f"『🎫』Informe o plano VIP que você deseja!\nPara ver todos os planos VIP disponíveis, acesse <#1047316824976523354>\nNossa equipe de administradores irá lhe responder assim que possível.",
+                description = f"『🎫』{interaction.user.mention} selecionou o VIP {self.role.mention}!\nPara ver todos os planos VIP disponíveis, acesse <#1047316824976523354>\nNossa equipe de administradores irá lhe responder assim que possível.",
                 color = discord.Color.from_rgb(50, 30, 200)
             )
             ticketEmbed.set_footer(text = f"Ticket de {interaction.user.name}", icon_url = interaction.user.display_avatar.url)
@@ -116,9 +164,7 @@ class ticketCancelConfirm(discord.ui.View):
                 description = f"『🎫』Ticket fechado por {interaction.user.mention}!",
                 color = discord.Color.from_rgb(50, 30, 200)
             )
-            repliedMsg = await interaction.original_response()
-            repliedMsg = await repliedMsg.edit(content = "🍆")
-            await interaction.channel.send(embed = ticketClosedMsgEmbed)
+            await interaction.channel.send(embed = ticketClosedMsgEmbed, view = ticketReopen(self.bot, self.json, self.user))
             return
         except Exception as e:
             print(e)
@@ -133,6 +179,51 @@ class ticketCancelConfirm(discord.ui.View):
             )
             ticketEmbed.set_footer(text = "Seja VIP!")
             await interaction.response.edit_message(embed = ticketEmbed, view = None)
+            return
+        except Exception as e:
+            print(e)
+
+class ticketReopen(discord.ui.View):
+    def __init__(self, bot, json, user):
+        super().__init__(timeout = None)
+        self.bot = bot
+        self.json = json
+        self.user = user
+    
+    @discord.ui.button(label = f"Abrir ticket", style = discord.ButtonStyle.green, emoji = "🔓")
+    async def ticketVipReopenInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
+        try:
+            print(self.user)
+            userOverwrites = interaction.channel.overwrites_for(self.user)
+            userOverwrites.read_messages, userOverwrites.send_messages = True, True
+            await interaction.channel.set_permissions(self.user, overwrite = userOverwrites)
+            ticketReopenedEmbed = discord.Embed(
+                title = f"꧁💎 Seja VIP 💎꧂",
+                description = f"『🎫』Ticket aberto por {interaction.user.mention}!",
+                color = discord.Color.from_rgb(50, 30, 200)
+            )
+            await interaction.message.edit(view = None)
+            await interaction.channel.send(embed = ticketReopenedEmbed)
+            return
+        except Exception as e:
+            print(e)
+
+    @discord.ui.button(label = f"Excluir", style = discord.ButtonStyle.red, emoji = "💣")
+    async def ticketVipNoInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
+        try:
+            ticketDeleteEmbed = discord.Embed(
+                title = f"꧁💎 Seja VIP 💎꧂",
+                description = f"『💥』Este ticket será excluído em 3, 2, 1...!",
+                color = discord.Color.from_rgb(255, 70, 20)
+            )
+            ticketDeleteEmbed.set_image(url = "https://media.tenor.com/u8jwYAiT_DgAAAAC/boom-bomb.gif")
+            ticketDeleteEmbed.set_footer(text = "Seja VIP!")
+            await interaction.message.edit(view = None)
+            await interaction.channel.send(embed = ticketDeleteEmbed, view = None)
+            await asyncio.sleep(3)
+            await interaction.channel.delete(
+                reason = "Ticket excluído!"
+            )
             return
         except Exception as e:
             print(e)
