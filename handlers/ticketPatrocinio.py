@@ -10,7 +10,7 @@ class ticketClass(discord.ui.View):
         self.bot = bot
         self.json = json
     
-    @discord.ui.button(label = f"Criar ticket", style = discord.ButtonStyle.blurple, emoji = "🚀")
+    @discord.ui.button(label = f"Patrocinar sorteio", style = discord.ButtonStyle.green, emoji = "🚀")
     async def ticketPatrocinadorInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
         alertChannel = self.bot.get_channel(self.json["ticketAlert"])
         await alertChannel.send(f"『🚀』{interaction.user.name} `({interaction.user.id})` abriu um ticket para patrocinador!")
@@ -60,7 +60,7 @@ class ticketCreateConfirm(discord.ui.View):
             )
             ticketEmbed.set_footer(text = f"Ticket de {interaction.user.name}", icon_url = interaction.user.display_avatar.url)
             ticketUser = interaction.user
-            await ticketChannel.send(content = f"『<a:ab_PurpleDiamond:938883672717787196>』Bem-vindo(a), {interaction.user.mention}!\n||<@&739210760567390250>||", embed = ticketEmbed, view = ticketCloseClass(self.bot, self.json, ticketUser))
+            await ticketChannel.send(content = f"『<a:ab_GreenDiamond:938880803692240927>』Bem-vindo(a), {interaction.user.mention}!\n||<@&739210760567390250>||", embed = ticketEmbed, view = ticketCloseClass(self.bot, self.json, ticketUser))
         except Exception as e:
             print(e)
 
@@ -195,37 +195,46 @@ async def getTicketPatrocinioRow(bot):
         ticketMsg = await channel.fetch_message(ticketJson["patrocinioTicket"])
         ticketMenuEmbed = discord.Embed(
             title = f"꧁<a:ab_RightArrow:939177432127246427> Seja Patrocinador <a:ab_LeftArrow:939177402381246514>꧂",
-            description = """
+            description =
+"""
 *Seja um <@&1047161198682067034> do servidor e nos ajude com o crescimento dele. Você pode patrocinar o seu próprio sorteio, e além de conseguir benefícios com os requisitos, você irá ajudar para que o servidor tenha sorteios frequentes.*
-
-**〔<:JannyCoin:969659132913274910>〕Requisitos Janny Coins〔<:JannyCoin:969659132913274910>〕**
-➺ Reputação 4h - 35M
-➺ Reputação 5h - 50M
-➺ Reputação 6h - 75M
-
-➺ Entrar em Servidor 4h - 40M
-➺ Entrar em Servidor 5h - 60M 
-➺ Entrar em Servidor 6h - 80M
-
-**〔☁〕Requisitos Sonhos〔☁〕**
-➺ Reputação 4h - 100k
-➺ Reputação 5h - 150k
-➺ Reputação 6h - 200k
-
-➺ Entrar em Servidor 4h - 150k
-➺ Entrar em Servidor 5h - 200k
-➺ Entrar em Servidor 6h - 250k
-
-<a:ab_RightArrow:939177432127246427> **Vantagens** <a:ab_LeftArrow:939177402381246514>
-➺ Cargo destacado na lateral do servidor <@&1047161198682067034>
-➺ 1 hora de tempo para claim nos sorteios
-➺ XP Loritta: 1.5x
-
-<a:ab_RedDiamond:938857687788183572> **Avisos** <a:ab_RedDiamond:938857687788183572>
-➺ Não marcamos everyone, apenas <@&1047164668088688700>
-➺ Podemos analisar pedidos para outros requisitos ou pagamentos com moeda de outros bots
 """,
             color = discord.Color.from_rgb(20, 175, 20)
+        )
+        ticketMenuEmbed.add_field(name = "『<:JannyCoin:969659132913274910>』Requisitos Moedas do Janny:", inline = False, value =
+"""
+➺ Reputação 4h - 5M
+➺ Reputação 6h - 10M
+➺ Reputação 8h - 15M
+
+➺ Entrar em Servidor 4h - 5M
+➺ Entrar em Servidor 6h - 10M
+➺ Entrar em Servidor 8h - 15M
+"""
+        )
+        ticketMenuEmbed.add_field(name = "『☁』Requisitos Sonhos:", inline = False, value =
+"""
+➺ Reputação 4h - 100k
+➺ Reputação 6h - 150k
+➺ Reputação 8h - 200k
+
+➺ Entrar em Servidor 4h - 150k
+➺ Entrar em Servidor 6h - 200k
+➺ Entrar em Servidor 8h - 250k
+"""
+        )
+        ticketMenuEmbed.add_field(name = "『<a:ab_LevelUp:1051238478089822241>』Vantagens:", inline = False, value =
+"""
+➺ Cargo destacado na lateral do servidor <@&1047161198682067034>
+➺ 1 hora de tempo para claim nos sorteios
+➺ XP Loritta: **1.5x**
+"""
+        )
+        ticketMenuEmbed.add_field(name = "『⚠』Atenção:", inline = False, value =
+"""
+➺ Não marcamos @everyone, apenas <@&1047164668088688700>
+➺ Podemos analisar pedidos para outros requisitos ou pagamentos com moeda de outros bots
+"""
         )
         ticketMenuEmbed.set_image(url = "https://i.imgur.com/tbd7xhv.png")
         ticketMenuEmbed.set_footer(text = "Seja Patrocinador", icon_url = bot.user.display_avatar.url)

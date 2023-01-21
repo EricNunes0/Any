@@ -247,7 +247,7 @@ async def getTicketVipRow(bot):
 ➺ XP Loritta: **1.5x**;
 ➺ Sorteios exclusivos;
 ⇀ **Duração:** 30 dias.
-⇁ **Valor:** 20M de Janny Coins ou 100K de sonhos
+⇁ **Valor:** 10M de Janny Coins ou 100K de sonhos
 
 <a:ab_GreenDiamond:938880803692240927> __**VIP JADE**__ <a:ab_GreenDiamond:938880803692240927>
 ➺ Cargo destacado na lateral do servidor <@&1047268770504253561>;
@@ -259,7 +259,7 @@ async def getTicketVipRow(bot):
 ➺ Sorteios exclusivos;
 ➺ Entrada 2x em sorteios e drops;
 ⇀ **Duração:** 30 dias.
-⇁ **Valor:** 30M de Janny Coins ou 200K de sonhos.
+⇁ **Valor:** 20M de Janny Coins ou 200K de sonhos.
 
 <a:ab_BlueDiamond:938850305083314207> __**VIP SAFIRA**__ <a:ab_BlueDiamond:938850305083314207>
 ➺ Cargo destacado na lateral do servidor <@&1047268807812595802>;
@@ -273,7 +273,7 @@ async def getTicketVipRow(bot):
 ➺ Entrada 3x em sorteios e drops;
 ➺ Imune a requisito dos sorteios;
 ⇀ **Duração:** 30 dias.
-⇁ **Valor:** 40M de Janny Coins ou 300K de sonhos.
+⇁ **Valor:** 30M de Janny Coins ou 300K de sonhos.
 
 Se já estiver com um VIP e queira dar um upgrade, os dias restantes serão adicionados no VIP atual. <a:ab_8bitLaserDance:908674226288988230>
 """,

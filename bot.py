@@ -21,6 +21,7 @@ from handlers.specialColors import *
 from handlers.ticketVip import *
 from handlers.ticketBooster import *
 from handlers.ticketPatrocinio import *
+from handlers.ticketMod import *
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -78,6 +79,7 @@ async def reloadServerOptions():
     await getTicketVipRow(bot = bot)
     await getTicketBoosterRow(bot = bot)
     await getTicketPatrocinioRow(bot = bot)
+    await getTicketModRow(bot = bot)
     while True:
         print("reloadServerOptions()")
         await getRuleRow(bot = bot)
