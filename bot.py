@@ -13,6 +13,7 @@ from mongoconnection.connect import getDatabase
 from mongoconnection.afk import searchForAfk, reactionSearchForAfk
 from mongoconnection.star import *
 from handlers.rules import *
+from handlers.antiInvite import *
 from handlers.basicColors import *
 from handlers.brightColors import *
 from handlers.darkColors import *
@@ -111,6 +112,7 @@ async def on_message(message):
         return
     if message.author == bot.user:
         return
+    antiinvite = await antiInvite(bot = bot, message = message)
     afk = await searchForAfk(message)
     if afk == 0:
         afkEmbed = discord.Embed(title = "Seu AFK foi desativado!",
