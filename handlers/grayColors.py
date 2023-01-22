@@ -50,7 +50,7 @@ class colorsClass(discord.ui.View):
             rolesIds = []
             for role in interaction.user.roles:
                 rolesIds.append(int(role.id))
-            if not 1047268770504253561 in rolesIds and not 1047268807812595802 in rolesIds:
+            if not 1047268770504253561 in rolesIds and not 1047268807812595802 in rolesIds and not 739210760567390250 in rolesIds:
                 colorsEmbed = discord.Embed(
                     title = f"꧁🎨 Cores Neutras 🎨꧂",
                     color = discord.Color.from_rgb(220, 20, 20)
