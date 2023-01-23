@@ -13,6 +13,7 @@ from mongoconnection.connect import getDatabase
 from mongoconnection.afk import searchForAfk, reactionSearchForAfk
 from mongoconnection.star import *
 from handlers.rules import *
+from handlers.antiSpam import *
 from handlers.antiInvite import *
 from handlers.basicColors import *
 from handlers.brightColors import *
@@ -112,6 +113,9 @@ async def on_message(message):
         return
     if message.author == bot.user:
         return
+    #「R.1」Flood/spam de mensagens/emojis:
+    antispam = await antiSpam(bot = bot, message = message)
+    #「R.11」Anti-invite:
     antiinvite = await antiInvite(bot = bot, message = message)
     afk = await searchForAfk(message)
     if afk == 0:
@@ -157,6 +161,7 @@ async def on_message_edit(before, after):
             return
         if before.author == bot.user:
             return
+        antiinvite = await antiInvite(bot = bot, message = after)
         afk = await searchForAfk(before)
         print(afk == 1, afk)
         if afk == 0:
