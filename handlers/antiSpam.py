@@ -63,7 +63,7 @@ async def antiSpam(bot, message):
                     timestamp = datetime.datetime.utcnow()
                 )
                 antiDMEmbed.add_field(name = f"『🚨』Motivo:", value = f"`Flood/spam de mensagens no `{message.channel.mention}", inline = False)
-                antiDMEmbed.add_field(name = "『📃』Spam:", value = f"`{len(authorMsgTimes[message.author.id])} mensagens enviadas em menos de {int(timeMilliseconds / 1000)} segundos`", inline = False)
+                antiDMEmbed.add_field(name = "『📃』Spam:", value = f"` 5 mensagens enviadas em menos de {int(timeMilliseconds / 1000)} segundos`", inline = False)
                 antiDMEmbed.add_field(name = "『🔇』Silenciado por:", value = f"`1 hora`", inline = False)
                 antiDMEmbed.set_thumbnail(url = message.author.display_avatar.url)
                 antiDMEmbed.set_footer(text = f"『🟢』Leia a regra nº 1: Flood/spam de mensagens/emojis", icon_url = bot.user.display_avatar.url)

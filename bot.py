@@ -115,6 +115,8 @@ async def on_message(message):
         return
     #「R.1」Flood/spam de mensagens/emojis:
     antispam = await antiSpam(bot = bot, message = message)
+    #「R.2」Mensagens desnecessariamente longas:
+    
     #「R.11」Anti-invite:
     antiinvite = await antiInvite(bot = bot, message = message)
     afk = await searchForAfk(message)
