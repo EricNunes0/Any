@@ -73,6 +73,7 @@ async def on_ready():
     bot.loop.create_task(statuschange())
 
 async def reloadServerOptions():
+    await getRuleRow(bot = bot)
     await getBasicColorsRow(bot = bot)
     await getBrightColorsRow(bot = bot)
     await getDarkColorsRow(bot = bot)
@@ -82,10 +83,6 @@ async def reloadServerOptions():
     await getTicketBoosterRow(bot = bot)
     await getTicketPatrocinioRow(bot = bot)
     await getTicketModRow(bot = bot)
-    while True:
-        print("reloadServerOptions()")
-        await getRuleRow(bot = bot)
-        await asyncio.sleep(30)
 
 async def statuschange():
     activity1 = discord.Game(name=f"Oi, eu sou o Any!", type=3)
