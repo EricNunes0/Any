@@ -61,7 +61,7 @@ class cog_pollVotes(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(name = "poll", aliases = ["votação"], pass_context = True)
+    @commands.command(name = "poll", aliases = ["vote", "votação"], pass_context = True)
     @has_permissions(administrator = True)
     @cooldown(1, 3, type = commands.BucketType.user)
     async def poll(self, ctx, channel: discord.TextChannel = None):
@@ -139,23 +139,35 @@ class pollSettingsButtons(discord.ui.View):
                 return
             await interaction.response.defer()
             await interaction.message.delete()
+            time = datetime.datetime.now()
+            timeStamp = time.timestamp() + self.time
             if len(pollsOptionsTexts) == 2:
-                pollMsg = await self.channel.send(embeds = [self.embed], view = poll2Options(self.embed))
+                pollMsg = await self.channel.send(content = f"**『🗳』Votação encerra <t:{int(timeStamp)}:R>**", embeds = [self.embed], view = poll2Options(self.embed))
             elif len(pollsOptionsTexts) == 3:
-                pollMsg = await self.channel.send(embeds = [self.embed], view = poll3Options(self.embed))
+                pollMsg = await self.channel.send(content = f"**『🗳』Votação encerra <t:{int(timeStamp)}:R>**", embeds = [self.embed], view = poll3Options(self.embed))
             elif len(pollsOptionsTexts) == 4:
-                pollMsg = await self.channel.send(embeds = [self.embed], view = poll4Options(self.embed))
+                pollMsg = await self.channel.send(content = f"**『🗳』Votação encerra <t:{int(timeStamp)}:R>**", embeds = [self.embed], view = poll4Options(self.embed))
             elif len(pollsOptionsTexts) == 5:
-                pollMsg = await self.channel.send(embeds = [self.embed], view = poll5Options(self.embed))
+                pollMsg = await self.channel.send(content = f"**『🗳』Votação encerra <t:{int(timeStamp)}:R>**", embeds = [self.embed], view = poll5Options(self.embed))
             await asyncio.sleep(self.time)
             for pollOptionText in pollsOptionsTexts:
                 self.embed.set_field_at(index = pollsOptionsTexts.index(pollOptionText), name = pollOptionText, value = f"`{len(totalPolls[pollsOptionsTexts.index(pollOptionText)])} votos`", inline = False)
-            self.embed.set_thumbnail(url = link["blueChecked"])
             self.embed.set_footer(text = "Votação encerrada!", icon_url = self.bot.user.display_avatar.url)
-            await pollMsg.edit(embeds = [self.embed], view = None)
-            pollsOptionsTexts.clear()
+            await pollMsg.edit(content = f"**『🗳』Votação encerrada <t:{int(timeStamp)}:R>!**", embeds = [self.embed], view = pollEndedOptions())
+            pollResultschannel = self.bot.get_channel(1066784099995492412)
+            totalPollResultsEmbed = discord.Embed(
+                title = self.embed.title,
+                color = discord.Color.from_rgb(20, 90, 255)
+            )
+            totalPollResultsEmbed.set_author(name = f"『🗳』Resultados da votação:", icon_url = self.bot.user.display_avatar.url)
             for totalPoll in totalPolls:
+                print(len(totalPoll))
+                if len(totalPoll) >= 1:
+                    print("index", totalPolls.index(totalPoll))
+                    totalPollResultsEmbed.add_field(name = f"『{POLL_EMOJIS[totalPolls.index(totalPoll)]}』{pollsOptionsTexts[totalPolls.index(totalPoll)]} ({len(totalPoll)} votos)", value = f"{totalPoll}", inline = False)
                 totalPoll.clear()
+            pollsOptionsTexts.clear()
+            await pollResultschannel.send(embed = totalPollResultsEmbed)
         except Exception as e:
             print(e)
 
@@ -263,7 +275,7 @@ class pollEditDurationModal(discord.ui.Modal, title = "Editar duração"):
         try:
             time = self.children[0].value
             self.time = convertTime(time)
-            await interaction.response.send_message(content = f"Duração alterada para {self.time} segundos", ephemeral = True)
+            await interaction.response.send_message(content = f"Duração alterada para {self.time} segundos!", ephemeral = True)
             await interaction.message.edit(embeds = [self.embed], view = pollSettingsButtons(self.bot, self.channel, self.time, self.embed))
         except Exception as e:
             print(e)
@@ -497,6 +509,14 @@ class poll5Options(discord.ui.View):
             return
         except Exception as e:
             print(e)
+
+class pollEndedOptions(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout = None)
+    
+    @discord.ui.button(label = "Votação encerrada!", style = discord.ButtonStyle.blurple, emoji = f"🗳", disabled = True)
+    async def pollEndedOption(self, interaction: discord.Interaction, button: discord.ui.Button):
+        print("Votação encerrada!")
 
 async def setup(bot):
     print(f"{prefix}poll")
