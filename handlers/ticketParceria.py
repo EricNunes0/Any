@@ -87,15 +87,24 @@ class parceriaForm1Row(discord.ui.View):
         self.user = user
     
     @discord.ui.button(label = f"Responder", style = discord.ButtonStyle.blurple, emoji = "✍")
-    async def movchatAnswer(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def parceriaAnswer1(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
             await interaction.response.send_modal(parceriaForm1Modal(self.embed))
         except Exception as e:
             print(e)
 
     @discord.ui.button(label = f"Confirmar", style = discord.ButtonStyle.green, emoji = "✅")
-    async def movchatConfirmAnswers(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def parceria1Confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
+            if self.embed.fields[0].value == "`Não informado`":
+                parceriaMissingAnswer1Embed = discord.Embed(
+                    title = f"꧁🤝 Parceria 🤝꧂",
+                    description = "Você precisar responder a pergunta acima!",
+                    color = discord.Color.from_rgb(230, 170, 10)
+                )
+                parceriaMissingAnswer1Embed.set_footer(text = "Parcerias!")
+                await interaction.response.send_message(embed = parceriaMissingAnswer1Embed, ephemeral = True)
+                return
             self.embed.add_field(name = "**『✍』Seu servidor tem mais de 100 membros (sem contar os bots)?**", value = "`Não informado`", inline = False)
             await interaction.response.defer()
             await interaction.message.edit(embed = self.embed, view = parceriaForm2Row(self.bot, self.embed, self.json, self.user))
@@ -103,7 +112,7 @@ class parceriaForm1Row(discord.ui.View):
             print(e)
 
     @discord.ui.button(label = f"Cancelar", style = discord.ButtonStyle.red, emoji = "❌")
-    async def movchatCancelForm(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def parceria1Cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
             await interaction.message.edit(view = None)
             answerConfirmEmbed = discord.Embed(
@@ -147,6 +156,13 @@ class parceriaForm2Row(discord.ui.View):
         self.embed.add_field(name = "**『✍』Seu servidor possui um cargo exclusivo para parceiros?**", value = "`Não informado`", inline = False)
         await interaction.response.defer()
         await interaction.message.edit(embed = self.embed, view = parceriaForm3Row(self.bot, self.embed, self.json, self.user))
+    
+    @discord.ui.button(label = f"Voltar", style = discord.ButtonStyle.blurple, emoji = "◀")
+    async def parceriaForm2Return(self, interaction: discord.Interaction, button: discord.ui.Button):
+        self.embed.remove_field(index = 1)
+        self.embed.set_field_at(index = 0, name = "**『✍』Qual o ID do seu servidor?**", value = "`Não informado`", inline = False)
+        await interaction.response.defer()
+        await interaction.message.edit(embed = self.embed, view = parceriaForm1Row(self.bot, self.embed, self.json, self.user))
 
 class parceriaForm3Row(discord.ui.View):
     def __init__(self, bot, embed, json, user):
@@ -170,6 +186,13 @@ class parceriaForm3Row(discord.ui.View):
         await interaction.response.defer()
         await interaction.message.edit(embed = self.embed, view = parceriaForm4Row(self.bot, self.embed, self.json, self.user))
 
+    @discord.ui.button(label = f"Voltar", style = discord.ButtonStyle.blurple, emoji = "◀")
+    async def parceriaForm3Return(self, interaction: discord.Interaction, button: discord.ui.Button):
+        self.embed.remove_field(index = 2)
+        self.embed.set_field_at(index = 1, name = "**『✍』Seu servidor tem mais de 100 membros (sem contar os bots)?**", value = "`Não informado`", inline = False)
+        await interaction.response.defer()
+        await interaction.message.edit(embed = self.embed, view = parceriaForm2Row(self.bot, self.embed, self.json, self.user))
+
 class parceriaForm4Row(discord.ui.View):
     def __init__(self, bot, embed, json, user):
         super().__init__(timeout = None)
@@ -191,6 +214,13 @@ class parceriaForm4Row(discord.ui.View):
         self.embed.add_field(name = "**『✍』Seu servidor tem um cargo para avisar os membros sobre as parceiras?**", value = "`Não informado`", inline = False)
         await interaction.response.defer()
         await interaction.message.edit(embed = self.embed, view = parceriaForm5Row(self.bot, self.embed, self.json, self.user))
+
+    @discord.ui.button(label = f"Voltar", style = discord.ButtonStyle.blurple, emoji = "◀")
+    async def parceriaForm4Return(self, interaction: discord.Interaction, button: discord.ui.Button):
+        self.embed.remove_field(index = 3)
+        self.embed.set_field_at(index = 2, name = "**『✍』Seu servidor possui um cargo exclusivo para parceiros?**", value = "`Não informado`", inline = False)
+        await interaction.response.defer()
+        await interaction.message.edit(embed = self.embed, view = parceriaForm3Row(self.bot, self.embed, self.json, self.user))
 
 class parceriaForm5Row(discord.ui.View):
     def __init__(self, bot, embed, json, user):
@@ -214,6 +244,13 @@ class parceriaForm5Row(discord.ui.View):
         await interaction.response.defer()
         await interaction.message.edit(embed = self.embed, view = parceriaForm6Row(self.bot, self.embed, self.json, self.user))
 
+    @discord.ui.button(label = f"Voltar", style = discord.ButtonStyle.blurple, emoji = "◀")
+    async def parceriaForm5Return(self, interaction: discord.Interaction, button: discord.ui.Button):
+        self.embed.remove_field(index = 4)
+        self.embed.set_field_at(index = 3, name = "**『✍』Seu servidor possui um canal para divulgações?**", value = "`Não informado`", inline = False)
+        await interaction.response.defer()
+        await interaction.message.edit(embed = self.embed, view = parceriaForm4Row(self.bot, self.embed, self.json, self.user))
+
 class parceriaForm6Row(discord.ui.View):
     def __init__(self, bot, embed, json, user):
         super().__init__(timeout = None)
@@ -222,33 +259,85 @@ class parceriaForm6Row(discord.ui.View):
         self.json = json
         self.user = user
     
-    @discord.ui.button(label = f"Dono", style = discord.ButtonStyle.blurple, emoji = "👑")
+    @discord.ui.button(label = f"Dono", style = discord.ButtonStyle.gray, emoji = "👑")
     async def parceriaForm6Option1(self, interaction: discord.Interaction, button: discord.ui.Button):
         self.embed.set_field_at(index = 5, name = "『☑』Qual a sua posição no servidor?", value = "`Dono`", inline = False)
-        self.embed.add_field(name = "**『✍』Nos conte um pouco sobre o servidor:**", value = "`Não informado`", inline = False)
+        self.embed.add_field(name = "**『✍』Nos conte um pouco sobre o seu servidor:**", value = "`Não informado`", inline = False)
         await interaction.response.defer()
-        await interaction.message.edit(embed = self.embed, view = None)#parceriaForm6Row(self.bot, self.embed, self.json, self.user))
+        await interaction.message.edit(embed = self.embed, view = parceriaForm7Row(self.bot, self.embed, self.json, self.user))
     
-    @discord.ui.button(label = f"Administrador", style = discord.ButtonStyle.blurple, emoji = "🛡")
+    @discord.ui.button(label = f"Administrador", style = discord.ButtonStyle.gray, emoji = "🛡")
     async def parceriaForm6Option2(self, interaction: discord.Interaction, button: discord.ui.Button):
         self.embed.set_field_at(index = 5, name = "『☑』Qual a sua posição no servidor?", value = "`Administrador`", inline = False)
-        self.embed.add_field(name = "**『✍』Nos conte um pouco sobre o servidor:**", value = "`Não informado`", inline = False)
+        self.embed.add_field(name = "**『✍』Nos conte um pouco sobre o seu servidor:**", value = "`Não informado`", inline = False)
         await interaction.response.defer()
-        await interaction.message.edit(embed = self.embed, view = None)#parceriaForm6Row(self.bot, self.embed, self.json, self.user))
+        await interaction.message.edit(embed = self.embed, view = parceriaForm7Row(self.bot, self.embed, self.json, self.user))
     
-    @discord.ui.button(label = f"Moderador", style = discord.ButtonStyle.blurple, emoji = "🚔")
+    @discord.ui.button(label = f"Moderador", style = discord.ButtonStyle.gray, emoji = "🚔")
     async def parceriaForm6Option3(self, interaction: discord.Interaction, button: discord.ui.Button):
         self.embed.set_field_at(index = 5, name = "『☑』Qual a sua posição no servidor?", value = "`Moderador`", inline = False)
-        self.embed.add_field(name = "**『✍』Nos conte um pouco sobre o servidor:**", value = "`Não informado`", inline = False)
+        self.embed.add_field(name = "**『✍』Nos conte um pouco sobre o seu servidor:**", value = "`Não informado`", inline = False)
         await interaction.response.defer()
-        await interaction.message.edit(embed = self.embed, view = None)#parceriaForm6Row(self.bot, self.embed, self.json, self.user))
+        await interaction.message.edit(embed = self.embed, view = parceriaForm7Row(self.bot, self.embed, self.json, self.user))
     
-    @discord.ui.button(label = f"Outro", style = discord.ButtonStyle.blurple, emoji = "👤")
+    @discord.ui.button(label = f"Outro", style = discord.ButtonStyle.gray, emoji = "👤")
     async def parceriaForm6Option4(self, interaction: discord.Interaction, button: discord.ui.Button):
         self.embed.set_field_at(index = 5, name = "『☑』Qual a sua posição no servidor?", value = "`Outro`", inline = False)
-        self.embed.add_field(name = "**『✍』Nos conte um pouco sobre o servidor:**", value = "`Não informado`", inline = False)
+        self.embed.add_field(name = "**『✍』Nos conte um pouco sobre o seu servidor:**", value = "`Não informado`", inline = False)
         await interaction.response.defer()
-        await interaction.message.edit(embed = self.embed, view = None)#parceriaForm6Row(self.bot, self.embed, self.json, self.user))
+        await interaction.message.edit(embed = self.embed, view = parceriaForm7Row(self.bot, self.embed, self.json, self.user))
+
+    @discord.ui.button(label = f"Voltar", style = discord.ButtonStyle.blurple, emoji = "◀")
+    async def parceriaForm6Return(self, interaction: discord.Interaction, button: discord.ui.Button):
+        self.embed.remove_field(index = 5)
+        self.embed.set_field_at(index = 4, name = "**『✍』Seu servidor tem um cargo para avisar os membros sobre as parceiras?**", value = "`Não informado`", inline = False)
+        await interaction.response.defer()
+        await interaction.message.edit(embed = self.embed, view = parceriaForm5Row(self.bot, self.embed, self.json, self.user))
+
+class parceriaForm7Row(discord.ui.View):
+    def __init__(self, bot, embed, json, user):
+        super().__init__(timeout = None)
+        self.bot = bot
+        self.embed = embed
+        self.json = json
+        self.user = user
+    
+    @discord.ui.button(label = f"Responder", style = discord.ButtonStyle.blurple, emoji = "✍")
+    async def parceriaSendModal7(self, interaction: discord.Interaction, button: discord.ui.Button):
+        try:
+            await interaction.response.send_modal(parceriaForm7Modal(self.embed))
+        except Exception as e:
+            print(e)
+
+    @discord.ui.button(label = f"Confirmar", style = discord.ButtonStyle.green, emoji = "✅")
+    async def parceriaConfirmAnswers7(self, interaction: discord.Interaction, button: discord.ui.Button):
+        try:
+            print(self.embed.fields[6].value)
+            if self.embed.fields[6].value == "`Não informado`":
+                parceriaMissingAnswer7Embed = discord.Embed(
+                    title = f"꧁🤝 Parceria 🤝꧂",
+                    description = "Você precisar responder a pergunta acima!",
+                    color = discord.Color.from_rgb(230, 170, 10)
+                )
+                parceriaMissingAnswer7Embed.set_footer(text = "Parcerias!")
+                await interaction.response.send_message(embed = parceriaMissingAnswer7Embed, ephemeral = True)
+                return
+            parceriaFinishConfirmEmbed = discord.Embed(
+                    title = f"꧁🤝 Parceria 🤝꧂",
+                    description = "Você tem certeza de que todas as respostas estão corretas. Uma vez que confirmar as respostas, não será possível alterá-las!",
+                    color = discord.Color.from_rgb(230, 170, 10)
+                )
+            parceriaFinishConfirmEmbed.set_footer(text = "Parcerias!")
+            await interaction.response.send_message(embed = parceriaFinishConfirmEmbed, view = parceriaFinishConfirmRow(self.bot, self.embed, self.json), ephemeral = True)
+        except Exception as e:
+            print(e)
+    
+    @discord.ui.button(label = f"Voltar", style = discord.ButtonStyle.blurple, emoji = "◀")
+    async def parceriaForm7Return(self, interaction: discord.Interaction, button: discord.ui.Button):
+        self.embed.remove_field(index = 6)
+        self.embed.set_field_at(index = 5, name = "**『✍』Qual a sua posição no servidor?**", value = "`Não informado`", inline = False)
+        await interaction.response.defer()
+        await interaction.message.edit(embed = self.embed, view = parceriaForm6Row(self.bot, self.embed, self.json, self.user))
 
 class parceriaForm1Modal(discord.ui.Modal, title = "Formulário para parcerias"):
     def __init__(self, embed):
@@ -269,6 +358,74 @@ class parceriaForm1Modal(discord.ui.Modal, title = "Formulário para parcerias")
             self.embed.set_field_at(index = 0, name = "『☑』Qual o ID do seu servidor?", value = f"{answer0}", inline = False)
             await interaction.response.defer()
             await interaction.message.edit(embeds = [self.embed])
+        except Exception as e:
+            print(e)
+
+class parceriaForm7Modal(discord.ui.Modal, title = "Formulário para parcerias"):
+    def __init__(self, embed):
+        super().__init__(timeout = None)
+        self.embed = embed
+
+        self.add_item(discord.ui.TextInput(
+            label = "Nos conte um pouco sobre o seu servidor:",
+            style = discord.TextStyle.paragraph,
+            min_length = 1,
+            max_length = 1000,
+            required = True,
+            )
+        )
+    async def on_submit(self, interaction: discord.Interaction):
+        try:
+            answer0 = self.children[0].value
+            self.embed.set_field_at(index = 6, name = "『☑』Nos conte um pouco sobre o seu servidor:", value = f"{answer0}", inline = False)
+            await interaction.response.defer()
+            await interaction.message.edit(embeds = [self.embed])
+        except Exception as e:
+            print(e)
+
+class parceriaFinishConfirmRow(discord.ui.View):
+    def __init__(self, bot, embed, json):
+        super().__init__(timeout = None)
+        self.bot = bot
+        self.embed = embed
+        self.json = json
+    
+    @discord.ui.button(label = f"Sim!", style = discord.ButtonStyle.green, emoji = "✅")
+    async def parceriaFinishYes(self, interaction: discord.Interaction, button: discord.ui.Button):
+        try:
+            self.embed.color = discord.Color.from_rgb(20, 200, 20)
+            repliedMsg = await interaction.channel.fetch_message(interaction.message.reference.message_id)
+            await repliedMsg.edit(embed = self.embed, view = None)
+            parceriaOpenedEmbed = discord.Embed(
+                title = f"꧁🤝 Parceria 🤝꧂",
+                description = f"『📃』Suas respostas foram enviadas! Entraremos em contato com você caso seja aprovado.",
+                color = discord.Color.from_rgb(20, 200, 20)
+            )
+            parceriaOpenedEmbed.set_footer(text = "Parcerias!")
+            await interaction.response.edit_message(embed = parceriaOpenedEmbed, view = None)
+            userOverwrites = interaction.channel.overwrites_for(interaction.guild.default_role)
+            userOverwrites.read_messages, userOverwrites.send_messages = False, False
+            await interaction.channel.set_permissions(interaction.user, overwrite = userOverwrites)
+            parceriaFormEmbed = discord.Embed(
+                title = f"꧁🤝 Parceria 🤝꧂",
+                description = f"『📄』{interaction.user.mention} terminou o formulário!",
+                color = discord.Color.from_rgb(20, 200, 20)
+            )
+            await interaction.channel.send(embed = parceriaFormEmbed)
+        except Exception as e:
+            print(e)
+
+    @discord.ui.button(label = f"Não", style = discord.ButtonStyle.red, emoji = "❌")
+    async def parceriaFinishNo(self, interaction: discord.Interaction, button: discord.ui.Button):
+        try:
+            canceledFinishedEmbed = discord.Embed(
+                title = f"꧁🤝 Parceria 🤝꧂",
+                description = f"『❌』Envio cancelado!",
+                color = discord.Color.from_rgb(230, 170, 10)
+            )
+            canceledFinishedEmbed.set_footer(text = "Parcerias!")
+            await interaction.response.edit_message(embed = canceledFinishedEmbed, view = None)
+            return
         except Exception as e:
             print(e)
 
