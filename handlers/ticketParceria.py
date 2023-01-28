@@ -30,11 +30,22 @@ class parceriaEntryConfirmRow(discord.ui.View):
     @discord.ui.button(label = f"Sim!", style = discord.ButtonStyle.green, emoji = "✅")
     async def parceriaConfirmEntryInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
-            ticketCategorie = discord.utils.get(interaction.guild.categories, id = 1064539729716064297)
-            channelName = f"『📃』・✧parceria-form✧"
+            ticketCategorie = discord.utils.get(interaction.guild.categories, id = 990275792074317854)
+            channelName = f"『📃』✩⋆parceria-form⋆✩"
+            channelTopic = f"Formulário de parceria: {interaction.user.id}"
+            for channel in interaction.guild.text_channels:
+                if channel.topic == channelTopic:
+                    parceriaAlreadyOpenedEmbed = discord.Embed(
+                        title = f"꧁🤝 Parceria 🤝꧂",
+                        description = f"『📃』Você possui um canal aberto para preencher o formulário: {channel.mention}!",
+                        color = discord.Color.from_rgb(230, 170, 10)
+                    )
+                    parceriaAlreadyOpenedEmbed.set_footer(text = "Parcerias!")
+                    await interaction.response.edit_message(embed = parceriaAlreadyOpenedEmbed, view = None)
+                    return
             parceriaFormChannel = await interaction.guild.create_text_channel(
                 name = channelName,
-                topic = f"Pedido de parceria de {interaction.user.name} ({interaction.user.id})",
+                topic = channelTopic,
                 category = ticketCategorie
             )
             serverOverwrites = interaction.channel.overwrites_for(interaction.guild.default_role)
@@ -99,7 +110,7 @@ class parceriaForm1Row(discord.ui.View):
             if self.embed.fields[0].value == "`Não informado`":
                 parceriaMissingAnswer1Embed = discord.Embed(
                     title = f"꧁🤝 Parceria 🤝꧂",
-                    description = "Você precisar responder a pergunta acima!",
+                    description = "Você precisa responder a pergunta acima!",
                     color = discord.Color.from_rgb(230, 170, 10)
                 )
                 parceriaMissingAnswer1Embed.set_footer(text = "Parcerias!")
@@ -316,7 +327,7 @@ class parceriaForm7Row(discord.ui.View):
             if self.embed.fields[6].value == "`Não informado`":
                 parceriaMissingAnswer7Embed = discord.Embed(
                     title = f"꧁🤝 Parceria 🤝꧂",
-                    description = "Você precisar responder a pergunta acima!",
+                    description = "Você precisa responder a pergunta acima!",
                     color = discord.Color.from_rgb(230, 170, 10)
                 )
                 parceriaMissingAnswer7Embed.set_footer(text = "Parcerias!")
@@ -324,7 +335,7 @@ class parceriaForm7Row(discord.ui.View):
                 return
             parceriaFinishConfirmEmbed = discord.Embed(
                     title = f"꧁🤝 Parceria 🤝꧂",
-                    description = "Você tem certeza de que todas as respostas estão corretas. Uma vez que confirmar as respostas, não será possível alterá-las!",
+                    description = "Você tem certeza de que todas as respostas estão corretas? Uma vez que confirmar as respostas, não será possível alterá-las!",
                     color = discord.Color.from_rgb(230, 170, 10)
                 )
             parceriaFinishConfirmEmbed.set_footer(text = "Parcerias!")
@@ -461,7 +472,7 @@ Exemplo:
 Responda as perguntas sinceramente. Todas as informações do formulário serão analisadas para comprovar se são verídicas, então não dê informações erradas e/ou falsas em nenhuma das perguntas! Nenhuma das informações do formulário serão compartilhadas com outros usuários ou terceiros, apenas os administradores do servidor terão acesso as informações.
 """
         )
-        parceriaDescriptionEmbed.set_image(url = "https://i.imgur.com/g4UL6yX.png")
+        parceriaDescriptionEmbed.set_image(url = "https://i.imgur.com/rD4teJy.png")
         parceriaDescriptionEmbed.set_footer(text = "Parcerias!", icon_url = bot.user.display_avatar.url)
         await ticketMsg.edit(content = None, embed = parceriaDescriptionEmbed, view = parceriaRequestEntryRow(bot = bot, json = ticketJson))
     except Exception as e:
