@@ -11,5 +11,9 @@
     "staffAlert": 1066383157999440073,
     "parceriaChannel": 1067917985429328002,
     "parceriaTicket": "1067919336108474418",
-    "parceriaAlert": 1067925685445857361
+    "parceriaAlert": 1067925685445857361,
+    "atendimentoChannel": 1068578086951600158,
+    "atendimentoTicket": "1068598786118668318",
+    "denunciaChannel": 1069963687768641606,
+    "denunciaTicket": "1069965749143212094"
 }

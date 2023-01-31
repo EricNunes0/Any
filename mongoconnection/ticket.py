@@ -15,6 +15,8 @@ def createTicketStats():
             "VipSafira": 0,
             "Boost": 0,
             "Patrocinio": 0,
+            "Atendimento": 0,
+            "Denuncia": 0,
         }
         newStats = collectionName.insert_one(ticketStats)
         return newStats
@@ -62,10 +64,38 @@ def updateTicketPatrocinioStats():
     updateTicketStatsTotal()
     return updatedStats
 
+def updateTicketAtendimentoStats():
+    dbname = getDatabase()
+    collectionName = dbname["ticket"]
+    updatedStats = collectionName.find_one_and_update({"Id": 1}, {"$inc": {"Atendimento": 1}}, return_document = pymongo.ReturnDocument.AFTER)
+    updateTicketStatsTotal()
+    return updatedStats
+
+def updateTicketDenunciaStats():
+    dbname = getDatabase()
+    collectionName = dbname["ticket"]
+    updatedStats = collectionName.find_one_and_update({"Id": 1}, {"$inc": {"Denuncia": 1}}, return_document = pymongo.ReturnDocument.AFTER)
+    updateTicketStatsTotal()
+    return updatedStats
+
 def setVipAmetistaStats(i):
     dbname = getDatabase()
     collectionName = dbname["ticket"]
     updatedStats = collectionName.find_one_and_update({"Id": 1}, {"$set": {"VipAmetista": int(i)}}, return_document = pymongo.ReturnDocument.AFTER)
+    updateTicketStatsTotal()
+    return updatedStats
+
+def setAtendimentoStats(i):
+    dbname = getDatabase()
+    collectionName = dbname["ticket"]
+    updatedStats = collectionName.find_one_and_update({"Id": 1}, {"$set": {"Atendimento": int(i)}}, return_document = pymongo.ReturnDocument.AFTER)
+    updateTicketStatsTotal()
+    return updatedStats
+
+def setDenunciaStats(i):
+    dbname = getDatabase()
+    collectionName = dbname["ticket"]
+    updatedStats = collectionName.find_one_and_update({"Id": 1}, {"$set": {"Denuncia": int(i)}}, return_document = pymongo.ReturnDocument.AFTER)
     updateTicketStatsTotal()
     return updatedStats
 
@@ -78,4 +108,6 @@ def updateTicketStatsTotal():
     vipSafira = int(foundProfile["VipSafira"])
     boosts = int(foundProfile["Boost"])
     patrocinios = int(foundProfile["Patrocinio"])
-    collectionName.find_one_and_update({"Id": 1}, {"$set": {"Vips": vipAmetista + vipJade + vipSafira, "Total": vipAmetista + vipJade + vipSafira + boosts + patrocinios}}, return_document = pymongo.ReturnDocument.AFTER)
+    atendimentos = int(foundProfile["Atendimento"])
+    denuncias = int(foundProfile["Denuncia"])
+    collectionName.find_one_and_update({"Id": 1}, {"$set": {"Vips": vipAmetista + vipJade + vipSafira, "Total": vipAmetista + vipJade + vipSafira + boosts + patrocinios + atendimentos + denuncias}}, return_document = pymongo.ReturnDocument.AFTER)

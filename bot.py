@@ -13,14 +13,17 @@ from mongoconnection.connect import getDatabase
 from mongoconnection.afk import searchForAfk, reactionSearchForAfk
 from mongoconnection.star import *
 from handlers.rules import *
-from handlers.antiSpam import *
 from handlers.antiInvite import *
+from handlers.antiLongMessages import *
+from handlers.antiSpam import *
 from handlers.basicColors import *
 from handlers.brightColors import *
 from handlers.darkColors import *
 from handlers.grayColors import *
 from handlers.specialColors import *
 from handlers.register import *
+from handlers.ticketAtendimento import *
+from handlers.ticketDenuncia import *
 from handlers.ticketVip import *
 from handlers.ticketBooster import *
 from handlers.ticketParceria import *
@@ -82,6 +85,8 @@ async def reloadServerOptions():
     await getGrayColorsRow(bot = bot)
     await getSpecialColorsRow(bot = bot)
     await getRegisterRow(bot = bot)
+    await getTicketAtendimentoRow(bot = bot)
+    await getTicketDenunciaRow(bot = bot)
     await getTicketVipRow(bot = bot)
     await getTicketBoosterRow(bot = bot)
     await getTicketPatrocinioRow(bot = bot)
@@ -117,9 +122,7 @@ async def on_message(message):
     #「R.1」Flood/spam de mensagens/emojis:
     antispam = await antiSpam(bot = bot, message = message)
     #「R.2」Mensagens desnecessariamente longas:
-    if len(message.content) >= 1000:
-        print(len(message.content), "caracteres")
-        await message.add_reaction("🧐")
+    antilongMessages = await antiLongMessages(bot = bot, message = message)
     #「R.11」Anti-invite:
     antiinvite = await antiInvite(bot = bot, message = message)
     afk = await searchForAfk(message)

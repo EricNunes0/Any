@@ -94,7 +94,6 @@ class colorsClass(discord.ui.View):
 
 async def getBasicColorsRow(bot):
     try:
-        print("getBasicColorsRow() started")
         c = open("../jsons/colors.json", encoding = "utf8")
         colorsJson = json.load(c)
         channel = bot.get_channel(colorsJson["colorsChannel"])
