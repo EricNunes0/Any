@@ -71,7 +71,7 @@ class ticketCreateConfirm(discord.ui.View):
             )
             ticketEmbed.set_footer(text = f"Ticket de {interaction.user.name}", icon_url = interaction.user.display_avatar.url)
             ticketUser = interaction.user
-            await ticketChannel.send(content = f"『<a:z_BlueDiamond:938850305083314207>』Bem-vindo(a), {interaction.user.mention}!\n||<@&739210760567390250 >||", embed = ticketEmbed, view = ticketCloseClass(self.bot, self.json, ticketUser))
+            await ticketChannel.send(content = f"『<a:z_BlueDiamond:938850305083314207>』Bem-vindo(a), {interaction.user.mention}!\n||<@&739210760567390250>||", embed = ticketEmbed, view = ticketCloseClass(self.bot, self.json, ticketUser))
         except Exception as e:
             print(e)
 
@@ -224,7 +224,7 @@ Clique no botão \"🚔 Denunciar\" para abrir um ticket. Nele, seja breve e rel
 ➺ Evite off-topic em geral e conversas paralelas.
 """
         )
-        ticketMenuEmbed.set_image(url = "https://i.imgur.com/7p24U3r.png")
+        ticketMenuEmbed.set_image(url = "https://i.imgur.com/GazWmNS.png")
         ticketMenuEmbed.set_footer(text = "Denúncia", icon_url = bot.user.display_avatar.url)
         await ticketMsg.edit(content = None, embed = ticketMenuEmbed, view = ticketClass(bot = bot, json = ticketJson))
     except Exception as e:
