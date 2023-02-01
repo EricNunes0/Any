@@ -4,18 +4,22 @@ import random
 import asyncio
 from mongoconnection.ticket import *
 
+QUESTION_BASE = "Em qual área você deseja ingressar?"
+QUESTION_A1 = "Qual a sua idade?"
+QUESTION_A2 = "Há quanto tempo você usa o Discord?"
+
 class ticketClass(discord.ui.View):
     def __init__(self, bot, json):
         super().__init__(timeout = None)
         self.bot = bot
         self.json = json
     
-    @discord.ui.button(label = f"Mov-chat", style = discord.ButtonStyle.gray, emoji = "💬")
+    @discord.ui.button(label = f"Participar", style = discord.ButtonStyle.gray, emoji = "🎫")
     async def ticketStaffInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
         
         ticketEmbed = discord.Embed(
-            title = f"꧁💬 Mov-chat 💬꧂",
-            description = "Os <@&1054734844434845726> são os responsáveis por manter a atividade no servidor!",
+            title = f"꧁🔰 Seja Staff 🔰꧂",
+            description = "Você será redirecionado para o formulário de staff. Você tem certeza de que deseja continuar?",
             color = discord.Color.from_rgb(160, 160, 160)
         )
         ticketEmbed.set_footer(text = "Seja Staff!")
@@ -27,7 +31,7 @@ class ticketCreateConfirm(discord.ui.View):
         self.bot = bot
         self.json = json
     
-    @discord.ui.button(label = f"Tenho interesse!", style = discord.ButtonStyle.green, emoji = "🙋‍♀️")
+    @discord.ui.button(label = f"Sim", style = discord.ButtonStyle.green, emoji = "✅")
     async def ticketStaffYesInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
             ticketCategorie = discord.utils.get(interaction.guild.categories, id = 1066082691843362917)
@@ -46,7 +50,7 @@ class ticketCreateConfirm(discord.ui.View):
             userOverwrites.read_messages, userOverwrites.send_messages = True, False
             await ticketChannel.set_permissions(interaction.user, overwrite = userOverwrites)
             ticketOpenedEmbed = discord.Embed(
-                title = f"꧁💬 Mov-chat 💬꧂",
+                title = f"꧁🔰 Seja Staff 🔰꧂",
                 description = f"『🔰』Siga as instruções do canal {ticketChannel.mention}!",
                 color = discord.Color.from_rgb(160, 160, 160)
             )
@@ -55,24 +59,23 @@ class ticketCreateConfirm(discord.ui.View):
             alertChannel = self.bot.get_channel(self.json["staffAlert"])
             await alertChannel.send(f"『💬』{interaction.user.name} `({interaction.user.id})` mostrou interesse em ser um mov-chat!")
             ticketEmbed = discord.Embed(
-                title = f"꧁💬 Mov-Chat 💬꧂",
-                description = f"『📄』Clique no botão \"✍ Responder\" e responda as perguntas abaixo. Após responder, clique em \"✅ Enviar\" para concluir o formulário.\n\n『❌』Para cancelar o formulário, clique em \"❌ Cancelar\".\n\n『<a:a_Alert:1063858446853734490>』**Atenção:** todas as respostas precisam obrigatoriamente ser respondidas. Caso não as responda, seu formulário será recusado!",
+                title = f"꧁🔰 Seja Staff 🔰꧂",
+                description = f"『🔘』Nas perguntas objetivas, clique em um dos botões abaixo para responder!\n\n『✍』Nas perguntas dissertativas (escritas), clique no botão **\"✍ Responder\"** e para alterar a resposta, em seguida em **\"✅ Confirmar\"** para enviá-la.\n\n『◀』Caso tenha preenchido uma resposta incorretamente e queira corrigi-la, clique em **\"◀ Voltar\"**.\n\n『❌』Para cancelar o formulário, clique em **\"❌ Cancelar\"**.\n\n『<a:a_Alert:1063858446853734490>』**Atenção:** todas as respostas precisam obrigatoriamente ser respondidas. Caso não as responda, seu formulário será recusado!",
                 color = discord.Color.from_rgb(160, 160, 160)
             )
-            ticketEmbed.add_field(name = f"Qual horário você geralmente está mais ativo no Discord?", value = "`Não informado`", inline = False)
-            ticketEmbed.add_field(name = f"Se uma pessoa estiver floodando/spamando mensagens nos canais de conversa, o que você faria?", value = "`Não informado`", inline = False)
+            ticketEmbed.add_field(name = f"『🔘』{QUESTION_BASE}", value = "`Não informado`", inline = False)
             ticketEmbed.set_footer(text = f"Formulário de {interaction.user.name}", icon_url = interaction.user.display_avatar.url)
             ticketUser = interaction.user
-            await ticketChannel.send(content = f"『<a:ab_GrayDiamond:938884683771543572>』Bem-vindo(a), {interaction.user.mention}!\n<@&739210760567390250>", embed = ticketEmbed, view = movchatFormClass(self.bot, self.json, ticketUser))
+            await ticketChannel.send(content = f"『<a:ab_GrayDiamond:938884683771543572>』Bem-vindo(a), {interaction.user.mention}!\n||<@&739210760567390250 >||", embed = ticketEmbed, view = staffQuestionBase1Row(self.bot, ticketEmbed, self.json, ticketUser))
         except Exception as e:
             print(e)
 
-    @discord.ui.button(label = f"Cancelar", style = discord.ButtonStyle.red, emoji = "❌")
+    @discord.ui.button(label = f"Não", style = discord.ButtonStyle.red, emoji = "❌")
     async def ticketStaffNoInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
             ticketEmbed = discord.Embed(
                 title = f"꧁🔰 Seja Staff 🔰꧂",
-                description = f"『❌』Pedido cancelado!",
+                description = f"『❌』Inscrição cancelada!",
                 color = discord.Color.from_rgb(160, 160, 160)
             )
             ticketEmbed.set_footer(text = "Seja Staff!")
@@ -81,50 +84,50 @@ class ticketCreateConfirm(discord.ui.View):
         except Exception as e:
             print(e)
 
-class movchatFormClass(discord.ui.View):
-    def __init__(self, bot, json, user):
+class staffQuestionBase1Row(discord.ui.View):
+    def __init__(self, bot, embed, json, user):
         super().__init__(timeout = None)
         self.bot = bot
+        self.embed = embed
         self.json = json
         self.user = user
     
-    @discord.ui.button(label = f"Responder", style = discord.ButtonStyle.blurple, emoji = "✍")
-    async def movchatAnswer(self, interaction: discord.Interaction, button: discord.ui.Button):
+    @discord.ui.button(label = f"Moderador", style = discord.ButtonStyle.blurple, emoji = "🚔")
+    async def staffForm1Answer1(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
-            await interaction.response.send_modal(movchatModal())
+            self.embed.set_field_at(index = 0, name = f"『☑』{QUESTION_BASE}", value = "`Moderador`", inline = False)
+            self.embed.add_field(name = f"**『✍』{QUESTION_A1}**", value = "`Não informado`", inline = False)
+            await interaction.response.defer()
+            await interaction.message.edit(embed = self.embed, view = staffQuestionA1Row(self.bot, self.embed, self.json, self.user))
         except Exception as e:
             print(e)
 
-    @discord.ui.button(label = f"Enviar", style = discord.ButtonStyle.green, emoji = "✅")
-    async def movchatConfirmAnswers(self, interaction: discord.Interaction, button: discord.ui.Button):
+    @discord.ui.button(label = f"Mov-chat", style = discord.ButtonStyle.blurple, emoji = "💬", disabled = True)
+    async def staffForm1Answer2(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
-            await interaction.message.edit(view = None)
-            answerConfirmEmbed = discord.Embed(
-                title = f"꧁💬 Mov-chat 💬꧂",
-                description = f"『✅』Sua respostas foram enviadas para os administradores! Entraremos em contato com você caso tenha sido aprovado.",
-                color = discord.Color.from_rgb(20, 200, 20)
-            )
-            answerConfirmEmbed.set_footer(text = "Seja Staff!")
-            await interaction.response.send_message(embeds = [answerConfirmEmbed], ephemeral = True)
-            userOverwrites = interaction.channel.overwrites_for(interaction.guild.default_role)
-            userOverwrites.read_messages, userOverwrites.send_messages = False, False
-            await interaction.channel.set_permissions(interaction.user, overwrite = userOverwrites)
-            answerAdminsEmbed = discord.Embed(
-                title = f"꧁💬 Mov-chat 💬꧂",
-                description = f"『✅』{interaction.user.mention} concluiu o formulário!",
-                color = discord.Color.from_rgb(20, 200, 20)
-            )
-            answerAdminsEmbed.set_footer(text = "Seja Staff!")
-            await interaction.channel.send(content = "<@&739210760567390250>", embeds = [answerAdminsEmbed])
+            self.embed.set_field_at(index = 0, name = f"『☑』{QUESTION_BASE}", value = "`Mov-chat`", inline = False)
+            self.embed.add_field(name = f"**『✍』{QUESTION_A1}**", value = "`Não informado`", inline = False)
+            await interaction.response.defer()
+            await interaction.message.edit(embed = self.embed, view = staffQuestionA1Row(self.bot, self.embed, self.json, self.user))
         except Exception as e:
             print(e)
 
-    @discord.ui.button(label = f"Cancel", style = discord.ButtonStyle.red, emoji = "❌")
-    async def movchatCancelForm(self, interaction: discord.Interaction, button: discord.ui.Button):
+    @discord.ui.button(label = f"Divulgador", style = discord.ButtonStyle.blurple, emoji = "📢", disabled = True)
+    async def staffForm1Answer3(self, interaction: discord.Interaction, button: discord.ui.Button):
+        try:
+            self.embed.set_field_at(index = 0, name = f"『☑』{QUESTION_BASE}", value = "`Divulgador`", inline = False)
+            self.embed.add_field(name = f"**『✍』{QUESTION_A1}**", value = "`Não informado`", inline = False)
+            await interaction.response.defer()
+            await interaction.message.edit(embed = self.embed, view = staffQuestionA1Row(self.bot, self.embed, self.json, self.user))
+        except Exception as e:
+            print(e)
+
+    @discord.ui.button(label = f"Cancelar", style = discord.ButtonStyle.red, emoji = "❌")
+    async def staffForm1Cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
         try:
             await interaction.message.edit(view = None)
             answerConfirmEmbed = discord.Embed(
-                title = f"꧁💬 Mov-chat 💬꧂",
+                title = f"꧁🔰 Seja Staff 🔰꧂",
                 description = f"『❌』Seu formulário foi cancelado com sucesso!",
                 color = discord.Color.from_rgb(200, 20, 20)
             )
@@ -134,59 +137,107 @@ class movchatFormClass(discord.ui.View):
             userOverwrites.read_messages, userOverwrites.send_messages = False, False
             await interaction.channel.set_permissions(interaction.user, overwrite = userOverwrites)
             answerAdminsEmbed = discord.Embed(
-                title = f"꧁💬 Mov-chat 💬꧂",
+                title = f"꧁🔰 Seja Staff 🔰꧂",
                 description = f"『❌』{interaction.user.mention} cancelou o formulário!",
                 color = discord.Color.from_rgb(200, 20, 20)
             )
             answerAdminsEmbed.set_footer(text = "Seja Staff!")
-            await interaction.channel.send(content = "<@&739210760567390250>", embeds = [answerAdminsEmbed])
+            await interaction.channel.send(content = "<@&739210760567390250 >", embeds = [answerAdminsEmbed])
         except Exception as e:
             print(e)
 
-class movchatModal(discord.ui.Modal, title = "Formulário para Mov-chat"):
-    def __init__(self):
+class staffQuestionA1Row(discord.ui.View):
+    def __init__(self, bot, embed, json, user):
         super().__init__(timeout = None)
+        self.bot = bot
+        self.embed = embed
+        self.json = json
+        self.user = user
+    
+    @discord.ui.button(label = f"Responder", style = discord.ButtonStyle.blurple, emoji = "✍")
+    async def staffFormA1Answer(self, interaction: discord.Interaction, button: discord.ui.Button):
+        try:
+            await interaction.response.send_modal(staffQuestionA1Modal(self.bot, self.embed, self.json, self.user))
+        except Exception as e:
+            print(e)
+    
+    @discord.ui.button(label = f"Confirmar", style = discord.ButtonStyle.green, emoji = "✅")
+    async def staffFormA1Confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        try:
+            if self.embed.fields[1].value == "`Não informado`":
+                parceriaMissingAnswer1Embed = discord.Embed(
+                    title = f"꧁🔰 Seja Staff 🔰꧂",
+                    description = "Você precisa responder a pergunta acima!",
+                    color = discord.Color.from_rgb(160, 160, 160)
+                )
+                parceriaMissingAnswer1Embed.set_footer(text = "Seja staff!")
+                await interaction.response.send_message(embed = parceriaMissingAnswer1Embed, ephemeral = True)
+                return
+            self.embed.add_field(name = f"**『✍』{QUESTION_A2}**", value = "`Não informado`", inline = False)
+            await interaction.response.defer()
+            await interaction.message.edit(embed = self.embed, view = None)#parceriaForm2Row(self.bot, self.embed, self.json, self.user))
+        except Exception as e:
+            print(e)
+    
+    @discord.ui.button(label = f"Voltar", style = discord.ButtonStyle.blurple, emoji = "◀")
+    async def staffFormA1Return(self, interaction: discord.Interaction, button: discord.ui.Button):
+        try:
+            self.embed.remove_field(index = 1)
+            self.embed.set_field_at(index = 0, name = f"**『🔘』{QUESTION_BASE}**", value = "`Não informado`", inline = False)
+            await interaction.response.defer()
+            await interaction.message.edit(embed = self.embed, view = staffQuestionBase1Row(self.bot, self.embed, self.json, self.user))
+        except Exception as e:
+            print(e)
+
+    @discord.ui.button(label = f"Cancelar", style = discord.ButtonStyle.red, emoji = "❌")
+    async def staffFormA1Cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+        try:
+            await interaction.message.edit(view = None)
+            answerConfirmEmbed = discord.Embed(
+                title = f"꧁🔰 Seja Staff 🔰꧂",
+                description = f"『❌』Seu formulário foi cancelado com sucesso!",
+                color = discord.Color.from_rgb(200, 20, 20)
+            )
+            answerConfirmEmbed.set_footer(text = "Seja Staff!")
+            await interaction.response.send_message(embeds = [answerConfirmEmbed], ephemeral = True)
+            userOverwrites = interaction.channel.overwrites_for(interaction.guild.default_role)
+            userOverwrites.read_messages, userOverwrites.send_messages = False, False
+            await interaction.channel.set_permissions(interaction.user, overwrite = userOverwrites)
+            answerAdminsEmbed = discord.Embed(
+                title = f"꧁🔰 Seja Staff 🔰꧂",
+                description = f"『❌』{interaction.user.mention} cancelou o formulário!",
+                color = discord.Color.from_rgb(200, 20, 20)
+            )
+            answerAdminsEmbed.set_footer(text = "Seja Staff!")
+            await interaction.channel.send(content = "<@&739210760567390250 >", embeds = [answerAdminsEmbed])
+        except Exception as e:
+            print(e)
+
+
+class staffQuestionA1Modal(discord.ui.Modal, title = "Formulário para staff"):
+    def __init__(self, bot, embed, json, user):
+        super().__init__(timeout = None)
+        self.bot = bot
+        self.embed = embed
+        self.json = json
+        self.user = user
 
         self.add_item(discord.ui.TextInput(
-            label="Qual horário você está mais ativo?",
+            label = "Qual a sua idade?",
             style = discord.TextStyle.short,
             min_length = 1,
-            max_length = 256,
-            required = True,
-            )
-        ),
-        self.add_item(discord.ui.TextInput(
-            label="O que faria em caso de flood?",
-            style = discord.TextStyle.short,
-            min_length = 1,
-            max_length = 256,
+            max_length = 10,
             required = True,
             )
         )
     async def on_submit(self, interaction: discord.Interaction):
         try:
             answer0 = self.children[0].value
-            answer1 = self.children[1].value
-            print(len(answer0), answer0)
-            answerEmbed = discord.Embed(
-                    title = f"꧁💬 Mov-chat 💬꧂",
-                    description = f"『📄』Clique no botão \"✍ Responder\" e responda as perguntas abaixo. Após responder, clique em \"✅ Enviar\" para concluir o formulário.\n\n『❌』Para cancelar o formulário, clique em \"❌ Cancelar\".\n\n『<a:a_Alert:1063858446853734490>』**Atenção:** todas as respostas precisam obrigatoriamente ser respondidas. Caso não as responda, seu formulário será recusado!",
-                    color = discord.Color.from_rgb(160, 160, 160)
-                )
-            answerEmbed.add_field(name = "Qual horário você geralmente está mais ativo no Discord?", value = answer0, inline = False)
-            answerEmbed.add_field(name = "Se uma pessoa estiver floodando/spamando mensagens nos canais de conversa, o que você faria?", value = answer1, inline = False)
-            answerEmbed.set_footer(text = f"Formulário de {interaction.user.name}", icon_url = interaction.user.display_avatar.url)
-            await interaction.message.edit(embeds = [answerEmbed])
-            answerConfirmEmbed = discord.Embed(
-                title = f"꧁💬 Mov-chat 💬꧂",
-                description = f"『✅』Sua respostas foram alteradas! Clique em \"✅ Enviar\" para concluir o formulário!",
-                color = discord.Color.from_rgb(160, 160, 160)
-            )
-            answerConfirmEmbed.set_footer(text = "Seja Staff!")
-            await interaction.response.send_message(embeds = [answerConfirmEmbed], ephemeral = True)
+            self.embed.set_field_at(index = 1, name = f"『☑』{QUESTION_A1}", value = f"{answer0}", inline = False)
+            await interaction.response.defer()
+            await interaction.message.edit(embeds = [self.embed])
         except Exception as e:
             print(e)
-
 
 async def getTicketModRow(bot):
     try:
@@ -206,8 +257,18 @@ async def getTicketModRow(bot):
 """
 ➺ Ter responsabilidade e comprometimento com as <#1064003850228473876>;
 ➺ Ter disponibilidade para moderar;
+➺ Obedecer as ordens de seus superiores;
 ➺ Responder ao formulário **honestamente**!
 """
+        )
+        ticketMenuEmbed.add_field(name = "『💼』Áreas disponíveis:", inline = False, value =
+        """
+<@&793689864469217290> ➺ São os responsáveis por moderar os chats de conversa e, caso necessário, punir membros que estejam infrinjindo as regras;
+
+<@&1054734844434845726> ➺ São os responsáveis por manter os chats de conversa ativos, incentivando os membros a participarem mais ativamente no servidor;
+
+<@&912505147907788890> ➺ São os responsáveis por divulgar nosso servidor e buscar parcerias.
+        """
         )
         ticketMenuEmbed.add_field(name = "『📄』Critérios avaliados:", inline = False, value =
 """
