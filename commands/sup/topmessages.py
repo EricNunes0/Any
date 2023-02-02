@@ -5,6 +5,10 @@ import datetime
 import asyncio
 import json
 import aiohttp
+import requests
+from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageFilter, ImageChops
+import textwrap
+from io import BytesIO
 
 c = open("../config.json")
 config = json.load(c)
@@ -85,15 +89,74 @@ class topMsgSettingsButtons(discord.ui.View):
 
     @discord.ui.button(style = discord.ButtonStyle.green, emoji = f"✅")
     async def topMsgSendOption(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if len(topMsgUsers) < 3:
+            await interaction.response.send_message(content = "『❌』É preciso ter pelo menos 3 usuários para montar o Top Chat!", ephemeral = True)
+            return
+        loadingEmbed = discord.Embed(
+                description = "Carregando...",
+                color = discord.Color.from_rgb(100, 100, 100)
+            )
+        await interaction.message.delete()
+        loadingMsg = await interaction.channel.send(embed = loadingEmbed, view = None)
         try:
             await interaction.response.defer()
-            await interaction.message.delete()
-            await self.channel.send(embeds = [self.embed])
-            
+            user0Avatar = topMsgUsers[0].display_avatar.url
+            user1Avatar = topMsgUsers[1].display_avatar.url
+            user2Avatar = topMsgUsers[2].display_avatar.url
+            url0 = requests.get(user0Avatar)
+            url1 = requests.get(user1Avatar)
+            url2 = requests.get(user2Avatar)
+            avatar0 = Image.open(BytesIO(url0.content))
+            avatar1 = Image.open(BytesIO(url1.content))
+            avatar2 = Image.open(BytesIO(url2.content))
+            avatar0 = avatar0.resize((234, 231))
+            avatar1 = avatar1.resize((182, 180))
+            avatar2 = avatar2.resize((171, 169))
+            bigavatar0 = (avatar0.size[0] * 3, avatar0.size[1] * 3)
+            bigavatar1 = (avatar1.size[0] * 3, avatar1.size[1] * 3)
+            bigavatar2 = (avatar2.size[0] * 3, avatar2.size[1] * 3)
+            mascara0 = Image.new('L', bigavatar0, 0)
+            mascara1 = Image.new('L', bigavatar1, 0)
+            mascara2 = Image.new('L', bigavatar2, 0)
+            recortar0 = ImageDraw.Draw(mascara0)
+            recortar1 = ImageDraw.Draw(mascara1)
+            recortar2 = ImageDraw.Draw(mascara2)
+            recortar0.ellipse((0, 0) + bigavatar0, fill=255)
+            recortar1.ellipse((0, 0) + bigavatar1, fill=255)
+            recortar2.ellipse((0, 0) + bigavatar2, fill=255)
+            mascara0 = mascara0.resize(avatar0.size, Image.ANTIALIAS)
+            mascara1 = mascara0.resize(avatar1.size, Image.ANTIALIAS)
+            mascara2 = mascara0.resize(avatar2.size, Image.ANTIALIAS)
+            avatar0.putalpha(mascara0)
+            avatar1.putalpha(mascara1)
+            avatar2.putalpha(mascara2)
+            saida0 = ImageOps.fit(avatar0, mascara0.size, centering=(0.5, 0.5))
+            saida1 = ImageOps.fit(avatar1, mascara1.size, centering=(0.5, 0.5))
+            saida2 = ImageOps.fit(avatar2, mascara2.size, centering=(0.5, 0.5))
+            saida0.putalpha(mascara0)
+            saida1.putalpha(mascara1)
+            saida2.putalpha(mascara2)
+            #saida.save('img_avatar.png')
+            img = Image.open("img_topchat(2).png")
+            imgBase = Image.open("img_topchat(1).png")
+            fonte = ImageFont.truetype("font_coolvetica_rg.ttf", 35)
+            img.paste(avatar0, (383, 185), avatar0)
+            img.paste(avatar1, (183, 264), avatar1)
+            img.paste(avatar2, (639, 300), avatar2)
+            img.paste(imgBase, (0, 0), imgBase)
+            img.save("img_topchat.png")
+            self.embed.set_image(url = "attachment://img_topchat.png")
+            await self.channel.send(embeds = [self.embed], file = discord.File("img_topchat.png"))
         except Exception as e:
+            loadingEmbed.color = discord.Color.from_rgb(255, 20, 20)
+            loadingEmbed.title = "Erro:"
+            loadingEmbed.description = f"{e}"
+            await loadingMsg.edit(embed = loadingEmbed)
             print(e)
+            return
+        await loadingMsg.delete()
 
-class topMsgModal(discord.ui.Modal, title = "Editar votação"):
+class topMsgModal(discord.ui.Modal, title = "Editar top mensagens"):
     def __init__(self, bot, channel, embed):
         super().__init__(timeout = None)
         self.bot = bot
