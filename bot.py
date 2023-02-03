@@ -255,9 +255,9 @@ async def on_member_join(member):
             await channelGet.edit(name=f"『🌟』Membros: {joinGuild.member_count}")
             welEmjs = ["<a:ab_8bitLaserDance:908674226288988230>", "<a:ab_AnimeDance:908671238451396618>", "<a:ab_BarriguinhaMole:908669226758340659>", "<a:ab_BobDance:908669712664256562>", "<a:ab_CyanDance:908673970503553047>", "<a:ab_Caverinha:960384154900500490>"]
             e = random.choice(welEmjs)
-            guildMemberAdd = discord.Embed(title = f"{e} Seja bem-vindo(a)! {e}", color = 0x4070e0)
+            guildMemberAdd = discord.Embed(title = f"{e} Seja bem-vindo(a)! {e}", color = discord.Color.from_rgb(240, 210, 0))
             guildMemberAdd.set_author(name = f"{member.name}#{member.discriminator}", icon_url = member.display_avatar.url)
-            guildMemberAdd.add_field(name = f"〔⏬〕Confira:", value = f"**『{link['grayDiamond']}』Regras:** <#1064003850228473876>\n**『{link['greenDiamond']}』Registre-se:** <#770250817684635658>\n**『{link['redDiamond']}』Use o Janny:** <#970038786908127273>")
+            guildMemberAdd.add_field(name = f"〔<a:ab_LevelDown:1051238512319537283>〕Confira:", value = f"**『{link['grayDiamond']}』Regras:** <#1064003850228473876>\n**『{link['greenDiamond']}』Registre-se:** <#1068578017292599356>\n**『{link['redDiamond']}』Use o Janny:** <#970038786908127273>")
             guildMemberAdd.set_thumbnail(url = member.display_avatar.url)
             guildMemberAdd.set_footer(text = f"ID: {member.id}", icon_url = member.display_avatar.url)
             welcomeChannel = bot.get_channel(sendWelcomeChannelId)

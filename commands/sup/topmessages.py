@@ -38,7 +38,7 @@ class cop_topMessages(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(name = "topmessages", aliases = ["topmsg", "topmgs", "msgtop", "tm", "topm"], pass_context = True)
+    @commands.command(name = "topmessages", aliases = ["topmsg", "topmgs", "msgtop", "tm", "topm", "topchat"], pass_context = True)
     @has_permissions(administrator = True)
     @cooldown(1, 3, type = commands.BucketType.user)
     async def topMessages(self, ctx, channel: discord.TextChannel = None):
@@ -106,9 +106,9 @@ class topMsgSettingsButtons(discord.ui.View):
             url0 = requests.get(user0Avatar)
             url1 = requests.get(user1Avatar)
             url2 = requests.get(user2Avatar)
-            avatar0 = Image.open(BytesIO(url0.content))
-            avatar1 = Image.open(BytesIO(url1.content))
-            avatar2 = Image.open(BytesIO(url2.content))
+            avatar0 = Image.open(BytesIO(url0.content)).convert('RGB')
+            avatar1 = Image.open(BytesIO(url1.content)).convert('RGB')
+            avatar2 = Image.open(BytesIO(url2.content)).convert('RGB')
             avatar0 = avatar0.resize((234, 231))
             avatar1 = avatar1.resize((182, 180))
             avatar2 = avatar2.resize((171, 169))
@@ -155,6 +155,7 @@ class topMsgSettingsButtons(discord.ui.View):
             print(e)
             return
         await loadingMsg.delete()
+        topMsgUsers.clear()
 
 class topMsgModal(discord.ui.Modal, title = "Editar top mensagens"):
     def __init__(self, bot, channel, embed):
