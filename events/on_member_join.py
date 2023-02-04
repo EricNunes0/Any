@@ -36,7 +36,7 @@ async def onMemberJoin(bot, member):
             view.add_item(discord.ui.Button(label = "Janny", style = discord.ButtonStyle.link, emoji = "🎰", url = "https://discord.com/channels/710506024489976028/970038786908127273"))
             view.add_item(discord.ui.Button(label = "Sorteios", style = discord.ButtonStyle.link, emoji = "🎉", url = "https://discord.com/channels/710506024489976028/1047160583302164550"))
             print("Row criado")
-            await welcomeChannel.send(content = member.mention, embed = guildMemberAdd, view = view)
+            await welcomeChannel.send(content = f"{member.mention} <@&1070416957108650014>", embed = guildMemberAdd, view = view)
             print("Mensagem de boas vindas enviada")
             return
     except Exception as e:
