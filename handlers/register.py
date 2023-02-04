@@ -633,57 +633,57 @@ async def getRegisterRow(bot):
         registerGenderEmbed = discord.Embed(
             title = f"Gênero",
             description = f"『🚹』<@&770251885268434984>\n『🚺』<@&770256373589213205>\n『🚻』<@&908742556421091328>\n『👤』<@&1048619483322916964>",
-            color = discord.Color.from_rgb(210, 30, 30)
+            color = discord.Color.from_rgb(80, 80, 255)
         )
-        registerGenderEmbed.set_image(url = "https://media.discordapp.net/attachments/1004090715267141742/1011058426132050021/linha-imagem-animada-0383.gif")
+        registerGenderEmbed.set_image(url = "https://i.imgur.com/PYHjpyL.png")
         registerGenderEmbed.set_footer(text = "Escolha o seu gênero no menu abaixo:", icon_url = bot.user.display_avatar.url)
         #AGE
         registerAgeEmbed = discord.Embed(
             title = f"Idade",
             description = f"『🍺』<@&908743910027825212>\n『🍷』<@&908743909688098907>\n『🧃』<@&1048621342049706044>",
-            color = discord.Color.from_rgb(210, 30, 30)
+            color = discord.Color.from_rgb(240, 40, 40)
         )
-        registerAgeEmbed.set_image(url = "https://media.discordapp.net/attachments/1004090715267141742/1011058426132050021/linha-imagem-animada-0383.gif")
+        registerAgeEmbed.set_image(url = "https://i.imgur.com/1z75afw.png")
         registerAgeEmbed.set_footer(text = "Escolha a sua idade no menu abaixo:", icon_url = bot.user.display_avatar.url)
         #RELATIONSHIP
         registerRelationshipEmbed = discord.Embed(
             title = f"Status de relacionamento",
             description = f"『👤』<@&770717169750114324>\n『💞』<@&770717226491838474>",
-            color = discord.Color.from_rgb(210, 30, 30)
+            color = discord.Color.from_rgb(255, 80, 255)
         )
-        registerRelationshipEmbed.set_image(url = "https://media.discordapp.net/attachments/1004090715267141742/1011058426132050021/linha-imagem-animada-0383.gif")
+        registerRelationshipEmbed.set_image(url = "https://i.imgur.com/paiMtCs.png")
         registerRelationshipEmbed.set_footer(text = "Escolha o seu status de relacionamento no menu abaixo:", icon_url = bot.user.display_avatar.url)
         #SEXUALITY
         registerSexualityEmbed = discord.Embed(
             title = f"Orientação sexual",
             description = f"『👫』<@&770716258215526431>\n『🏳️‍🌈』<@&770716350976884774>",
-            color = discord.Color.from_rgb(210, 30, 30)
+            color = discord.Color.from_rgb(255, 170, 80)
         )
-        registerSexualityEmbed.set_image(url = "https://media.discordapp.net/attachments/1004090715267141742/1011058426132050021/linha-imagem-animada-0383.gif")
+        registerSexualityEmbed.set_image(url = "https://i.imgur.com/jSnIhCP.png")
         registerSexualityEmbed.set_footer(text = "Escolha a sua orientação sexual:", icon_url = bot.user.display_avatar.url)
         #HOBBIES
         registerHobbiesEmbed = discord.Embed(
             title = f"Hobbies",
             description = f"『🍡』<@&908744651362684998>\n『🗒️』<@&908744651375251466>\n『📺』<@&908744651563991060>\n『🎞️‍』<@&908744652180574288>\n『⚽』<@&908745189806448660>\n『🕹』<@&908745566652088360>\n『📚』<@&1048624150245290024>\n『👨‍💻』<@&1048624968046477455>\n『🎨』<@&1048627050988195881>\n『🎹』<@&1048638519876268122>\n『🎰』<@&1048639876758777916>\n『🛫』<@&1048659796850643004>",
-            color = discord.Color.from_rgb(210, 30, 30)
+            color = discord.Color.from_rgb(200, 60, 255)
         )
-        registerHobbiesEmbed.set_image(url = "https://media.discordapp.net/attachments/1004090715267141742/1011058426132050021/linha-imagem-animada-0383.gif")
+        registerHobbiesEmbed.set_image(url = "https://i.imgur.com/ZtVYr3v.png")
         registerHobbiesEmbed.set_footer(text = "Escolha os seus hobbies abaixo:", icon_url = bot.user.display_avatar.url)
         #REGION
         registerRegionEmbed = discord.Embed(
             title = f"Região",
             description = f"『🏕️』<@&966131471863660554>\n『🏖️』<@&966131715334619226>\n『🏞️』<@&966131907974823947>\n『🏙️』<@&966132076409655367>\n『🌃』<@&966132164129345547>\n『🇵🇹』<@&966133492385738792>\n『✈️』<@&966196222291480607>",
-            color = discord.Color.from_rgb(210, 30, 30)
+            color = discord.Color.from_rgb(60, 255, 60)
         )
-        registerRegionEmbed.set_image(url = "https://media.discordapp.net/attachments/1004090715267141742/1011058426132050021/linha-imagem-animada-0383.gif")
+        registerRegionEmbed.set_image(url = "https://i.imgur.com/z1CvVNy.png")
         registerRegionEmbed.set_footer(text = "Escolha a sua região:", icon_url = bot.user.display_avatar.url)
         #PINGS
         registerPingsEmbed = discord.Embed(
             title = f"Pings",
             description = f"『🔑』<@&960414419496611860>\n『🔔』<@&962186652565004409>\n『🔺』<@&979920087123394630>\n『📈』<@&979800757689778226>\n『🛎️』<@&979920562883268638>\n『📽️』<@&979929259210580019>\n『🥳』<@&1047161356626972703>\n『🎊』<@&1047164668088688700>\n『🎁』<@&1047164421300027505>\n『🍿』<@&1028328814369058877>",
-            color = discord.Color.from_rgb(210, 30, 30)
+            color = discord.Color.from_rgb(255, 240, 60)
         )
-        registerPingsEmbed.set_image(url = "https://media.discordapp.net/attachments/1004090715267141742/1011058426132050021/linha-imagem-animada-0383.gif")
+        registerPingsEmbed.set_image(url = "https://i.imgur.com/ZebPk3G.png")
         registerPingsEmbed.set_footer(text = "Escolha os cargos de pings no menu abaixo:", icon_url = bot.user.display_avatar.url)
         
         await registerMessageGender.edit(content = "", embed = registerGenderEmbed, view = registerGenderRow(bot = bot, json = registerJson))
