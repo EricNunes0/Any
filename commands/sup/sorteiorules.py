@@ -42,7 +42,7 @@ class cog_sorteioRules(commands.Cog):
             )
             roles1Embed.add_field(name = "Como participar?", inline = False, value = 
 """
-Para participar dos sorteios, é necessário que você pegue o cargo <@&1047164668088688700> no <#1068578017292599356> e acesse o canal <#1047160583302164550> nos horários que houver sorteios disponíveis! Todos os sorteios possui seus próprios requisitos, que são tarefas que você deverá cumprir para poder participar. Ao final do sorteio, caso você tenha sido sorteado e tiver cumprido os requisitos, o prêmio será seu! <a:d_8bitLaserDance:908674226288988230>
+Para participar dos sorteios, é necessário que você pegue o cargo <@&1047164668088688700> no <#1068578017292599356> e acesse o canal <#1047160583302164550> nos horários que houver sorteios disponíveis! Todos os sorteios possuem seus próprios requisitos, que são tarefas das quais você deverá cumprir para poder participar. Ao final do sorteio, caso você tenha sido sorteado e tiver cumprido os requisitos, o prêmio será seu! <a:d_8bitLaserDance:908674226288988230>
 """
             )
             roles1Embed.add_field(name = "Horários:", inline = False, value = 
@@ -52,7 +52,7 @@ Todos os dias temos sorteios disponíveis das 12h até 20h.
             )
             roles1Embed.add_field(name = "Requisitos:", inline = False, value = 
 """
-Os requisitos sempre serão diferentes em cada um dos sorteios, e apenas serão considerados vencedores aqueles que cumprirem os requisitos e e forem sorteados! Nossos sorteios são divididos em 5 níveis de dificuldade, de acordo com o nível de dificuldade dos requisitos estabelecidos. Vale lembrar que quanto maior o nível de dificuldade, maior será a recompensa para o vencedor!
+Os requisitos sempre serão diferentes em cada um dos sorteios, e apenas serão considerados vencedores aqueles que cumprirem eles e e forem sorteados! Os sorteios são divididos em 5 níveis de dificuldade, de acordo com o nível de dificuldade dos requisitos estabelecidos. Vale lembrar que quanto maior o nível de dificuldade, maior será a recompensa para o vencedor!
 """
             )
             roles1Embed.add_field(name = "Níveis de dificuldade:", inline = False, value = 

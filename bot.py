@@ -29,6 +29,7 @@ from handlers.ticketBooster import *
 from handlers.ticketParceria import *
 from handlers.ticketPatrocinio import *
 from handlers.ticketMod import *
+from events.on_member_join import *
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -92,6 +93,11 @@ async def reloadServerOptions():
     await getTicketPatrocinioRow(bot = bot)
     await getTicketParceriaRow(bot = bot)
     await getTicketModRow(bot = bot)
+    while True:
+        joinGuild = bot.get_guild(710506024489976028)
+        channelGet = bot.get_channel(983902645272059964)
+        await asyncio.sleep(60)
+        await editVoiceChannel(channelGet, joinGuild.member_count)
 
 async def statuschange():
     activity1 = discord.Game(name=f"Oi, eu sou o Any!", type=3)
@@ -241,32 +247,11 @@ async def on_command_error(ctx, error):
 
 @bot.event
 async def on_member_join(member):
-    guildToJoinId = 710506024489976028
-    sendWelcomeChannelId = 723155037332832296
-    editChannelNameId = 983902645272059964
-    if not member.guild.id == guildToJoinId:
-        print(f"『📤』Um usuário entrou em algum servidor! {member}")
-        return
     try:
-        if member.guild.id == guildToJoinId:
-            print(f"『📤』Um usuário entrou no servidor! {member}")
-            joinGuild = bot.get_guild(guildToJoinId)
-            channelGet = discord.utils.get(joinGuild.channels, id = editChannelNameId)
-            await channelGet.edit(name=f"『🌟』Membros: {joinGuild.member_count}")
-            welEmjs = ["<a:ab_8bitLaserDance:908674226288988230>", "<a:ab_AnimeDance:908671238451396618>", "<a:ab_BarriguinhaMole:908669226758340659>", "<a:ab_BobDance:908669712664256562>", "<a:ab_CyanDance:908673970503553047>", "<a:ab_Caverinha:960384154900500490>"]
-            e = random.choice(welEmjs)
-            guildMemberAdd = discord.Embed(title = f"{e} Seja bem-vindo(a)! {e}", color = discord.Color.from_rgb(240, 210, 0))
-            guildMemberAdd.set_author(name = f"{member.name}#{member.discriminator}", icon_url = member.display_avatar.url)
-            guildMemberAdd.add_field(name = f"〔<a:ab_LevelDown:1051238512319537283>〕Confira:", value = f"**『{link['grayDiamond']}』Regras:** <#1064003850228473876>\n**『{link['greenDiamond']}』Registre-se:** <#1068578017292599356>\n**『{link['redDiamond']}』Use o Janny:** <#970038786908127273>")
-            guildMemberAdd.set_thumbnail(url = member.display_avatar.url)
-            guildMemberAdd.set_footer(text = f"ID: {member.id}", icon_url = member.display_avatar.url)
-            welcomeChannel = bot.get_channel(sendWelcomeChannelId)
-            await welcomeChannel.send(content = member.mention, embed = guildMemberAdd)
-            print("Membro entrou com sucesso")
-            return
+        await onMemberJoin(bot, member)
     except Exception as e:
         print(e)
-        return
+    return
 
 @bot.event
 async def on_member_remove(member):
