@@ -121,6 +121,17 @@ async def statuschange():
 
 @bot.event
 async def on_message(message):
+    if message.type == discord.MessageType.premium_guild_subscription:
+        boosterEmbed = discord.Embed(
+            title = "NOVO BOOST!!!",
+            description = f"Muito obrigado por impulsionar o servidor, {message.author.mention}! Abra um ticket em <#1048659113107804260> para resgatar seus benefícios.\n\nNosso servidor agora possui **{message.guild.premium_subscription_count}** impulso(s)!",
+            color = discord.Color.from_rgb(244, 127, 255)
+        )
+        boosterEmbed.set_author(name = "Boosts:", icon_url = "https://emoji.discadia.com/emojis/b191da2e-4bd9-4bc1-aa96-93c9b3109039.gif")
+        boosterEmbed.set_thumbnail(url = message.author.display_avatar.url)
+        boosterEmbed.set_image(url = "https://cdn.discordapp.com/attachments/740760158098948097/1070909269727256576/191d73a89a48d9788a56a5b9ff2db336.png")
+        await message.channel.send(content = f"{message.author.mention}", embed = boosterEmbed)
+        return
     if message.author.bot:
         return
     if message.author == bot.user:

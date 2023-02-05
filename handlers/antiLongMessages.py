@@ -6,7 +6,6 @@ import json
 
 async def antiLongMessages(bot, message):
     try:
-        print(len(message.content))
         if len(message.content) >= 1000:
             c = open("../jsons/antiLongMessages.json", encoding = "utf8")
             antiLongMessagesJson = json.load(c)
@@ -21,15 +20,14 @@ async def antiLongMessages(bot, message):
                 print("AntiLongMessages desativado por canal")
                 return
             foundLongMessage = message.content[:1000]
-            #await message.delete()
-            await message.add_reaction("🧐")
+            await message.delete()
             antiInviteWarnMessage = await message.channel.send(f"『🟢』{message.author.mention}, não envie mensagens muito longas fora do <#931019005609779220>!")
             antiChannel = bot.get_channel(antiLongMessagesJson["antiChannel"])
             antiEmbed = discord.Embed(
                 color = discord.Color.from_rgb(20, 200, 20),
                 timestamp = datetime.datetime.utcnow()
             )
-            antiEmbed.set_author(name = "『💬』Mensagem muito longa:", icon_url= bot.user.display_avatar.url)
+            antiEmbed.set_author(name = "『💬』Mensagem longa:", icon_url= bot.user.display_avatar.url)
             antiEmbed.add_field(name = f"『💬』Enviado em {message.channel.name}:", value = f"{foundLongMessage}", inline = False)
             antiEmbed.add_field(name = "『📃』Detalhes:", value = f"`{len(message.content)} caracteres`", inline = False)
             antiEmbed.add_field(name = "『👤』Usuário:", value = f"{message.author.mention} `({message.author.id})`", inline = False)
