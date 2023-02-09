@@ -21,7 +21,7 @@ async def antiSpam(bot, message):
         ]
         for msgTime in expiredMessages:
             authorMsgTimes[message.author.id].remove(msgTime)
-        print(len(authorMsgTimes[message.author.id]), maxMessages)
+        #print(len(authorMsgTimes[message.author.id]), maxMessages)
         if len(authorMsgTimes[message.author.id]) > maxMessages:
             authorMsgTimes.clear()
             c = open("../jsons/antiSpam.json", encoding = "utf8")

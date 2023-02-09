@@ -203,13 +203,13 @@ async def getTicketPatrocinioRow(bot):
         )
         ticketMenuEmbed.add_field(name = "『<:JannyCoin:969659132913274910>』Requisitos Moedas do Janny:", inline = False, value =
 """
-➺ Reputação 4h - 5M
-➺ Reputação 6h - 10M
-➺ Reputação 8h - 15M
+➺ Reputação 4h - 3M
+➺ Reputação 6h - 4M
+➺ Reputação 8h - 5M
 
-➺ Entrar em Servidor 4h - 5M
-➺ Entrar em Servidor 6h - 10M
-➺ Entrar em Servidor 8h - 15M
+➺ Entrar em Servidor 4h - 3M
+➺ Entrar em Servidor 6h - 4M
+➺ Entrar em Servidor 8h - 5M
 """
         )
         ticketMenuEmbed.add_field(name = "『☁』Requisitos Sonhos:", inline = False, value =

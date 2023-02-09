@@ -22,6 +22,7 @@ from handlers.darkColors import *
 from handlers.grayColors import *
 from handlers.specialColors import *
 from handlers.register import *
+from handlers.starRules import *
 from handlers.ticketAtendimento import *
 from handlers.ticketDenuncia import *
 from handlers.ticketVip import *
@@ -71,12 +72,19 @@ async def on_ready():
     activity = discord.Game(name=f"{prefix}help", type=3)
     await bot.change_presence(status=discord.Status.online, activity=activity)
     welcomeChannel = bot.get_channel(982824719046832188)
+    #Star Rules
+    starRulesChannel = bot.get_channel(1071285010574868501)
+    await starRulesLoop(bot = bot, channel = starRulesChannel)
+    joinGuild = bot.get_guild(710506024489976028)
+    channelGet = bot.get_channel(983902645272059964)
     synced = await bot.tree.sync()
     print(f"{len(synced)} slash commands")
     await welcomeChannel.send(content = f"**『<a:z_GreenDiamond:938880803692240927>』Olá, eu estou online!**")
     print(f"Estou pronto! Eu sou o {bot.user}")
     bot.loop.create_task(reloadServerOptions())
     bot.loop.create_task(statuschange())
+    bot.loop.create_task(starRulesLoop(bot = bot, channel = starRulesChannel))
+    bot.loop.create_task(editVoiceChannel(channel = channelGet, count = joinGuild.member_count))
 
 async def reloadServerOptions():
     await getRuleRow(bot = bot)
@@ -93,11 +101,6 @@ async def reloadServerOptions():
     await getTicketPatrocinioRow(bot = bot)
     await getTicketParceriaRow(bot = bot)
     await getTicketModRow(bot = bot)
-    while True:
-        joinGuild = bot.get_guild(710506024489976028)
-        channelGet = bot.get_channel(983902645272059964)
-        await asyncio.sleep(60)
-        await editVoiceChannel(channelGet, joinGuild.member_count)
 
 async def statuschange():
     activity1 = discord.Game(name=f"Oi, eu sou o Any!", type=3)
@@ -219,7 +222,7 @@ async def on_reaction_add(reaction, user):
                 await reaction.message.clear_reactions()
                 userStars = updateStar(user.id, i)
                 starEmbed = discord.Embed(
-                    description = f"『{link['stars']['emjs'][f'{i}']}』Parabéns {user.mention}, você conseguiu uma estrela e agora tem **{userStars['total'] + 1}** estrelas!",
+                    description = f"『{link['stars']['emjs'][f'{i}']}』Parabéns {user.mention}, você pegou uma estrela e agora tem **{userStars['total'] + 1}** estrelas!",
                     color = discord.Color.from_rgb(link["stars"]["colors"][f"{i}"][0], link["stars"]["colors"][f"{i}"][1], link["stars"]["colors"][f"{i}"][2])
                 )
                 starEmbed.set_author(name = f"『⭐』Caça as estrelas:", icon_url = user.display_avatar.url)
