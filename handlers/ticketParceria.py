@@ -186,14 +186,14 @@ class parceriaForm3Row(discord.ui.View):
     @discord.ui.button(label = f"Sim", style = discord.ButtonStyle.green, emoji = "✅")
     async def parceriaForm3Yes(self, interaction: discord.Interaction, button: discord.ui.Button):
         self.embed.set_field_at(index = 2, name = "『☑』Seu servidor possui um cargo exclusivo para parceiros?", value = "`Sim`", inline = False)
-        self.embed.add_field(name = "**『✍』Seu servidor possui um canal para divulgações?**", value = "`Não informado`", inline = False)
+        self.embed.add_field(name = "**『✍』Seu servidor possui um canal para divulgar os servidores parceiros?**", value = "`Não informado`", inline = False)
         await interaction.response.defer()
         await interaction.message.edit(embed = self.embed, view = parceriaForm4Row(self.bot, self.embed, self.json, self.user))
 
     @discord.ui.button(label = f"Não", style = discord.ButtonStyle.red, emoji = "❌")
     async def parceriaForm3No(self, interaction: discord.Interaction, button: discord.ui.Button):
         self.embed.set_field_at(index = 2, name = "『☑』Seu servidor possui um cargo exclusivo para parceiros?", value = "`Não`", inline = False)
-        self.embed.add_field(name = "**『✍』Seu servidor possui um canal para divulgações?**", value = "`Não informado`", inline = False)
+        self.embed.add_field(name = "**『✍』Seu servidor possui um canal para divulgar os servidores parceiros?**", value = "`Não informado`", inline = False)
         await interaction.response.defer()
         await interaction.message.edit(embed = self.embed, view = parceriaForm4Row(self.bot, self.embed, self.json, self.user))
 
@@ -214,14 +214,14 @@ class parceriaForm4Row(discord.ui.View):
     
     @discord.ui.button(label = f"Sim", style = discord.ButtonStyle.green, emoji = "✅")
     async def parceriaForm4Yes(self, interaction: discord.Interaction, button: discord.ui.Button):
-        self.embed.set_field_at(index = 3, name = "『☑』Seu servidor possui um canal para divulgações?", value = "`Sim`", inline = False)
+        self.embed.set_field_at(index = 3, name = "『☑』Seu servidor possui um canal para divulgar os servidores parceiros?", value = "`Sim`", inline = False)
         self.embed.add_field(name = "**『✍』Seu servidor tem um cargo para avisar os membros sobre as parceiras?**", value = "`Não informado`", inline = False)
         await interaction.response.defer()
         await interaction.message.edit(embed = self.embed, view = parceriaForm5Row(self.bot, self.embed, self.json, self.user))
 
     @discord.ui.button(label = f"Não", style = discord.ButtonStyle.red, emoji = "❌")
     async def parceriaForm4No(self, interaction: discord.Interaction, button: discord.ui.Button):
-        self.embed.set_field_at(index = 3, name = "『☑』Seu servidor possui um canal para divulgações?", value = "`Não`", inline = False)
+        self.embed.set_field_at(index = 3, name = "『☑』Seu servidor possui um canal para divulgar os servidores parceiros?", value = "`Não`", inline = False)
         self.embed.add_field(name = "**『✍』Seu servidor tem um cargo para avisar os membros sobre as parceiras?**", value = "`Não informado`", inline = False)
         await interaction.response.defer()
         await interaction.message.edit(embed = self.embed, view = parceriaForm5Row(self.bot, self.embed, self.json, self.user))
@@ -258,7 +258,7 @@ class parceriaForm5Row(discord.ui.View):
     @discord.ui.button(label = f"Voltar", style = discord.ButtonStyle.blurple, emoji = "◀")
     async def parceriaForm5Return(self, interaction: discord.Interaction, button: discord.ui.Button):
         self.embed.remove_field(index = 4)
-        self.embed.set_field_at(index = 3, name = "**『✍』Seu servidor possui um canal para divulgações?**", value = "`Não informado`", inline = False)
+        self.embed.set_field_at(index = 3, name = "**『✍』Seu servidor possui um canal para divulgar os servidores parceiros?**", value = "`Não informado`", inline = False)
         await interaction.response.defer()
         await interaction.message.edit(embed = self.embed, view = parceriaForm4Row(self.bot, self.embed, self.json, self.user))
 

@@ -98,6 +98,8 @@ f"""
 {a_R} <@&803678859647123466>️ ➺ Nível necessário: 80
 {a_R} <@&803679348363231233> ➺ Nível necessário: 100
 {a_R} ??? ➺ Nível necessário: 200
+
+*OBS: Os cargos acima são obtidos no ranking da Loritta!*
 """
                 )
                 roles3Embed.set_image(url = "https://i.imgur.com/L0O9XHk.png")
