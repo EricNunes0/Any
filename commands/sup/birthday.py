@@ -7,7 +7,6 @@ import json
 import aiohttp
 import requests
 from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageFilter, ImageChops
-import textwrap
 from io import BytesIO
 
 c = open("../config.json")
