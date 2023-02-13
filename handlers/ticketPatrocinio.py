@@ -60,7 +60,7 @@ class ticketCreateConfirm(discord.ui.View):
             )
             ticketEmbed.set_footer(text = f"Ticket de {interaction.user.name}", icon_url = interaction.user.display_avatar.url)
             ticketUser = interaction.user
-            await ticketChannel.send(content = f"『<a:ab_GreenDiamond:938880803692240927>』Bem-vindo(a), {interaction.user.mention}!\n||<@&739210760567390250>||", embed = ticketEmbed, view = ticketCloseClass(self.bot, self.json, ticketUser))
+            await ticketChannel.send(content = f"『<a:ab_GreenDiamond:938880803692240927>』Bem-vindo(a), {interaction.user.mention}!\n||<@&1057303786311405598>||", embed = ticketEmbed, view = ticketCloseClass(self.bot, self.json, ticketUser))
         except Exception as e:
             print(e)
 
@@ -193,6 +193,8 @@ async def getTicketPatrocinioRow(bot):
         ticketJson = json.load(c)
         channel = bot.get_channel(ticketJson["patrocinioChannel"])
         ticketMsg = await channel.fetch_message(ticketJson["patrocinioTicket"])
+        jc = "<:JannyCoin:969659132913274910>"
+        sonhos = "☁"
         ticketMenuEmbed = discord.Embed(
             title = f"꧁<a:ab_RightArrow:939177432127246427> Seja Patrocinador <a:ab_LeftArrow:939177402381246514>꧂",
             description =
@@ -201,26 +203,29 @@ async def getTicketPatrocinioRow(bot):
 """,
             color = discord.Color.from_rgb(20, 175, 20)
         )
-        ticketMenuEmbed.add_field(name = "『<:JannyCoin:969659132913274910>』Requisitos Moedas do Janny:", inline = False, value =
-"""
-➺ Reputação 4h - 3M
-➺ Reputação 6h - 4M
-➺ Reputação 8h - 5M
-
-➺ Entrar em Servidor 4h - 3M
-➺ Entrar em Servidor 6h - 4M
-➺ Entrar em Servidor 8h - 5M
+        ticketMenuEmbed.add_field(name = "『🏙』Requisitos para sorteio:", inline = False, value =
+f"""
+O valor mínimo para o sorteio de servidor é de **1 milhão de moedas {jc}** ou **100.000 sonhos {sonhos}**. Valores acima destes estão abertos à negociações!
 """
         )
-        ticketMenuEmbed.add_field(name = "『☁』Requisitos Sonhos:", inline = False, value =
-"""
-➺ Reputação 4h - 100k
-➺ Reputação 6h - 150k
-➺ Reputação 8h - 200k
+        ticketMenuEmbed.add_field(name = "『<:JannyCoin:969659132913274910>』Duração:", inline = False, value =
+f"""
+Por padrão, os sorteios do servidor duram, em média, 8 horas, iniciando das 12:00 até às 20:00 (veja <#1070834630124634174>). Caso queira aumentar o tempo da duração, você precisará pagar uma taxa.
+➺ Padrão (8 horas): sem taxa;
+➺ 1 dia: **500.000 moedas {jc}** ou **50.000 sonhos {sonhos}**;
+➺ 2 dias: **1.000.000 moedas {jc}** ou **100.000 sonhos {sonhos}**;
 
-➺ Entrar em Servidor 4h - 150k
-➺ Entrar em Servidor 6h - 200k
-➺ Entrar em Servidor 8h - 250k
+*Obs: Podemos negociar os horários e preço caso seja diferente das durações listadas acima!*
+"""
+        )
+        ticketMenuEmbed.add_field(name = "『🔔』Pings:", inline = False, value =
+f"""
+Em todos os sorteios, vamos marcar o cargo de sorteios! Para adicionar cargos, você deverá pagar as seguintes taxas:
+➺ <@&1047164668088688700>: **grátis**;
+➺ @here: **1.000.000 moedas {jc}** ou **50.000 sonhos {sonhos}**;
+➺ <@&723119617488322671>: **1.500.000 moedas {jc}** ou **100.000 sonhos {sonhos}**;
+
+*Obs: os preços podem ser alterados a qualquer momento!*
 """
         )
         ticketMenuEmbed.add_field(name = "『<a:ab_LevelUp:1051238478089822241>』Vantagens:", inline = False, value =
@@ -231,9 +236,9 @@ async def getTicketPatrocinioRow(bot):
 """
         )
         ticketMenuEmbed.add_field(name = "『⚠』Atenção:", inline = False, value =
-"""
-➺ Não marcamos @everyone, apenas <@&1047164668088688700>
-➺ Podemos analisar pedidos para outros requisitos ou pagamentos com moeda de outros bots
+f"""
+➺ Podemos analisar pedidos para outros requisitos ou pagamentos com moeda de outros bots;
+➺ Sorteios com prêmios menores que **1 milhão de sonhos {jc}** ou **100.000 sonhos** não são aceitos {sonhos};
 """
         )
         ticketMenuEmbed.set_image(url = "https://i.imgur.com/tbd7xhv.png")

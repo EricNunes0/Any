@@ -28,6 +28,7 @@ from handlers.ticketDenuncia import *
 from handlers.ticketVip import *
 from handlers.ticketBooster import *
 from handlers.ticketParceria import *
+from handlers.ticketParceriaNew import *
 from handlers.ticketPatrocinio import *
 from handlers.ticketMod import *
 from events.on_member_join import *
@@ -100,6 +101,7 @@ async def reloadServerOptions():
     await getTicketBoosterRow(bot = bot)
     await getTicketPatrocinioRow(bot = bot)
     await getTicketParceriaRow(bot = bot)
+    await getTicketParceriaNewRow(bot = bot)
     await getTicketModRow(bot = bot)
 
 async def statuschange():

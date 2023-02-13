@@ -10,7 +10,7 @@ class parceriaRequestEntryRow(discord.ui.View):
         self.bot = bot
         self.json = json
     
-    @discord.ui.button(label = f"Pedir parceria", style = discord.ButtonStyle.blurple, emoji = "🤝")
+    @discord.ui.button(label = f"Fechado!", style = discord.ButtonStyle.blurple, emoji = "⏰", disabled = True)
     async def parceriaRequestEntryInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
         
         parceriaRequestEmbed = discord.Embed(
@@ -71,7 +71,7 @@ class parceriaEntryConfirmRow(discord.ui.View):
             parceriaFormEmbed.add_field(name = f"**『✍』Qual o ID do seu servidor?**", value = "`Não informado`", inline = False)
             parceriaFormEmbed.set_footer(text = f"Formulário de {interaction.user.name}", icon_url = interaction.user.display_avatar.url)
             ticketUser = interaction.user
-            await parceriaFormChannel.send(content = f"『<a:ab_YellowDiamond:938857668888645673>』Bem-vindo(a), {interaction.user.mention}!", embed = parceriaFormEmbed, view = parceriaForm1Row(self.bot, parceriaFormEmbed, self.json, ticketUser))
+            await parceriaFormChannel.send(content = f"『<a:ab_YellowDiamond:938857668888645673>』Bem-vindo(a), {interaction.user.mention}!\n<@&1071499645311782912>", embed = parceriaFormEmbed, view = parceriaForm1Row(self.bot, parceriaFormEmbed, self.json, ticketUser))
         except Exception as e:
             print(e)
 
