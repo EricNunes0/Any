@@ -238,7 +238,6 @@ Em todos os sorteios, vamos marcar o cargo de sorteios! Para adicionar cargos, v
         ticketMenuEmbed.add_field(name = "『⚠』Atenção:", inline = False, value =
 f"""
 ➺ Podemos analisar pedidos para outros requisitos ou pagamentos com moeda de outros bots;
-➺ Sorteios com prêmios menores que **1 milhão de sonhos {jc}** ou **100.000 sonhos** não são aceitos {sonhos};
 """
         )
         ticketMenuEmbed.set_image(url = "https://i.imgur.com/tbd7xhv.png")
