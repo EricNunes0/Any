@@ -211,6 +211,7 @@ Primeiramente você precisa ter o **Nitro Gaming** (um plano do próprio Discord
 ➺ Sem tempo de claim nos sorteios 
 ➺ Imune a requisito dos sorteios
 ➺ 50% de desconto para compra de VIP
+➺ Apostas ilimitadas na <#1053878659829735424>
 
 <a:ab_RightArrow:939177432127246427> **2 IMPULSOS** <a:ab_LeftArrow:939177402381246514>
 ➺ Cargo destacado na lateral do servidor <@&1047535078806405231>
@@ -221,6 +222,7 @@ Primeiramente você precisa ter o **Nitro Gaming** (um plano do próprio Discord
 ➺ Imune a requisito dos sorteios
 ➺ XP Loritta: 2x
 ➺ 50% de desconto para compra de VIP
+➺ Apostas ilimitadas na <#1053878659829735424>
 
 <a:ab_carregando:911073196038582272> Os benefícios permanecerão durante o seu tempo de impulso, se remover o boost, automaticamente perderá o cargo e os privilégios. <a:ab_carregando:911073196038582272>
 """,
