@@ -451,7 +451,7 @@ async def getTicketParceriaRow(bot):
             title = f"꧁<a:ab_RightArrow:939177432127246427> SEJA UM PARCEIRO <a:ab_LeftArrow:939177402381246514>꧂",
             description =
 """
-*Gostaria de fazer uma parceria com o nosso servidor. Então esta é a hora! Basta clicar no botão \"🤝 Pedir parceria\", responder ao nosso formulário e aguardar uma resposta, dizendo se o seu servidor foi aprovado para parceria, ou não e os motivos.*
+*Gostaria de fazer uma parceria com o nosso servidor? Então esta é a hora! Basta clicar no botão \"🤝 Pedir parceria\", responder ao nosso formulário e aguardar uma resposta, dizendo se o seu servidor foi aprovado para parceria, ou não e os motivos.*
 """,
             color = discord.Color.from_rgb(230, 170, 10)
         )
@@ -459,8 +459,6 @@ async def getTicketParceriaRow(bot):
 """
 ➺ O responsável pela parceria precisa obrigatoriamente permanecer neste servidor;
 ➺ Ter no mínimo 100 membros (sem contar os bots). (Não fazemos parcerias com servidores recém-criados e com mais bots do que pessoas!)
-➺ Ter o bot <@911002921594925056> adicionado em seu servidor.
-Obs: Caso tenha problemas em adicioná-lo, entre em contato com <@656295512219058196>.
 ➺ Ter um cargo e um canal para anunciar as parcerias.
 Exemplo:
 ⇀ <#750017382734495775> (Canal para avisos de parcerias)
