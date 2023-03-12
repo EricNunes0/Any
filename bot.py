@@ -12,7 +12,6 @@ import json
 from mongoconnection.connect import getDatabase
 from mongoconnection.afk import searchForAfk, reactionSearchForAfk
 from mongoconnection.star import *
-from handlers.rules import *
 from handlers.antiInvite import *
 from handlers.antiLongMessages import *
 from handlers.antiSpam import *
@@ -88,7 +87,6 @@ async def on_ready():
     bot.loop.create_task(editVoiceChannel(channel = channelGet, count = joinGuild.member_count))
 
 async def reloadServerOptions():
-    await getRuleRow(bot = bot)
     await getBasicColorsRow(bot = bot)
     await getBrightColorsRow(bot = bot)
     await getDarkColorsRow(bot = bot)
