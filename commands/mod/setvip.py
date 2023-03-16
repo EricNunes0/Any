@@ -654,8 +654,8 @@ class setVipModal5(discord.ui.Modal, title = "Canal próprio:"):
                 )
                 serverOverwrites = interaction.channel.overwrites_for(interaction.guild.default_role)
                 userOverwrites = interaction.channel.overwrites_for(interaction.guild.default_role)
-                serverOverwrites.speak, serverOverwrites.connect = False, False
-                userOverwrites.speak, userOverwrites.connect = True, True
+                serverOverwrites.view_channel, serverOverwrites.send_messages, serverOverwrites.speak, serverOverwrites.connect = True, False, False, False
+                userOverwrites.view_channel, userOverwrites.send_messages, userOverwrites.speak, userOverwrites.connect = True, True, True, True
                 await vipChannel.set_permissions(interaction.guild.default_role, overwrite = serverOverwrites)
                 await vipChannel.set_permissions(user, overwrite = userOverwrites)
                 self.config["channel"] = f"{vipChannel.id}"
@@ -666,8 +666,8 @@ class setVipModal5(discord.ui.Modal, title = "Canal próprio:"):
                 await vipChannel.edit(name = channelName, category = vipCategorie)
                 serverOverwrites = interaction.channel.overwrites_for(interaction.guild.default_role)
                 userOverwrites = interaction.channel.overwrites_for(interaction.guild.default_role)
-                serverOverwrites.speak, serverOverwrites.connect = False, False
-                userOverwrites.speak, userOverwrites.connect = True, True
+                serverOverwrites.view_channel, serverOverwrites.send_messages, serverOverwrites.speak, serverOverwrites.connect = True, False, False, False
+                userOverwrites.view_channel, userOverwrites.send_messages, userOverwrites.speak, userOverwrites.connect = True, True, True, True
                 await vipChannel.set_permissions(interaction.guild.default_role, overwrite = serverOverwrites)
                 await vipChannel.set_permissions(user, overwrite = userOverwrites)
                 self.config["channel"] = f"{vipChannel.id}"
@@ -696,23 +696,26 @@ class setVipModal6(discord.ui.Modal, title = "Adicionar amigo:"):
     async def on_submit(self, interaction: discord.Interaction):
         try:
             friendId = self.children[0].value
-            user = await self.bot.fetch_user(friendId)
+            user = discord.utils.get(self.bot.get_guild(interaction.guild.id).members, id = int(friendId))
+            print(user)
+            if self.config["role"] != "`Não informado`":
+                vipExclusiveRole = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(self.config["role"]))
+                await user.add_roles(vipExclusiveRole)
             if self.config["channel"] != "`Não informado`":
-                vipGuild = self.bot.get_guild(interaction.guild.id)
-                vipChannel = discord.utils.get(vipGuild.channels, id = int(self.config["channel"]))
+                vipChannel = discord.utils.get(self.bot.get_guild(interaction.guild.id).channels, id = int(self.config["channel"]))
                 serverOverwrites = interaction.channel.overwrites_for(interaction.guild.default_role)
                 userOverwrites = interaction.channel.overwrites_for(interaction.guild.default_role)
-                serverOverwrites.speak, serverOverwrites.connect = False, False
-                userOverwrites.speak, userOverwrites.connect = True, True
+                serverOverwrites.view_channel, serverOverwrites.send_messages, serverOverwrites.speak, serverOverwrites.connect = True, False, False, False
+                userOverwrites.view_channel, userOverwrites.send_messages, userOverwrites.speak, userOverwrites.connect = True, True, True, True
                 await vipChannel.set_permissions(interaction.guild.default_role, overwrite = serverOverwrites)
                 await vipChannel.set_permissions(user, overwrite = userOverwrites)
-                f = []
-                self.config["friends"].append(f"{user.id}")
-                for friend in self.config["friends"]:
-                    user = await self.bot.fetch_user(int(friend))
-                    f.append(f"{user.mention} `({user.id})`")
-                await interaction.response.send_message(content = f"『👤』Novo amigo: {user.mention}\n『👥』Total de amigos: " + '\n'.join(f), ephemeral = True)
-                self.embed.set_field_at(index = 5, name = "『👥』Amigos:", value = '\n'.join(f), inline = False)
+            f = []
+            self.config["friends"].append(f"{user.id}")
+            for friend in self.config["friends"]:
+                user = await self.bot.fetch_user(int(friend))
+                f.append(f"{user.mention} `({user.id})`")
+            await interaction.response.send_message(content = f"『👤』Novo amigo: {user.mention}\n『👥』Total de amigos: " + '\n'.join(f), ephemeral = True)
+            self.embed.set_field_at(index = 5, name = "『👥』Amigos:", value = '\n'.join(f), inline = False)
             print(self.config)
             await interaction.message.edit(embeds = [self.embed], view = setVipForm6(self.bot, self.embed, self.config, self.user))
         except Exception as e:

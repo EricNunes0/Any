@@ -26,23 +26,66 @@ vipNames = ["Ametista", "Jade", "Safira"]
 vipRoles = [1051948366461939744, 1047268770504253561, 1047268807812595802]
 vipEmojis = ["<a:ab_PurpleDiamond:938883672717787196>", "<a:ab_GreenDiamond:938880803692240927>", "<a:ab_BlueDiamond:938850305083314207>"]
 
-bot.ses = aiohttp.ClientSession()
-class cog_vip(commands.Cog):
-    def __init__(self, bot):
+def invalidUserInteraction(collectedUser, allowedUser):
+    noPerm = discord.Embed(
+        title = f"Sem VIP!",
+        description = f"『❌』Apenas {allowedUser.mention} pode configurar este VIP!",
+        color = 0xFF0000
+    )
+    noPerm.set_thumbnail(url = link["error"])
+    noPerm.set_footer(text = f"Pedido por {collectedUser.name}", icon_url = collectedUser.display_avatar.url)
+    return noPerm
+
+class deleteVipForm1(discord.ui.View):
+    def __init__(self, bot, embed, config, user):
+        super().__init__(timeout = None)
         self.bot = bot
+        self.embed = embed
+        self.config = config
+        self.user = user
     
-    @commands.command(name = "vip", aliases = ["vippe"], pass_context = True)
-    @cooldown(1, 3, type = commands.BucketType.user)
-    async def vip(self, ctx):
+    @discord.ui.button(label = f"Excluir", style = discord.ButtonStyle.blurple, emoji = "🗑")
+    async def setvipAnswer1(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id != self.user.id:
+            invalidUserEmbed = invalidUserInteraction(interaction.user, self.user)
+            await interaction.response.send_message(embed = invalidUserEmbed, ephemeral = True)
+            return
         try:
             dbname = getDatabase()
             collectionName = dbname["vip"]
-            vip = collectionName.find_one({"User": ctx.author.id})
+            vip = collectionName.find_one_and_delete({"User": self.config["User"]})
+            print(vip)
+            vipRoleFound = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = vipRoles[vip["Vip"]])
+            user = discord.utils.get(self.bot.get_guild(interaction.guild.id).members, id = vip["User"])
+            await user.remove_roles(vipRoleFound)
+            if self.config["Role"] != None:
+                vipExclusiveRoleFound = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(vip["Role"]))
+                await vipExclusiveRoleFound.delete()
+            if self.config["Channel"] != None:
+                vipExclusiveChannelFound = discord.utils.get(self.bot.get_guild(interaction.guild.id).voice_channels, id = int(vip["Channel"]))
+                await vipExclusiveChannelFound.delete()
+            await interaction.message.edit(view = None)
+            await interaction.message.add_reaction("✅")
+        except Exception as e:
+            print(e)
+
+bot.ses = aiohttp.ClientSession()
+class cog_deleteVip(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    
+    @commands.command(name = "deletevip", aliases = ["vipdelete"], pass_context = True)
+    @cooldown(1, 3, type = commands.BucketType.user)
+    async def deletevip(self, ctx, id: int = None):
+        try:
+            dbname = getDatabase()
+            collectionName = dbname["vip"]
+            vip = collectionName.find_one({"User": id})
             print(vip)
             if vip == None:
                 noVip = discord.Embed(
                     title = f"Sem VIP!",
-                    description = f"『❌』Você não possui um plano VIP ativo no momento. Confira todos os benefícios de se tornar um VIP em <#1047316824976523354>",
+                    description = f"『❌』Não encontrei um usuário com VIP com este ID.",
                     color = 0xFF0000
                 )
                 noVip.set_thumbnail(url = link["error"])
@@ -71,7 +114,7 @@ class cog_vip(commands.Cog):
                     user = await self.bot.fetch_user(int(friend))
                     f.append(f"{user.mention}")
                 userFriends = "\n".join(f)
-            vipEmbed.set_author(name = f"『💎』VIP:", icon_url = self.bot.user.display_avatar.url)
+            vipEmbed.set_author(name = f"『💎』Excluir VIP:", icon_url = self.bot.user.display_avatar.url)
             vipEmbed.add_field(name = f"『💎』VIP atual:", value = f"{vipRole.mention}", inline = False)
             vipEmbed.add_field(name = f"『⏰』Termina em:", value = f"<t:{vip['EndsAt']}>", inline = False)
             vipEmbed.add_field(name = f"『💼』Seu cargo:", value = userRole, inline = False)
@@ -79,11 +122,11 @@ class cog_vip(commands.Cog):
             vipEmbed.add_field(name = f"『👥』Amigos:", value = userFriends, inline = False)
             vipEmbed.set_thumbnail(url = ctx.author.display_avatar.url)
             vipEmbed.set_footer(text = f"Pedido por {ctx.author.name}", icon_url = ctx.author.display_avatar.url)
-            await ctx.reply(embed = vipEmbed)
+            await ctx.reply(embed = vipEmbed, view = deleteVipForm1(self.bot, vipEmbed, vip, ctx.author))
             return
         except Exception as e:
             print(e)
     
 async def setup(bot):
-    print(f"{prefix}vip")
-    await bot.add_cog(cog_vip(bot))
+    print(f"{prefix}deletevip")
+    await bot.add_cog(cog_deleteVip(bot))

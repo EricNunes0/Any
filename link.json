@@ -14,11 +14,11 @@
     "grayDiamond": "<a:ab_GrayDiamond:938884683771543572>",
     "stars": {
         "emjs": {
-            "0": "<:ab_RedStar:1061774588796751962>",
-            "1": "<:ab_OrangeStar:1061774638536982558>",
-            "2": "<:ab_YellowStar:1061774704668577872>",
-            "3": "<:ab_GreenStar:1061774738411753572>",
-            "4": "<:ab_BlueStar:1061774767268565042>"
+            "0": "<a:ab_RedStarShine:1082883036405833779>",
+            "1": "<a:ab_OrangeStarShine:1083608348592717834>",
+            "2": "<a:ab_YellowStarShine:1085428288241008680>",
+            "3": "<a:ab_GreenStarShine:1085428321438933053>",
+            "4": "<a:ab_BlueStarShine:1085428423553458318>"
         },
         "colors": {
             "0": [255, 20, 20],

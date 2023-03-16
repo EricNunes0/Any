@@ -10,7 +10,7 @@ class ticketClass(discord.ui.View):
         self.bot = bot
         self.json = json
     
-    @discord.ui.button(label = f"Ametista", style = discord.ButtonStyle.blurple, emoji = "<a:ab_PurpleDiamond:938883672717787196>", disabled = True)
+    @discord.ui.button(label = f"Ametista", style = discord.ButtonStyle.blurple, emoji = "<a:ab_PurpleDiamond:938883672717787196>", disabled = False)
     async def ticketVipAmetistaInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
         alertChannel = self.bot.get_channel(self.json["ticketAlert"])
         await alertChannel.send(f"『💎』{interaction.user.name} `({interaction.user.id})` abriu um ticket para VIP!")
@@ -24,7 +24,7 @@ class ticketClass(discord.ui.View):
         vipRole = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(1051948366461939744))
         await interaction.response.send_message(embed = ticketEmbed, view = ticketCreateConfirm(self.bot, self.json, vipRole, 1), ephemeral = True)
 
-    @discord.ui.button(label = f"Jade", style = discord.ButtonStyle.blurple, emoji = "<a:ab_GreenDiamond:938880803692240927>", disabled = True)
+    @discord.ui.button(label = f"Jade", style = discord.ButtonStyle.blurple, emoji = "<a:ab_GreenDiamond:938880803692240927>", disabled = False)
     async def ticketVipJadeInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
         alertChannel = self.bot.get_channel(self.json["ticketAlert"])
         await alertChannel.send(f"『💎』{interaction.user.name} `({interaction.user.id})` abriu um ticket para VIP!")
@@ -38,7 +38,7 @@ class ticketClass(discord.ui.View):
         vipRole = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(1047268770504253561))
         await interaction.response.send_message(embed = ticketEmbed, view = ticketCreateConfirm(self.bot, self.json, vipRole, 2), ephemeral = True)
 
-    @discord.ui.button(label = f"Safira", style = discord.ButtonStyle.blurple, emoji = "<a:ab_BlueDiamond:938850305083314207>", disabled = True)
+    @discord.ui.button(label = f"Safira", style = discord.ButtonStyle.blurple, emoji = "<a:ab_BlueDiamond:938850305083314207>", disabled = False)
     async def ticketVipSaphireInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
         alertChannel = self.bot.get_channel(self.json["ticketAlert"])
         await alertChannel.send(f"『💎』{interaction.user.name} `({interaction.user.id})` abriu um ticket para VIP!")
