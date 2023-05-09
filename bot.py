@@ -15,13 +15,12 @@ from mongoconnection.star import *
 from handlers.antiInvite import *
 from handlers.antiLongMessages import *
 from handlers.antiSpam import *
-from handlers.basicColors import *
-from handlers.brightColors import *
-from handlers.darkColors import *
-from handlers.grayColors import *
-from handlers.specialColors import *
 from handlers.register import *
-from handlers.shopColor import *
+from handlers.shopColor import * #Loja de cores básicas
+from handlers.shopColorBright import * # Loja de cores claras
+from handlers.shopColorDark import * #Loja de cores escuras
+from handlers.shopColorGray import * #Loja de cores neutras
+from handlers.shopColorSpecial import * #Loja de cores especiais
 from handlers.starRules import *
 from handlers.ticketAtendimento import *
 from handlers.ticketDenuncia import *
@@ -88,13 +87,12 @@ async def on_ready():
     bot.loop.create_task(editVoiceChannel(channel = channelGet, count = joinGuild.member_count))
 
 async def reloadServerOptions():
-    await getBasicColorsRow(bot = bot)
-    await getBrightColorsRow(bot = bot)
-    await getDarkColorsRow(bot = bot)
-    await getGrayColorsRow(bot = bot)
-    await getSpecialColorsRow(bot = bot)
+    await getShopColor(bot = bot) # Loja de cores básicas
+    await getShopColorBright(bot = bot) # Loja de cores claras
+    await getShopColorDark(bot = bot) # Loja de cores escuras
+    await getShopColorGray(bot = bot) # Loja de cores neutras
+    await getShopColorSpecial(bot = bot) # Loja de cores especiais
     await getRegisterRow(bot = bot)
-    await getShopColor(bot = bot)
     await getTicketAtendimentoRow(bot = bot)
     await getTicketDenunciaRow(bot = bot)
     await getTicketVipRow(bot = bot)

@@ -39,6 +39,9 @@ async def starRulesLoop(bot, channel):
 *As estrelas da Janny City são itens colecionáveis do <@900346730237820939>. Seu objetivo é coletar o máximo de estrelas que puder para desbloquear benefícios e conseguir aumentar sua posição no ranking.*
 """
         )
+        starRolesEmbed.add_field(name = "『🎨』Cores:", inline = False, value =
+"""Use suas estrelas para comprar cores para o seu nome. Confira o canal de <#1064641839027724440> para ver todas as cores disponíveis, e seus preços!"""
+        )
         starRolesEmbed.add_field(name = "『🌟』Como conseguir?", inline = False, value =
 """De tempos em tempos, uma mensagem escolhida aleatoriamente no chat de conversas pelo Any, terá uma reação de estrela adicionada por ele. Para obter-la, basta clicar na reação rapidamente, e a mesma será adicionada em seu total de estrelas. Mas cuidado, assim que um membro reagir em uma estrela, a mesma irá desaparecer. Portanto, seja rápido para pega-lá antes que outro membro a pegue!"""
         )
