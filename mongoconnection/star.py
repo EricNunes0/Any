@@ -38,6 +38,16 @@ def updateStar(userId, star):
     updateStarTotal(userId)
     return updatedProfile
 
+def removeStars(userId, star, amount: int):
+    dbname = getDatabase()
+    collectionName = dbname["star"]
+    foundProfile = collectionName.find_one({"userId": userId})
+    if foundProfile == None:
+        createNewStar(userId)
+    updatedProfile = collectionName.find_one_and_update({"userId": userId}, {"$inc": {f"stars.{star}": -amount}}, return_document = pymongo.ReturnDocument.AFTER)
+    updateStarTotal(userId)
+    return updatedProfile
+
 def updateStarTotal(userId):
     dbname = getDatabase()
     collectionName = dbname["star"]

@@ -21,6 +21,7 @@ from handlers.darkColors import *
 from handlers.grayColors import *
 from handlers.specialColors import *
 from handlers.register import *
+from handlers.shopColor import *
 from handlers.starRules import *
 from handlers.ticketAtendimento import *
 from handlers.ticketDenuncia import *
@@ -93,6 +94,7 @@ async def reloadServerOptions():
     await getGrayColorsRow(bot = bot)
     await getSpecialColorsRow(bot = bot)
     await getRegisterRow(bot = bot)
+    await getShopColor(bot = bot)
     await getTicketAtendimentoRow(bot = bot)
     await getTicketDenunciaRow(bot = bot)
     await getTicketVipRow(bot = bot)
