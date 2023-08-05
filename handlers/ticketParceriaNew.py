@@ -10,7 +10,7 @@ class parceriaRequestEntryRow(discord.ui.View):
         self.bot = bot
         self.json = json
     
-    @discord.ui.button(label = f"Pedir parceria", style = discord.ButtonStyle.blurple, emoji = "🤝", disabled = False)
+    @discord.ui.button(label = f"Desativado temporariamente", style = discord.ButtonStyle.blurple, emoji = "🔒", disabled = True)
     async def parceriaRequestEntryInteraction(self, interaction: discord.Interaction, button: discord.ui.Button):
         
         parceriaRequestEmbed = discord.Embed(
