@@ -67,41 +67,6 @@ class cog_ps(commands.Cog):
         embed.set_thumbnail(url="https://i.imgur.com/A9X6IKH.gif")
         await ctx.reply(embed=embed)
 
-    @commands.command(name="stonks")
-    @cooldown(1,5, type = commands.BucketType.user)
-    async def stonks(self, ctx, *, mensagem=None):
-        userAvatar = ctx.author.avatar_url
-        url = requests.get(userAvatar)
-        if mensagem == None:
-            await ctx.send(f"❌| {ctx.author.mention}, insira um texto.")
-            return
-        await open_account(ctx.author)
-        users = await get_bank_data()
-        earnings = 8
-        users[str(ctx.author.id)]["wallet"] += earnings
-        with open("mainbank.json","w") as f:
-            json.dump(users,f)
-        avatar = Image.open(BytesIO(url.content))
-        avatar = avatar.resize((225,225))
-        bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
-        mascara = Image.new('L', bigavatar, 0)
-        recortar = ImageDraw.Draw(mascara)
-        recortar.ellipse((0, 0) + bigavatar, fill=255)
-        mascara = mascara.resize(avatar.size, Image.ANTIALIAS)
-        avatar.putalpha(mascara)
-
-        saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
-        saida.putalpha(mascara)
-        saida.save('img_avatar.png')
-
-        img = Image.open("img_stonks(1).png")
-        fonte = ImageFont.truetype("font_coolvetica_rg.ttf", 35)
-        escrever = ImageDraw.Draw(img)
-        escrever.text(xy=(10,10), text=f"{mensagem}", fill=(20, 20, 20), font=fonte)
-        img.paste(avatar, (7, 90), avatar)
-        img.save('img_stonks.png')
-        await ctx.send(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +{earnings}**",file=discord.File('img_stonks.png'))
-
     @commands.command(name="notstonks")
     @cooldown(1,5, type = commands.BucketType.user)
     async def notstonks(self, ctx, *, mensagem=None):

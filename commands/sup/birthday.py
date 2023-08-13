@@ -30,14 +30,14 @@ botPermAdmin = discord.Embed(title = f"Eu não tenho permissão", description = 
 botPermAdmin.set_thumbnail(url = link["error"])
 
 BIRTHDAY_IMAGES = [
-    "https://i.imgur.com/6AZV2bX.png",
-    "https://i.imgur.com/dSOCKVB.png",
-    "https://i.imgur.com/GkxMNbY.png",
-    "https://i.imgur.com/cyjxIMu.png",
-    "https://i.imgur.com/oijQ1Uh.png",
-    "https://i.imgur.com/0sTR7Th.png",
-    "https://i.imgur.com/j2Y5ga0.png",
-    "https://i.imgur.com/Rhqq0p7.png",
+    "https://i.postimg.cc/LsJ1vDcW/Birthday-1.png",
+    "https://i.postimg.cc/jjBJ1NKS/Birthday-2.png",
+    "https://i.postimg.cc/wvJsYvTc/Birthday-3.png",
+    "https://i.postimg.cc/zDCRdVQq/Birthday-4.png",
+    "https://i.postimg.cc/Prdv0dGY/Birthday-5.png",
+    "https://i.postimg.cc/NFk9LzXK/Birthday-6.png",
+    "https://i.postimg.cc/QC3K83FL/Birthday-7.png",
+    "https://i.postimg.cc/4xLczqSt/Birthday-8.png",
 ]
 
 bot.ses = aiohttp.ClientSession()
@@ -61,7 +61,8 @@ class cog_birthday(commands.Cog):
             user0Avatar = user.display_avatar.url
             url0 = requests.get(user0Avatar)
             avatar0 = Image.open(BytesIO(url0.content)).convert('RGB')
-            avatar0 = avatar0.resize((350, 350))
+            #avatar0 = avatar0.resize((350, 350)) Tamanho original da imagem
+            avatar0 = avatar0.resize((300, 300))
             bigavatar0 = (avatar0.size[0] * 3, avatar0.size[1] * 3)
             mascara0 = Image.new('L', bigavatar0, 0)
             recortar0 = ImageDraw.Draw(mascara0)
@@ -72,7 +73,8 @@ class cog_birthday(commands.Cog):
             saida0.putalpha(mascara0)
             response = requests.get(BIRTHDAY_IMAGES[index])
             img = Image.open(BytesIO(response.content)).convert('RGB')
-            img.paste(avatar0, (1065, 75), avatar0)
+            #img.paste(avatar0, (1065, 75), avatar0) Tamanho original da imagem
+            img.paste(avatar0, (910, 65), avatar0)
             img.save("img_happybirthday.png")
             await channel.send(content = user.mention, file = discord.File("img_happybirthday.png"))
             return

@@ -16,49 +16,49 @@ class shopColorRow(discord.ui.View):
     @discord.ui.select(custom_id = f"shop-color_{random.randint(0, 10000)}", placeholder = f"Escolha uma cor:", options = [
         discord.SelectOption(
             label = "Vermelho",
-            description = "10 estrelas vermelhas",
+            description = "0 estrelas vermelhas",
             emoji = "🔴",
             value = 800815629309181953
         ),
         discord.SelectOption(
             label = "Laranja",
-            description = "10 estrelas vermelhas",
+            description = "0 estrelas vermelhas",
             emoji = "🟠",
             value = 800815989750628412
         ),
         discord.SelectOption(
             label = "Amarelo",
-            description = "10 estrelas vermelhas",
+            description = "0 estrelas vermelhas",
             emoji = "🟡",
             value = 800816207422291988
         ),
         discord.SelectOption(
             label = "Verde",
-            description = "10 estrelas vermelhas",
+            description = "0 estrelas vermelhas",
             emoji = "🟢",
             value = 800816348333867008
         ),
         discord.SelectOption(
             label = "Azul",
-            description = "10 estrelas vermelhas",
+            description = "0 estrelas vermelhas",
             emoji = "🔵",
             value = 800822581648818177
         ),
         discord.SelectOption(
             label = "Roxo",
-            description = "10 estrelas vermelhas",
+            description = "0 estrelas vermelhas",
             emoji = "🟣",
             value = 800816957891805214
         ),
         discord.SelectOption(
             label = "Rosa",
-            description = "10 estrelas vermelhas",
+            description = "0 estrelas vermelhas",
             emoji = "💟",
             value = 800817073299259463
         ),
         discord.SelectOption(
             label = "Marrom",
-            description = "10 estrelas vermelhas",
+            description = "0 estrelas vermelhas",
             emoji = "🟤",
             value = 800824526384398356
         ),
@@ -95,7 +95,7 @@ class shopColorRow(discord.ui.View):
                 if 1051948366461939744 in rolesIds or 1047268770504253561 in rolesIds or 1047268807812595802 in rolesIds or 739210760567390250 in rolesIds:
                     price = 0
                 else:
-                    price = 10
+                    price = 0
                 colorRole = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(value))
                 if userStars['stars']['0'] >= price:
                     colorsBuyEmbed = discord.Embed(title = f"꧁🎨 Cores Básicas 🎨꧂", description = f"Você tem certeza de que deseja comprar esta cor: {colorRole.mention}?", color = discord.Color.from_rgb(255, 20, 20))
@@ -105,7 +105,7 @@ class shopColorRow(discord.ui.View):
                     await interaction.response.send_message(embed = colorsBuyEmbed, ephemeral = True, view = shopColorConfirmRow(self.bot, self.json, colorRole, price))
                     await alertChannel.send(f"『{link['stars']['emjs']['0']}』{interaction.user.mention} `({interaction.user.id})` escolheu a cor {colorRole}!")
                 else:
-                    colorsEmbed = discord.Embed(title = f"꧁🎨 Cores Básicas 🎨꧂", description = f"Você precisa ter **10** estrelas vermelhas para comprar esta cor!", color = discord.Color.from_rgb(255, 20, 20))
+                    colorsEmbed = discord.Embed(title = f"꧁🎨 Cores Básicas 🎨꧂", description = f"Você precisa ter **0** estrelas vermelhas para comprar esta cor!", color = discord.Color.from_rgb(255, 20, 20))
                     colorsEmbed.add_field(name = f"Suas estrelas:", value = f"{userStars['stars']['0']} {link['stars']['emjs']['0']}", inline = True)
                     colorsEmbed.add_field(name = f"Dica:", value = f"Não sabe como ganhar estrelas? Confira o nosso canal de <#1071285010574868501> para saber como obtê-las ;)", inline = False)
                     await interaction.response.send_message(embed = colorsEmbed, ephemeral = True)

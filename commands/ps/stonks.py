@@ -25,44 +25,48 @@ now = datetime.datetime.now()
 now = now.strftime("%d/%m/%Y - %H:%M:%S")
 
 
-class cog_minecraft(commands.Cog):
+class cog_stonks(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name = "minecraft", aliases = ["mine"])
+    @commands.command(name = "stonks", aliases = ["stonksmeme"])
     @cooldown(1, 5, type = commands.BucketType.user)
-    async def mine(self, ctx, *, message = None):
+    async def stonks(self, ctx, *, mensagem=None):
         try:
-            if message == None:
-                await ctx.reply(f"『❌』{ctx.author.mention}, insira um texto!")
-                return
             userAvatar = ctx.author.display_avatar.url
             url = requests.get(userAvatar)
+            if mensagem == None:
+                await ctx.reply(f"『❌』{ctx.author.mention}, insira um texto!")
+                return
             avatar = Image.open(BytesIO(url.content))
-            avatar = avatar.resize((80,80))
+            avatar = avatar.resize((225,225))
             bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
             mascara = Image.new('L', bigavatar, 0)
             recortar = ImageDraw.Draw(mascara)
             recortar.ellipse((0, 0) + bigavatar, fill=255)
             mascara = mascara.resize(avatar.size, Image.ANTIALIAS)
             avatar.putalpha(mascara)
-            saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 0.5))
+
+            saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
             saida.putalpha(mascara)
             saida.save('img_avatar.png')
-            img = Image.open("img_conquista.png")
-            fonte = ImageFont.truetype("font_Minecraft.ttf", 35)
+
+            backgroundImage = requests.get("https://i.postimg.cc/cJnvw2SD/Stonks.png")
+            img = Image.open(BytesIO(backgroundImage.content))
+            fonte = ImageFont.truetype("font_coolvetica_rg.ttf", 35)
             escrever = ImageDraw.Draw(img)
-            escrever.text(xy = (118,75), text = f"{message}", fill = (230, 230, 230), font = fonte)
-            img.paste(avatar, (25, 25), avatar)
-            img.save("img_conquistamine.png")
-            mineEmbed = discord.Embed(color = discord.Color.from_rgb(255, 100, 20))
-            mineEmbed.set_image(url = "attachment://img_conquistamine.png")
-            mineEmbed.set_author(name = f"『🧊』Minecraft:", icon_url = self.bot.user.display_avatar.url)
-            mineEmbed.set_footer(text = f"Pedido por {ctx.author.name}", icon_url = ctx.author.display_avatar.url)
-            await ctx.send(embed = mineEmbed, file=discord.File('img_conquistamine.png'))
+            escrever.text(xy=(10,10), text=f"{mensagem}", fill=(20, 20, 20), font=fonte)
+            img.paste(avatar, (7, 90), avatar)
+            img.save('img_stonks.png')
+            psEmbed = discord.Embed(color = discord.Color.from_rgb(255, 100, 20))
+            psEmbed.set_image(url = "attachment://img_stonks.png")
+            psEmbed.set_author(name = f"『📈』Stonks:", icon_url = self.bot.user.display_avatar.url)
+            psEmbed.set_footer(text = f"Pedido por {ctx.author.name}", icon_url = ctx.author.display_avatar.url)
+            await ctx.send(embed = psEmbed, file=discord.File('img_stonks.png'))
         except Exception as e:
             print(e)
+
     
 async def setup(bot):
-    print("cog_minecraft.py loaded")
-    await bot.add_cog(cog_minecraft(bot))
+    print("cog_stonks.py loaded")
+    await bot.add_cog(cog_stonks(bot))
