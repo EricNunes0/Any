@@ -16,49 +16,49 @@ class shopColorDarkRow(discord.ui.View):
     @discord.ui.select(custom_id = f"shop-color_{random.randint(0, 10000)}", placeholder = f"Escolha uma cor:", options = [
         discord.SelectOption(
             label = "Vermelho Escuro",
-            description = "15 estrelas amarelas",
+            description = "5 estrelas amarelas",
             emoji = "🟥",
             value = 800819136493649920
         ),
         discord.SelectOption(
             label = "Laranja Escuro",
-            description = "15 estrelas amarelas",
+            description = "5 estrelas amarelas",
             emoji = "🟧",
             value = 800820080866361344
         ),
         discord.SelectOption(
             label = "Amarelo Escuro",
-            description = "15 estrelas amarelas",
+            description = "5 estrelas amarelas",
             emoji = "🟨",
             value = 800820635395162143
         ),
         discord.SelectOption(
             label = "Verde Escuro",
-            description = "15 estrelas amarelas",
+            description = "5 estrelas amarelas",
             emoji = "🟩",
             value = 800816522561585213
         ),
         discord.SelectOption(
             label = "Azul Escuro",
-            description = "15 estrelas amarelas",
+            description = "5 estrelas amarelas",
             emoji = "🟦",
             value = 800816798748246076
         ),
         discord.SelectOption(
             label = "Roxo Escuro",
-            description = "15 estrelas amarelas",
+            description = "5 estrelas amarelas",
             emoji = "🟪",
             value = 800823824106782735
         ),
         discord.SelectOption(
             label = "Rosa Escuro",
-            description = "15 estrelas amarelas",
+            description = "5 estrelas amarelas",
             emoji = "💝",
             value = 800823008876036126
         ),
         discord.SelectOption(
             label = "Marrom Escuro",
-            description = "15 estrelas amarelas",
+            description = "5 estrelas amarelas",
             emoji = "🟫",
             value = 800824641769832489
         ),
@@ -95,7 +95,7 @@ class shopColorDarkRow(discord.ui.View):
                 if 1047268770504253561 in rolesIds or 1047268807812595802 in rolesIds or 739210760567390250 in rolesIds:
                     price = 0
                 else:
-                    price = 15
+                    price = 5
                 colorRole = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(value))
                 if userStars['stars']['2'] >= price:
                     colorsBuyEmbed = discord.Embed(title = f"꧁🎨 Cores Escuras 🎨꧂", description = f"Você tem certeza de que deseja comprar esta cor: {colorRole.mention}?", color = discord.Color.from_rgb(255, 255, 20))

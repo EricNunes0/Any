@@ -16,49 +16,49 @@ class shopColorBrightRow(discord.ui.View):
     @discord.ui.select(custom_id = f"shop-color_{random.randint(0, 10000)}", placeholder = f"Escolha uma cor:", options = [
         discord.SelectOption(
             label = "Vermelho Claro",
-            description = "15 estrelas laranjas",
+            description = "5 estrelas laranjas",
             emoji = "❤",
             value = 800819064926765064
         ),
         discord.SelectOption(
             label = "Laranja Claro",
-            description = "15 estrelas laranjas",
+            description = "5 estrelas laranjas",
             emoji = "🧡",
             value = 800819875106652171
         ),
         discord.SelectOption(
             label = "Amarelo Claro",
-            description = "15 estrelas laranjas",
+            description = "5 estrelas laranjas",
             emoji = "💛",
             value = 800820389072601108
         ),
         discord.SelectOption(
             label = "Verde Claro",
-            description = "15 estrelas laranjas",
+            description = "5 estrelas laranjas",
             emoji = "💚",
             value = 800821907150077952
         ),
         discord.SelectOption(
             label = "Azul Claro",
-            description = "15 estrelas laranjas",
+            description = "5 estrelas laranjas",
             emoji = "💙",
             value = 800816685828931604
         ),
         discord.SelectOption(
             label = "Roxo Claro",
-            description = "15 estrelas laranjas",
+            description = "5 estrelas laranjas",
             emoji = "💜",
             value = 800823739054424086
         ),
         discord.SelectOption(
             label = "Rosa Claro",
-            description = "15 estrelas laranjas",
+            description = "5 estrelas laranjas",
             emoji = "💖",
             value = 800822869038071848
         ),
         discord.SelectOption(
             label = "Marrom Claro",
-            description = "15 estrelas laranjas",
+            description = "5 estrelas laranjas",
             emoji = "🤎",
             value = 800824444338700358
         ),
@@ -95,7 +95,7 @@ class shopColorBrightRow(discord.ui.View):
                 if 1047268770504253561 in rolesIds or 1047268807812595802 in rolesIds or 739210760567390250 in rolesIds:
                     price = 0
                 else:
-                    price = 15
+                    price = 5
                 colorRole = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(value))
                 if userStars['stars']['1'] >= price:
                     colorsBuyEmbed = discord.Embed(title = f"꧁🎨 Cores Claras 🎨꧂", description = f"Você tem certeza de que deseja comprar esta cor: {colorRole.mention}?", color = discord.Color.from_rgb(255, 120, 20))

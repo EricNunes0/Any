@@ -16,37 +16,37 @@ class shopColorGrayRow(discord.ui.View):
     @discord.ui.select(custom_id = f"shop-color_{random.randint(0, 10000)}", placeholder = f"Escolha uma cor:", options = [
         discord.SelectOption(
             label = "Branco",
-            description = "20 estrelas verdes",
+            description = "10 estrelas verdes",
             emoji = "🤍",
             value = 800824734526079026
         ),
         discord.SelectOption(
             label = "Cinza Claro",
-            description = "20 estrelas verdes",
+            description = "10 estrelas verdes",
             emoji = "⚪",
             value = 800825064697626624
         ),
         discord.SelectOption(
             label = "Cinza Prata",
-            description = "20 estrelas verdes",
+            description = "10 estrelas verdes",
             emoji = "⬜",
             value = 1065310669592866836
         ),
         discord.SelectOption(
             label = "Cinza Escuro",
-            description = "20 estrelas verdes",
+            description = "10 estrelas verdes",
             emoji = "🖤",
             value = 800825175938433036
         ),
         discord.SelectOption(
             label = "Cinza Chumbo",
-            description = "20 estrelas verdes",
+            description = "10 estrelas verdes",
             emoji = "⚫",
             value = 1065310983079350332
         ),
         discord.SelectOption(
             label = "Preto",
-            description = "20 estrelas verdes",
+            description = "10 estrelas verdes",
             emoji = "⬛",
             value = 800825219651862548
         ),
@@ -83,7 +83,7 @@ class shopColorGrayRow(discord.ui.View):
                 if 1047268807812595802 in rolesIds or 739210760567390250 in rolesIds:
                     price = 0
                 else:
-                    price = 20
+                    price = 10
                 colorRole = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(value))
                 if userStars['stars']['3'] >= price:
                     colorsBuyEmbed = discord.Embed(title = f"꧁🎨 Cores Neutras 🎨꧂", description = f"Você tem certeza de que deseja comprar esta cor: {colorRole.mention}?", color = discord.Color.from_rgb(20, 255, 20))

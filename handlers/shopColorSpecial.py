@@ -16,55 +16,55 @@ class shopColorSpecialRow(discord.ui.View):
     @discord.ui.select(custom_id = f"shop-color_{random.randint(0, 10000)}", placeholder = f"Escolha uma cor:", options = [
         discord.SelectOption(
             label = "Escarlate",
-            description = "20 estrelas azuis",
+            description = "10 estrelas azuis",
             emoji = "🔺",
             value = 1065397010624155738
         ),
         discord.SelectOption(
             label = "Solar",
-            description = "20 estrelas azuis",
+            description = "10 estrelas azuis",
             emoji = "☀",
             value = 1065397238911741972
         ),
         discord.SelectOption(
             label = "Limão",
-            description = "20 estrelas azuis",
+            description = "10 estrelas azuis",
             emoji = "🍋",
             value = 1065397426552307812
         ),
         discord.SelectOption(
             label = "Aquamarine",
-            description = "20 estrelas azuis",
+            description = "10 estrelas azuis",
             emoji = "🌊",
             value = 1065397559264288819
         ),
         discord.SelectOption(
             label = "Ciano",
-            description = "20 estrelas azuis",
+            description = "10 estrelas azuis",
             emoji = "🔹",
             value = 1065397795500081264
         ),
         discord.SelectOption(
             label = "Azul Marinho",
-            description = "20 estrelas azuis",
+            description = "10 estrelas azuis",
             emoji = "🔷",
             value = 1065629506188083200
         ),
         discord.SelectOption(
             label = "Carmesim",
-            description = "20 estrelas azuis",
+            description = "10 estrelas azuis",
             emoji = "🌺",
             value = 1065397983849496716
         ),
         discord.SelectOption(
             label = "Vinho",
-            description = "20 estrelas azuis",
+            description = "10 estrelas azuis",
             emoji = "🍷",
             value = 1065398133632274563
         ),
         discord.SelectOption(
             label = "Castanho",
-            description = "20 estrelas azuis",
+            description = "10 estrelas azuis",
             emoji = "🤎",
             value = 1065398310963261500
         ),
@@ -101,9 +101,9 @@ class shopColorSpecialRow(discord.ui.View):
                 if 1047268807812595802 in rolesIds or 739210760567390250 in rolesIds:
                     price = 0
                 else:
-                    price = 20
+                    price = 10
                 colorRole = discord.utils.get(self.bot.get_guild(interaction.guild.id).roles, id = int(value))
-                if userStars['stars']['4'] >= price: # 20 estrelas azuis
+                if userStars['stars']['4'] >= price: # 10 estrelas azuis
                     colorsBuyEmbed = discord.Embed(title = f"꧁🎨 Cores Especiais 🎨꧂", description = f"Você tem certeza de que deseja comprar esta cor: {colorRole.mention}?", color = discord.Color.from_rgb(20, 120, 255))
                     colorsBuyEmbed.add_field(name = f"Preço:", value = f"{price} {link['stars']['emjs']['4']}", inline = True)
                     colorsBuyEmbed.add_field(name = f"Suas estrelas:", value = f"{userStars['stars']['4']} {link['stars']['emjs']['4']}", inline = True)
