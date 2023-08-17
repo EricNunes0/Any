@@ -67,51 +67,6 @@ class cog_ps(commands.Cog):
         embed.set_thumbnail(url="https://i.imgur.com/A9X6IKH.gif")
         await ctx.reply(embed=embed)
 
-    @commands.command(name="tweet")
-    @cooldown(1,5, type = commands.BucketType.user)
-    async def tweet(self, ctx, *, mensagem=None):
-        userAvatar = ctx.author.avatar_url
-        url = requests.get(userAvatar)
-        if mensagem == None:
-            await ctx.send(f"❌| {ctx.author.mention}, insira um texto.")
-            return
-        await open_account(ctx.author)
-        users = await get_bank_data()
-        earnings = 7
-        users[str(ctx.author.id)]["wallet"] += earnings
-        with open("mainbank.json","w") as f:
-            json.dump(users,f)
-        avatar = Image.open(BytesIO(url.content))
-        avatar = avatar.resize((70,70))
-        bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
-        mascara = Image.new('L', bigavatar, 0)
-        recortar = ImageDraw.Draw(mascara)
-        recortar.ellipse((0, 0) + bigavatar, fill=255)
-        mascara = mascara.resize(avatar.size, Image.ANTIALIAS)
-        avatar.putalpha(mascara)
-
-        saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
-        saida.putalpha(mascara)
-        saida.save('img_avatar.png')
-
-        img = Image.open("img_tweet(1).png")
-        fonte1 = ImageFont.truetype("font_arial.ttf", 20)
-        fonte2 = ImageFont.truetype("font_arial.ttf", 30)
-        nick = ImageDraw.Draw(img)
-        nick.text(xy=(150,60), text=f"{ctx.author.name}", fill=(0, 0, 0), font=fonte1)
-        nick.text(xy=(150,80), text=f"@{ctx.author.name}", fill=(100, 100, 100), font=fonte1)
-        texto = ImageDraw.Draw(img)
-        textao = textwrap.fill(text=mensagem, width=40)
-        texto.text(xy=(70,130), text=f"{textao}", fill=(0, 0, 0), font=fonte2)
-        retweets = random.randint(30000,80000)
-        likes = random.randint(40000,100000)
-        rand = ImageDraw.Draw(img)
-        rand.text(xy=(70,323), text=f"{retweets}", fill=(0, 0, 0), font=fonte1)
-        rand.text(xy=(255,323), text=f"{likes}", fill=(0, 0, 0), font=fonte1)
-        img.paste(avatar, (60, 45), avatar)
-        img.save('img_tweet.png')
-        await ctx.reply(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +{earnings}**", file=discord.File('img_tweet.png'))
-
     @commands.command(name="candidato")
     @cooldown(1,5, type = commands.BucketType.user)
     async def candidato(self, ctx, member: discord.Member = None):
@@ -153,30 +108,6 @@ class cog_ps(commands.Cog):
         img.paste(avatar, (60, 90), avatar)
         img.save('img_candidato.png')
         await ctx.send(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +{earnings}**",file=discord.File('img_candidato.png'))
-
-    @commands.command(name="clyde")
-    @cooldown(1,5, type = commands.BucketType.user)
-    async def clyde(self, ctx, *, mensagem=None):
-        now = datetime.datetime.now()
-        now = now.strftime("%d/%m/%Y às %H:%M")
-        if mensagem == None:
-            return await ctx.send(f"❌| {ctx.author.mention}, insira um texto.")
-        await open_account(ctx.author)
-        users = await get_bank_data()
-        earnings = 7
-        users[str(ctx.author.id)]["wallet"] += earnings
-        with open("mainbank.json","w") as f:
-            json.dump(users,f)
-        img = Image.open("img_clyde(1).png")
-        fonte1 = ImageFont.truetype("font_arial.ttf", 18)
-        fonte2 = ImageFont.truetype("font_arial.ttf", 21)
-        nick = ImageDraw.Draw(img)
-        nick.text(xy=(225,35), text=f"{now}", fill=(140, 140, 140), font=fonte1)
-        texto = ImageDraw.Draw(img)
-        textao = textwrap.fill(text=mensagem, width=55)
-        texto.text(xy=(110,60), text=f"{textao}", fill=(220, 220, 220), font=fonte2)
-        img.save('img_clyde.png')
-        await ctx.send(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +{earnings}**",file=discord.File('img_clyde.png'))
 
     @commands.command(name="christmasgift", aliases = ["giftchristmas","natalpresente","presentenatal","natalgift","giftnatal"])
     @cooldown(1,8, type = commands.BucketType.user)
