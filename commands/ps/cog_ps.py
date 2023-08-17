@@ -59,107 +59,13 @@ class cog_ps(commands.Cog):
     @commands.command(name="photoshop", aliases = ["ps","🖼️"])
     @cooldown(1,3, type = commands.BucketType.user)
     async def photoshop(self, ctx):
-        with open('prefixes.json', 'r') as f:
-            prefixes = json.load(f)
-        prefix = prefixes[str(ctx.guild.id)]
+        #with open('prefixes.json', 'r') as f:
+        #    prefixes = json.load(f)
+        prefix = "a!"#prefixes[str(ctx.guild.id)]
         embed = discord.Embed(title = f"『🖼️』Photoshop [22]",description =  "**`avataredit - bbb22 - candidato - captcha - christmasgift - clyde - 🛠️crewmate - facecomment - facepost - fato - hipocrisia - instacomment - laranjo - mine - notstonks - pp - srincrivel - stonks - tweet - ytcomment - xcomment - zapmessage`**",color = 0xff7b00)
-        embed.set_footer(text=f"• Para obter informações de cada comando, digite {prefix}help <comando>", icon_url=self.bot.user.avatar_url)
+        embed.set_footer(text=f"• Para obter informações de cada comando, digite {prefix}help <comando>", icon_url=self.bot.user.display_avatar.url)
         embed.set_thumbnail(url="https://i.imgur.com/A9X6IKH.gif")
         await ctx.reply(embed=embed)
-
-    @commands.command(name="candidato")
-    @cooldown(1,5, type = commands.BucketType.user)
-    async def candidato(self, ctx, member: discord.Member = None):
-        if not member:
-            member = ctx.message.author
-        userAvatar = member.avatar_url
-        url = requests.get(userAvatar)
-        await open_account(ctx.author)
-        users = await get_bank_data()
-        earnings = 7
-        users[str(ctx.author.id)]["wallet"] += earnings
-        with open("mainbank.json","w") as f:
-            json.dump(users,f)
-        avatar = Image.open(BytesIO(url.content))
-        avatar = avatar.resize((450,450))
-        bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
-        mascara = Image.new('L', bigavatar, 0)
-        recortar = ImageDraw.Draw(mascara)
-        recortar.ellipse((0, 0) + bigavatar, fill=255)
-        mascara = mascara.resize(avatar.size, Image.ANTIALIAS)
-        avatar.putalpha(mascara)
-
-        saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
-        saida.putalpha(mascara)
-        saida.save('img_avatar.png')
-
-        img = Image.open("img_candidato(1).png")
-        fonte1 = ImageFont.truetype("font_arial.ttf", 70)
-        fonte2 = ImageFont.truetype("font_arial.ttf", 45)
-        nick = ImageDraw.Draw(img)
-        nick.text(xy=(585,180), text=f"{member.name}", fill=(255, 255, 255), font=fonte1)
-        randomCand = ["Presidente","Prefeito","Governador","Vereador","Deputado Federal","Deputado Estadual"]
-        randomCandidato = random.choice(randomCand)
-        randomPart = ["Partido da Índole Nacional do Tráfico de Ovos - PINTO","Partido do Queijo Parmesão - PQP","Partido do Amantes de Uvas - PAU","Partido Estadual dos Navegadores da Internet Semanal - PENIS","Partido dos Opositores a Memes Cringes - POMC","Partido dos Postadores de Vídeos Cringes - PPVC","Partido dos Apreciadores dos Carros de Ovos - PACO"]
-        randomPartido = random.choice(randomPart)
-        rand = ImageDraw.Draw(img)
-        rand.text(xy=(585,250), text=f"{randomCandidato}", fill=(255, 255, 255), font=fonte1)
-        rand.text(xy=(585,330), text=f"{randomPartido}", fill=(255, 255, 255), font=fonte2)
-        img.paste(avatar, (60, 90), avatar)
-        img.save('img_candidato.png')
-        await ctx.send(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +{earnings}**",file=discord.File('img_candidato.png'))
-
-    @commands.command(name="christmasgift", aliases = ["giftchristmas","natalpresente","presentenatal","natalgift","giftnatal"])
-    @cooldown(1,8, type = commands.BucketType.user)
-    async def christmasgift(self, ctx, member:discord.Member = None):
-        with open('prefixes.json', 'r') as f:
-            prefixes = json.load(f)
-        prefix = prefixes[str(ctx.guild.id)]
-        if member == None:
-            return await ctx.send(f"❌| Por favor {ctx.author.mention}, mencione um usuário.\n⁉| Para mais informações sobre o comando, digite `{prefix}help christmasgift`")
-        userAvatar = ctx.author.avatar_url
-        url = requests.get(userAvatar)
-        userAvatar1 = member.avatar_url
-        url1 = requests.get(userAvatar1)
-        
-        avatar = Image.open(BytesIO(url.content))
-        avatar = avatar.resize((120,120))
-        bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
-        mascara = Image.new('L', bigavatar, 0)
-        recortar = ImageDraw.Draw(mascara)
-        recortar.ellipse((0, 0) + bigavatar, fill=255)
-        mascara = mascara.resize(avatar.size, Image.ANTIALIAS)
-        avatar.putalpha(mascara)
-        
-        saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
-        saida.putalpha(mascara)
-        saida.save('img_avatar.png')
-        
-        avatar1 = Image.open(BytesIO(url1.content))
-        avatar1 = avatar1.resize((95,95))
-        bigavatar1 = (avatar1.size[0] * 3, avatar1.size[1] * 3)
-        mascara1 = Image.new('L', bigavatar1, 0)
-        recortar1 = ImageDraw.Draw(mascara1)
-        recortar1.ellipse((0, 0) + bigavatar1, fill=255)
-        mascara1 = mascara1.resize(avatar1.size, Image.ANTIALIAS)
-        avatar1.putalpha(mascara1)
-        
-        saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
-        saida.putalpha(mascara)
-        saida.save('img_avatar(1).png')
-        
-        img = Image.open("img_natal(1).png")
-        img.paste(avatar, (125, 240), avatar)
-        img.paste(avatar1, (470, 170), avatar1)
-        img.save('img_natal.png')
-        
-        await open_account(ctx.author)
-        users = await get_bank_data()
-        earnings = 8
-        users[str(ctx.author.id)]["wallet"] += earnings
-        with open("mainbank.json","w") as f:
-            json.dump(users,f)
-        await ctx.send(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +{earnings}**",file=discord.File('img_natal.png'))
 
     @commands.command(name="laranjo")
     @cooldown(1,5, type = commands.BucketType.user)
