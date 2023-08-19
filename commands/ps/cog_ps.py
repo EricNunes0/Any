@@ -136,50 +136,6 @@ class cog_ps(commands.Cog):
         img.save('img_facepost.png')
         await ctx.reply(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +{earnings}**", file=discord.File('img_facepost.png'))
 
-    @commands.command(name="facecomment", aliases = ["facecom"])
-    @cooldown(1,7, type = commands.BucketType.user)
-    async def facecomment(self, ctx, *, mensagem=None):
-        userAvatar = ctx.author.avatar_url
-        url = requests.get(userAvatar)
-        if mensagem == None:
-            await ctx.send(f"❌| {ctx.author.mention}, insira um texto.")
-            return
-        await open_account(ctx.author)
-        users = await get_bank_data()
-        earnings = 7
-        users[str(ctx.author.id)]["wallet"] += earnings
-        with open("mainbank.json","w") as f:
-            json.dump(users,f)
-        avatar = Image.open(BytesIO(url.content))
-        avatar = avatar.resize((50,50))
-        bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
-        mascara = Image.new('L', bigavatar, 0)
-        recortar = ImageDraw.Draw(mascara)
-        recortar.ellipse((0, 0) + bigavatar, fill=255)
-        mascara = mascara.resize(avatar.size, Image.ANTIALIAS)
-        avatar.putalpha(mascara)
-
-        saida = ImageOps.fit(avatar, mascara.size, centering=(0.5, 1.5))
-        saida.putalpha(mascara)
-        saida.save('img_avatar.png')
-
-        img = Image.open("img_facecomment(1).png")
-        fonte1 = ImageFont.truetype("font_arial.ttf", 18)
-        fonte2 = ImageFont.truetype("font_arial.ttf", 22)
-        nick = ImageDraw.Draw(img)
-        nick.text(xy=(75,20), text=f"{ctx.author.name}", fill=(255, 255, 255), font=fonte1)
-        texto = ImageDraw.Draw(img)
-        textao = textwrap.fill(text=mensagem, width=40)
-        texto.text(xy=(75,45), text=f"{textao}", fill=(255, 255, 255), font=fonte2)
-        comenta = random.randint(20,150)
-        likes = random.randint(100,500)
-        rand = ImageDraw.Draw(img)
-        rand.text(xy=(97,283), text=f"{comenta}", fill=(200, 200, 200), font=fonte1)
-        rand.text(xy=(526,241), text=f"{likes}", fill=(255, 255, 255), font=fonte1)
-        img.paste(avatar, (7, 9), avatar)
-        img.save('img_facecomment.png')
-        await ctx.reply(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +{earnings}**", file=discord.File('img_facecomment.png'))
-
     @commands.command(name="instacomment", aliases = ["instacom"])
     @cooldown(1,7, type = commands.BucketType.user)
     async def instacomment(self, ctx, *, mensagem=None):

@@ -36,7 +36,7 @@ class cog_filter(commands.Cog):
     async def filter(self, ctx, member:discord.Member = None, *, filter = None):
         try:
             embed = discord.Embed(title = f"Avatar Edit",
-            description = f"**『🖼️✨』** Aplique diferentes filtros em seu avatar!\n**『⚙️』Uso:** `a!avataredit <usuário> <filtro>`\n**『💬』Exemplo:** `{prefix}avataredit invert `{ctx.author.mention}",color = 0xff7b00)
+            description = f"**『🖼️✨』** Aplique diferentes filtros em seu avatar!\n**『⚙️』Uso:** `a!avataredit <usuário> <filtro>`\n**『💬』Exemplo:** `{prefix}avataredit` {ctx.author.mention} `invert",color = 0xff7b00)
             embed.set_thumbnail(url="https://i.imgur.com/A9X6IKH.gif")
             embed.add_field(name = "『➖』Invert/Negative", value = "`Inverte as cores`", inline = True)
             embed.add_field(name = "『⬛』Gray/Grayscale", value = "`Preto e branco`", inline = True)
