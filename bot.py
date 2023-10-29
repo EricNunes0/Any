@@ -31,6 +31,7 @@ from handlers.ticketParceriaNew import *
 from handlers.ticketPatrocinio import *
 from handlers.ticketMod import *
 from events.on_member_join import *
+from handlers.youtube import *
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -134,6 +135,9 @@ async def on_message(message):
         boosterEmbed.set_thumbnail(url = message.author.display_avatar.url)
         boosterEmbed.set_image(url = "https://cdn.discordapp.com/attachments/740760158098948097/1070909269727256576/191d73a89a48d9788a56a5b9ff2db336.png")
         await message.channel.send(content = f"{message.author.mention}", embed = boosterEmbed)
+        return
+    if int(message.channel.id) == 1167917462516408381:
+        await youtube(bot = bot, message = message)
         return
     if message.author.bot:
         return

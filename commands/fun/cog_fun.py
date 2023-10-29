@@ -34,49 +34,10 @@ class cog_fun(commands.Cog):
         embed.set_thumbnail(url="https://i.imgur.com/hEgd2tI.gif")
         await ctx.reply(embed=embed)
 
-    @commands.command(aliases=["8ball","pergunta"])
-    @cooldown(1,2, type = commands.BucketType.user)
-    async def ball(self, ctx, *, message):
-        now = datetime.datetime.now()
-        now = now.strftime("%H:%M:%S")
-        answers = ["Sim!✔","Não!❌","Provavelmente sim ☑","Provavelmente não ✖","Claro que sim!✅","Claro que não!❎","Acho que sim☑","Acho que não ✖","Minhas fontes dizem que sim ✔","Minhas fontes dizem que não ❌"]
-        escolha = random.choice(answers)
-        ballEmbed = discord.Embed(color = 0xffbb00)
-        ballEmbed.add_field(name = "『❔』Pergunta:", value = f"```{message}```", inline = False)
-        ballEmbed.add_field(name = "『🎱』Resposta:", value = f"```{escolha}```", inline = False)
-        ballEmbed.set_footer(text=f"• Pedido por {ctx.author} às {now}", icon_url= ctx.author.avatar.url)
-        await ctx.send(embed = ballEmbed)
-
-    @ball.error
-    async def ball_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            now = datetime.datetime.now()
-            now = now.strftime("%d/%m/%Y - %H:%M:%S")
-            embed = discord.Embed(title = f"『🎱』{prefix}8ball", color = 0xffbb00)
-            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar.url)
-            embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Responde qualquer pergunta com 100% de precisão 😎.`", inline = False)
-            embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{prefix}ball, {prefix}pergunta`", inline = False)
-            embed.add_field(name = f"『⚙️』Uso:", value = f"`{prefix}8ball <pergunta>`", inline = False)
-            embed.add_field(name = f"『💬』Exemplos¹ (60 segundos):", value = f"`{prefix}8ball Eu vou ganhar na loteria?`", inline = False)
-            embed.add_field(name = f"『🛠️』Permissões do usuário:", value = f"`Nenhuma`", inline = False)
-            embed.add_field(name = f"『🛠️』Permissões do bot:", value = f"`Ver canais, Enviar mensagens`", inline = False)
-            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar.url)
-            embed.set_thumbnail(url="https://i.imgur.com/2nkTc33.gif")
-            await ctx.reply(embed=embed)
-
-
     @commands.command(name="akumanomi")
     @cooldown(1,3, type = commands.BucketType.user)
     async def akumanomi(self, ctx):
         num = random.randint(1,20)
-        print(1,20)
-        #await open_account(ctx.author)
-        #users = await get_bank_data()
-        #user = ctx.author
-        #earnings = 3
-        #users[str(user.id)]["wallet"] += earnings
-        #with open("mainbank.json","w") as f:
-        #    json.dump(users,f)
         akuma_name = ["Você achou a Gomu Gomu no Mi! 👒",
         "Você achou a Hana Hana no Mi! 🌸",
         "Você achou a Yomi Yomi no Mi! 💀",
@@ -148,21 +109,6 @@ class cog_fun(commands.Cog):
         akumanomi.set_thumbnail(url=akuma_thumb[num])
         akumanomi.set_footer(text = f"Pedido por {ctx.author.name} em {now}", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=akumanomi)
-
-    @commands.command(name="amogus", aliases = ["sus","amongus"])
-    @cooldown(1,1, type = commands.BucketType.user)
-    async def amogus(self, ctx):
-        num = random.randint(0,24)
-        squares = ["🟥","🟥","🟧","🟨","🟩","🟪","🟫","⬜","⬛","⏹️",":flag_br:",":flag_es:","🇨🇳","🇬🇧", "🇳🇱", "🇦🇲", "🇦🇷", "🇦🇹", "🇦🇽", "🇦🇿", "🇧🇪", "🇨🇦", "🇫🇷", "🇮🇹", "🇯🇵", "🇰🇷"]
-        s = squares[num]
-        sus = f"➖➖{s}{s}{s}\n➖{s}{s}🟦🟦🟦\n{s}{s}{s}🟦🟦🟦\n{s}{s}{s}🟦🟦🟦\n{s}{s}{s}{s}{s}{s}\n➖{s}{s}{s}{s}{s}\n➖{s}{s}➖{s}{s}\n➖{s}{s}➖{s}{s}"
-        #await open_account(ctx.author)
-        #users = await get_bank_data()
-        #earnings = 1
-        #users[str(ctx.author.id)]["wallet"] += earnings
-        #with open("mainbank.json","w") as f:
-        #    json.dump(users,f)
-        await ctx.send(sus)
 
     @commands.command(name="angry", aliases = ["raiva"])
     @cooldown(1,3, type = commands.BucketType.user)
@@ -255,9 +201,6 @@ class cog_fun(commands.Cog):
     @commands.command(name="baka")
     @cooldown(1,3, type = commands.BucketType.user)
     async def baka(self, ctx, *, member: discord.Member = None):
-        #with open('prefixes.json', 'r') as f:
-        #    prefixes = json.load(f)
-        #prefix = prefixes[str(ctx.guild.id)]
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
         if member == None:
@@ -279,13 +222,6 @@ class cog_fun(commands.Cog):
         "https://c.tenor.com/b8sy7WBrJA8AAAAd/baka-tsundere.gif",
         ]
         url_imagem = random.choice(url_image)
-        #await open_account(ctx.author)
-        #users = await get_bank_data()
-        #user = ctx.author
-        #earnings = 5
-        #users[str(user.id)]["wallet"] += earnings
-        #with open("mainbank.json","w") as f:
-        #    json.dump(users,f)
         embed_image = discord.Embed(
             description = f"{ctx.author.mention} chamou o {member.mention} de baka!",
             color = 0xffbb00,
@@ -297,9 +233,6 @@ class cog_fun(commands.Cog):
     @commands.command(name="bater", aliases = ["punch"])
     @cooldown(1,3, type = commands.BucketType.user)
     async def on_member(self, ctx, *, member: discord.Member = None):
-        #with open('prefixes.json', 'r') as f:
-        #    prefixes = json.load(f)
-        #prefix = prefixes[str(ctx.guild.id)]
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
         if member == None:
@@ -319,13 +252,6 @@ class cog_fun(commands.Cog):
         "https://pa1.narvii.com/6710/0d7f0d555493888fc03d410306678953305fece5_hq.gif",
         "https://c.tenor.com/P4HQFHaju04AAAAC/muda-muda-giorno-giovanna.gif"
         ]
-        #await open_account(ctx.author)
-        #users = await get_bank_data()
-        #user = ctx.author
-        #earnings = 5
-        #users[str(user.id)]["wallet"] += earnings
-        #with open("mainbank.json","w") as f:
-        #    json.dump(users,f)
         url_imagem = random.choice(url_image)
         embed_image = discord.Embed(
             description = f"{ctx.author.mention} bateu em {member.mention}!",
@@ -338,9 +264,6 @@ class cog_fun(commands.Cog):
     @commands.command(name="beijar", aliases = ["kiss"])
     @cooldown(1,3, type = commands.BucketType.user)
     async def beijar(self, ctx, *, member: discord.Member = None):
-        #with open('prefixes.json', 'r') as f:
-        #    prefixes = json.load(f)
-        #prefix = prefixes[str(ctx.guild.id)]
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
         if member == None:
@@ -476,9 +399,6 @@ class cog_fun(commands.Cog):
     @commands.command(name="cafune", aliases = ["pat"])
     @cooldown(1,3, type = commands.BucketType.user)
     async def cafune(self, ctx, *, member: discord.Member = None):
-        #with open('prefixes.json', 'r') as f:
-        #    prefixes = json.load(f)
-        #prefix = prefixes[str(ctx.guild.id)]
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y - %H:%M:%S")
         if member == None:
@@ -636,9 +556,6 @@ class cog_fun(commands.Cog):
     @commands.command(name="hack", pass_context = True)
     @cooldown(1,1, type = commands.BucketType.user)
     async def hack(self, ctx, member: discord.Member = None):
-        #with open('prefixes.json', 'r') as f:
-        #    prefixes = json.load(f)
-        #prefix = prefixes[str(ctx.guild.id)]
         if member == None:
             await ctx.send(f"**❌| {ctx.author.mention}**, mencione um usuário.\n**⁉|** Para mais informações sobre o comando, digite `{prefix}help hack`")
             return

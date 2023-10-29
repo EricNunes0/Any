@@ -123,18 +123,12 @@ class cog_ps(commands.Cog):
             img = Image.open("img_facepost(13).png")
         else:
             return await ctx.reply(embed=embed)
-        await open_account(ctx.author)
-        users = await get_bank_data()
-        earnings = 6
-        users[str(ctx.author.id)]["wallet"] += earnings
-        with open("mainbank.json","w") as f:
-            json.dump(users,f)
         fonte1 = ImageFont.truetype("font_coolvetica_rg.ttf", 30)
         texto = ImageDraw.Draw(img)
         textao = textwrap.fill(text=mensagem, width=30)
         texto.text(xy=(20,20), text=f"{textao}", fill=(0, 0, 0), font=fonte1)
         img.save('img_facepost.png')
-        await ctx.reply(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +{earnings}**", file=discord.File('img_facepost.png'))   
+        await ctx.reply(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +**", file=discord.File('img_facepost.png'))   
 
     @commands.command(name="zapmessage", aliases = ["zapmsg"])
     @cooldown(1,7, type = commands.BucketType.user)
@@ -146,12 +140,6 @@ class cog_ps(commands.Cog):
             return
         now = datetime.datetime.now()
         now = now.strftime("%H:%M")
-        await open_account(ctx.author)
-        users = await get_bank_data()
-        earnings = 7
-        users[str(ctx.author.id)]["wallet"] += earnings
-        with open("mainbank.json","w") as f:
-            json.dump(users,f)
         avatar = Image.open(BytesIO(url.content))
         avatar = avatar.resize((105,105))
         bigavatar = (avatar.size[0] * 3, avatar.size[1] * 3)
@@ -204,7 +192,7 @@ class cog_ps(commands.Cog):
         texto.text(xy=(890,1069), text=f"{now}", fill=(170, 210, 170), font=fonte3)
         zap.paste(avatar, (63, 18), avatar)
         zap.save('img_zapmessage.png')
-        await ctx.reply(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +{earnings}**", file=discord.File('img_zapmessage.png'))
+        await ctx.reply(content = f"**{ctx.author.mention} <:anicoin:919293624850727022>| +**", file=discord.File('img_zapmessage.png'))
 
 async def setup(bot):
     print("cog_ps.py loaded")

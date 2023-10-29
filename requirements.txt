@@ -4,7 +4,9 @@ python-dotenv
 discord-py-interactions
 discord.py-message-components
 discord-py-slash-command
+httpcore==0.18.0
+pymongo==4.3.3
 googletrans
 Pillow
 PyNaCl
-pymongo
+pytube
