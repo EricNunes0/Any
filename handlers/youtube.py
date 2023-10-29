@@ -42,8 +42,8 @@ class sendLocation(discord.ui.View):
                 return
             youtubeObject = youtubeQuery.streams.get_highest_resolution()
             videoName = "resultado.mp4"
-            dirPath = str(os.getcwd()) + f"\\videos"
-            filePath = dirPath + f"\\{videoName}"
+            dirPath = str(os.getcwd()) + f"/videos"
+            filePath = dirPath + f"/{videoName}"
             try:
                 yt = youtubeObject.download(filename = videoName, output_path=dirPath)
             except Exception as e:
@@ -58,7 +58,7 @@ class sendLocation(discord.ui.View):
                 ageRestriction = "Sim"
             self.embed.title = youtubeQuery.title
             self.embed.set_thumbnail(url = youtubeQuery.thumbnail_url)
-            self.embed.add_field(name = "『©』Autor:", value = f"`{youtubeQuery.author}`")
+            self.embed.add_field(name = "『©』Autor:", value = f"[{youtubeQuery.author}]({youtubeQuery.channel_url})")
             self.embed.add_field(name = "『⏫』Data de publicação:", value = f"`{youtubeQuery.publish_date}`")
             self.embed.add_field(name = "『👁』Visualizações:", value = f"`{youtubeQuery.views}`")
             self.embed.add_field(name = "『🔞』Restrição de idade:", value = f"`{ageRestriction}`")
@@ -73,8 +73,8 @@ class sendLocation(discord.ui.View):
                 self.embed.title = "Este vídeo é muito grande"
                 self.embed.color = discord.Color.from_rgb(255, 0, 0)
             await interaction.message.edit(embed = self.embed)
-            if os.path.exists(f"videos\\{videoName}"):
-                os.remove(f"videos\\{videoName}")
+            if os.path.exists(f"videos/{videoName}"):
+                os.remove(f"videos/{videoName}")
             return
     
     @discord.ui.button(label = f"DM", style = discord.ButtonStyle.blurple, emoji = "👤", disabled = False)
@@ -102,8 +102,8 @@ class sendLocation(discord.ui.View):
                 return
             youtubeObject = youtubeQuery.streams.get_highest_resolution()
             videoName = "resultado.mp4"
-            dirPath = str(os.getcwd()) + f"\\videos"
-            filePath = dirPath + f"\\{videoName}"
+            dirPath = str(os.getcwd()) + f"/videos"
+            filePath = dirPath + f"/{videoName}"
             try:
                 yt = youtubeObject.download(filename = videoName, output_path=dirPath)
             except Exception as e:
@@ -119,7 +119,7 @@ class sendLocation(discord.ui.View):
             self.embed.title = youtubeQuery.title
             self.embed.color = discord.Color.from_rgb(0, 255, 0)
             self.embed.set_thumbnail(url = youtubeQuery.thumbnail_url)
-            self.embed.add_field(name = "『©』Autor:", value = f"`{youtubeQuery.author}`")
+            self.embed.add_field(name = "『©』Autor:", value = f"[{youtubeQuery.author}]({youtubeQuery.channel_url})")
             self.embed.add_field(name = "『⏫』Data de publicação:", value = f"`{youtubeQuery.publish_date}`")
             self.embed.add_field(name = "『👁』Visualizações:", value = f"`{youtubeQuery.views}`")
             self.embed.add_field(name = "『🔞』Restrição de idade:", value = f"`{ageRestriction}`")
@@ -136,8 +136,8 @@ class sendLocation(discord.ui.View):
                 self.embed.title = "Este vídeo é muito grande"
                 self.embed.color = discord.Color.from_rgb(255, 0, 0)
             await interaction.message.edit(embed = self.embed)
-            if os.path.exists(f"videos\\{videoName}"):
-                os.remove(f"videos\\{videoName}")
+            if os.path.exists(f"videos/{videoName}"):
+                os.remove(f"videos/{videoName}")
             return
     
     @discord.ui.button(label = f"Cancelar", style = discord.ButtonStyle.red, emoji = "❌", disabled = False)
