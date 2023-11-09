@@ -10,3 +10,4 @@ googletrans
 Pillow
 PyNaCl
 pytube
+ffmpeg
