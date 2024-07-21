@@ -64,43 +64,15 @@ class cog_mod(commands.Cog):
     @commands.command(name="mod", aliases = ["⚙️"])
     @cooldown(1,3, type = commands.BucketType.user)
     async def mod(self, ctx):
-        embed = discord.Embed(title = f"『⚙』Moderação [28]『<a:ab_BlueDiamond:938850305083314207>』",description = f"**`addemoji - addrole - ban - clear - clone - createchannel - createinvite - deletechannel - deleteinvites - invites - kick - listban - lock - mute - nuke - removeemoji - removerole - renamechannel - say - sayembed - setguildicon - setguildname - setnick - setprefix - slowmode - unban - unlock - unmute`**",color = 0x0055c5)
-        embed.set_footer(text=f"• Para obter informações de cada comando, digite {command_prefix}help <comando>", icon_url=self.bot.user.avatar_url)
-        embed.set_thumbnail(url="https://i.imgur.com/Zyaj8U0.gif")
-        await ctx.reply(embed=embed)
-
-    @commands.command(name="addrole", aliases=["createrole"])
-    @bot_has_permissions(manage_roles = True)
-    @has_permissions(manage_roles = True)
-    @cooldown(1,3, type = commands.BucketType.user)
-    async def addrole(self, ctx, *, name):
-        if ctx.author.guild_permissions.manage_roles:
-            await ctx.guild.create_role(name = name)
-            role = discord.utils.get(ctx.guild.roles, name = name)
-            createdRole = discord.Embed(title = f"Emoji criado", description = f"『✅』O cargo foi criado com sucesso!\n『➡️』Cargo: {role.mention}", color = 0x40ffb0)
-            createdRole.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
-            createdRole.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
-            await ctx.reply(embed = createdRole)
-
-    @addrole.error
-    async def addrole_error(self, ctx, error):
-        if isinstance(error, BotMissingPermissions):
-            await ctx.reply(embed = botPermRole)
-        elif isinstance(error, commands.MissingPermissions):
-            await ctx.reply(embed = userPermRole)
-        elif isinstance(error, commands.MissingRequiredArgument):
+        try:
             now = datetime.datetime.now()
             now = now.strftime("%d/%m/%Y - %H:%M:%S")
-            embed = discord.Embed(title = f"『+💼』{command_prefix}addrole", color = 0x4070ff)
-            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
-            embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Cria um cargo para o servidor.`", inline = False)
-            embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}createrole`", inline = False)
-            embed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}addrole <nome>`", inline = False)
-            embed.add_field(name = f"『💬』Exemplo:", value = f"`{command_prefix}addrole Novo cargo`", inline = False)
-            embed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Gerenciar cargos`", inline = False)
-            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
-            embed.set_thumbnail(url="https://i.imgur.com/FEp8F1G.gif")
+            embed = discord.Embed(title = f"『⚙』Moderação [28]『<a:ab_BlueDiamond:938850305083314207>』",description = f"**`addemoji - addrole - ban - clear - clone - createchannel - createinvite - deletechannel - deleteinvites - invites - kick - listban - lock - mute - nuke - removeemoji - removerole - renamechannel - say - sayembed - setguildicon - setguildname - setnick - setprefix - slowmode - unban - unlock - unmute`**",color = 0x0055c5)
+            embed.set_footer(text=f"• Para obter informações de cada comando, digite {command_prefix}help <comando>", icon_url=self.bot.user.display_avatar.url)
+            embed.set_thumbnail(url="https://i.imgur.com/Zyaj8U0.gif")
             await ctx.reply(embed=embed)
+        except Exception as e:
+            print(e)      
 
     @commands.command(name='clear', aliases= ['purge','delete'])
     @bot_has_permissions(manage_messages = True)
@@ -125,7 +97,7 @@ class cog_mod(commands.Cog):
                 await ctx.channel.purge(limit=int(total))
                 clearedMsg = discord.Embed(title = f"Mensagens apagadas!", description = f"『🧹』O canal teve {int(total)} mensagens apagadas!", color = 0x40ffb0)
                 clearedMsg.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
-                clearedMsg.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+                clearedMsg.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.display_avatar.url)
                 del_msg = await ctx.send(embed = clearedMsg)
                 await asyncio.sleep(5)
                 return await del_msg.delete()
@@ -140,13 +112,13 @@ class cog_mod(commands.Cog):
             now = datetime.datetime.now()
             now = now.strftime("%d/%m/%Y - %H:%M:%S")
             embed = discord.Embed(title = f"『🧹』{command_prefix}clear", color = 0x4070ff)
-            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
+            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.display_avatar.url)
             embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Apaga uma quantidade de mensagens.`", inline = False)
             embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}delete, {command_prefix}purge`", inline = False)
             embed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}clear <número>`", inline = False)
             embed.add_field(name = f"『💬』Exemplo:", value = f"`{command_prefix}clear 10`", inline = False)
             embed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Gerenciar mensagens`", inline = False)
-            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.display_avatar.url)
             embed.set_thumbnail(url="https://i.imgur.com/FEp8F1G.gif")
             await ctx.reply(embed=embed)
 
@@ -181,7 +153,7 @@ class cog_mod(commands.Cog):
         )
         embed.add_field(name="Hex:", value=f"{hex}")
         embed.add_field(name="RBG:", value=f"{color1}, {color2}, {color3}")
-        embed.set_footer(text="Requisitado por " + ctx.author.name + " em " + now, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Requisitado por " + ctx.author.name + " em " + now, icon_url=ctx.author.display_avatar.url)
         await ctx.send(embed=embed)
 
     @commands.command(name="createchannel", aliases = ["channelcreate","addchannel","channeladd"])
@@ -194,7 +166,7 @@ class cog_mod(commands.Cog):
             await new_channel.send(f"**『👶』{ctx.author.mention}**, este canal foi criado com sucesso!")
             createdRole = discord.Embed(title = f"Canal criado", description = f"『✅』O canal de texto foi criado com sucesso!\n『📕』Canal: {new_channel.mention}", color = 0x40ffb0)
             createdRole.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
-            createdRole.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            createdRole.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.display_avatar.url)
             await ctx.reply(embed = createdRole)
         else:
             await ctx.send(f"『❌』 {ctx.author.mention}, você não tem a permissão para criar canais! Permissões necessárias: `Gerenciar canais`")
@@ -209,13 +181,13 @@ class cog_mod(commands.Cog):
             now = datetime.datetime.now()
             now = now.strftime("%d/%m/%Y - %H:%M:%S")
             embed = discord.Embed(title = f"『📕』{command_prefix}createchannel", color = 0x4070ff)
-            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
+            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.display_avatar.url)
             embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Cria um canal de texto.`", inline = False)
             embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}channelcreate, {command_prefix}addchannel, {command_prefix}channeladd`", inline = False)
             embed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}createchannel <nome>`", inline = False)
             embed.add_field(name = f"『💬』Exemplo:", value = f"`{command_prefix}createchannel Novo canal`", inline = False)
             embed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Gerenciar canais`", inline = False)
-            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.display_avatar.url)
             embed.set_thumbnail(url="https://i.imgur.com/FEp8F1G.gif")
             await ctx.reply(embed=embed)
 
@@ -251,7 +223,7 @@ class cog_mod(commands.Cog):
             invitelink = await ctx.channel.create_invite(max_age=seconds)
             createdInvite = discord.Embed( title="『✉️』 Convite criado com sucesso!", description=f"**Link do convite:** {invitelink}", color = 0x40ffb0)
             createdInvite.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
-            createdInvite.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            createdInvite.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.display_avatar.url)
             await ctx.send(embed=createdInvite)
             print(invitelink)
         else:
@@ -267,7 +239,7 @@ class cog_mod(commands.Cog):
             now = datetime.datetime.now()
             now = now.strftime("%d/%m/%Y - %H:%M:%S")
             embed = discord.Embed(title = f"『✉️』{command_prefix}createinvite", color = 0x4070ff)
-            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
+            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.display_avatar.url)
             embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Cria um convite para o servidor.`", inline = False)
             embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}invite, {command_prefix}convite`", inline = False)
             embed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}createinvite <tempo><s/m/h/d>`", inline = False)
@@ -277,7 +249,7 @@ class cog_mod(commands.Cog):
             embed.add_field(name = f"『💬』Exemplos⁴ (7 dias):", value = f"`{command_prefix}createinvite 7d`", inline = False)
             embed.add_field(name = f"『💬』Exemplos⁵ (Ilimitado):", value = f"`{command_prefix}createinvite 0s`", inline = False)
             embed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Criar convites`", inline = False)
-            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.display_avatar.url)
             embed.set_thumbnail(url="https://i.imgur.com/FEp8F1G.gif")
             await ctx.reply(embed=embed)
 
@@ -294,7 +266,7 @@ class cog_mod(commands.Cog):
             convites = f"{_list}"
             embed.add_field(name = f"Convites:", value = f"{convites}", inline = False)
             embed.set_thumbnail(url=ctx.guild.icon_url)
-            embed.set_footer(text = f"Pedido por {ctx.author.name} em {now}", icon_url=ctx.author.avatar_url)
+            embed.set_footer(text = f"Pedido por {ctx.author.name} em {now}", icon_url=ctx.author.display_avatar.url)
             await ctx.send(embed=embed)
         else:
             await ctx.send(f"『❌』{ctx.author.mention}, você não tem a permissão para ver convites! Permissões necessárias: `Gerenciar servidor`")
@@ -310,7 +282,7 @@ class cog_mod(commands.Cog):
         _list = "\r\n".join([f"『{str(num).zfill(2)}』 {data}" for num, data in enumerate(loop, start=1)])
         banimentos = f"{_list}"
         embed.set_author(name=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
-        embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now, icon_url=ctx.author.display_avatar.url)
         embed.add_field(name="Bans:", value=banimentos, inline=False)
         await ctx.send(embed=embed)
 
@@ -329,7 +301,7 @@ class cog_mod(commands.Cog):
         await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False, view_channel = False)
         lockEmbed = discord.Embed( title="『🔑』 Canal fechado!", description=f"『✅』{ctx.author.mention}, o canal {ctx.channel.mention} foi fechado com sucesso! Para abri-lo, use `{command_prefix}unlock`", color = 0x40ffb0)
         lockEmbed.set_thumbnail(url = "https://i.imgur.com/nKHOkqE.gif")
-        lockEmbed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+        lockEmbed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.display_avatar.url)
         await ctx.send(embed = lockEmbed)
         print("lock")
 
@@ -391,7 +363,7 @@ class cog_mod(commands.Cog):
             now = datetime.datetime.now()
             now = now.strftime("%d/%m/%Y - %H:%M:%S")
             embed = discord.Embed(title = f"『🤫』{command_prefix}mute", color = 0x4070ff)
-            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.avatar_url)
+            embed.set_author(name = f"Central de Ajuda do {self.bot.user.name}", icon_url = self.bot.user.display_avatar.url)
             embed.add_field(name = f"『ℹ️』Descrição:", value = f"`Silencia um usuário no servidor.`", inline = False)
             embed.add_field(name = f"『🔀』Sinônimos:", value = f"`{command_prefix}mutar, {command_prefix}silenciar`", inline = False)
             embed.add_field(name = f"『⚙️』Uso:", value = f"`{command_prefix}mute <@usuário> <tempo><s/m/h>`", inline = False)
@@ -401,7 +373,7 @@ class cog_mod(commands.Cog):
             #embed.add_field(name = f"『💬』Exemplos⁴ (7 dias):", value = f"`{command_prefix}createinvite 7d`", inline = False)
             #embed.add_field(name = f"『💬』Exemplos⁵ (Ilimitado):", value = f"`{command_prefix}createinvite 0s`", inline = False)
             embed.add_field(name = f"『🛠️』Permissões necessárias:", value = f"`Gerenciar canais` e `Gerenciar cargos`", inline = False)
-            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.avatar_url)
+            embed.set_footer(text=f"• Pedido por {ctx.author} em {now}", icon_url= ctx.author.display_avatar.url)
             embed.set_thumbnail(url="https://i.imgur.com/FEp8F1G.gif")
             await ctx.reply(embed=embed)
 
@@ -483,7 +455,7 @@ class cog_mod(commands.Cog):
                 description = f"{mensagem}",
                 color = 0x0055c5,
             )
-            embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+            embed.set_author(name=ctx.author.name, icon_url=ctx.author.display_avatar.url)
             embed.set_thumbnail(url=ctx.guild.icon_url)
             embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now + f"| 💰", icon_url=ctx.guild.icon_url)
             await ctx.send(embed=embed)
@@ -572,7 +544,7 @@ class cog_mod(commands.Cog):
                 description=f"**Modo lento definido por:** {ctx.author.mention}\n**Tempo:** `{time}`",
                 color = 0x0055c5
             )
-            muted_embed.set_footer(text="Configurado por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.avatar_url)
+            muted_embed.set_footer(text="Configurado por " + ctx.author.name + " às " + now + f"| 💰", icon_url=ctx.author.display_avatar.url)
             await ctx.channel.edit(slowmode_delay=seconds)
             await ctx.send(embed=muted_embed)
         else:
@@ -596,8 +568,8 @@ class cog_mod(commands.Cog):
                     embed.add_field(name="📕| Tag de Usuário:", value=f"`{user.name}#{user.discriminator}`", inline=True)
                     embed.add_field(name="💻| ID:", value=f"`{user.id}`", inline=True)
                     #embed.add_field(name="🗓️| Data de criação:", value=f"`{creation_time}`", inline=True)
-                    embed.set_thumbnail(url=user.avatar_url)
-                    embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now + "| 💰 +1", icon_url=ctx.author.avatar_url)
+                    embed.set_thumbnail(url=user.display_avatar.url)
+                    embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now + "| 💰 +1", icon_url=ctx.author.display_avatar.url)
                     await ctx.guild.unban(user)
                     return await ctx.send(embed=embed)
         else:
@@ -789,7 +761,7 @@ class cog_mod(commands.Cog):
                 """,
                 color = 0x0055c5)
             embed.set_thumbnail(url=member.avatar_url)
-            embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now + f"| 💰", icon_url=ctx.author.avatar_url)
+            embed.set_footer(text="Pedido por " + ctx.author.name + " em " + now + f"| 💰", icon_url=ctx.author.display_avatar.url)
             await ctx.send(embed = embed)
 
     @removeemoji.error

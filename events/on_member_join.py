@@ -26,7 +26,7 @@ async def onMemberJoin(bot, member):
             e = random.choice(welEmjs)
             guildMemberAdd = discord.Embed(title = f"{e} Seja bem-vindo(a)! {e}", color = discord.Color.from_rgb(240, 210, 0))
             guildMemberAdd.set_author(name = f"{member.name}#{member.discriminator}", icon_url = member.display_avatar.url)
-            guildMemberAdd.add_field(name = f"〔<a:ab_LevelDown:1051238512319537283>〕Confira:", value = f"**『{link['grayDiamond']}』Regras:** <#1064003850228473876>\n**『{link['greenDiamond']}』Registre-se:** <#1068578017292599356>\n**『{link['redDiamond']}』Use o Janny:** <#970038786908127273>\n**『{link['purpleDiamond']}』Participe dos nossos sorteios:** <#1047160583302164550>")
+            guildMemberAdd.add_field(name = f"〔<a:ab_LevelDown:1051238512319537283>〕Confira:", value = f"**『{link['grayDiamond']}』Regras:** <#1064003850228473876>\n**『{link['greenDiamond']}』Registre-se:** <#1068578017292599356>\n**『{link['redDiamond']}』Use o Janny:** <#970038786908127273>")
             guildMemberAdd.set_thumbnail(url = member.display_avatar.url)
             guildMemberAdd.set_footer(text = f"ID: {member.id}", icon_url = member.display_avatar.url)
             print("Embed criado")
@@ -34,10 +34,8 @@ async def onMemberJoin(bot, member):
             view.add_item(discord.ui.Button(label = "Regras", style = discord.ButtonStyle.link, emoji = "📃", url = "https://discord.com/channels/710506024489976028/1064003850228473876"))
             view.add_item(discord.ui.Button(label = "Registre-se", style = discord.ButtonStyle.link, emoji = "📋", url = "https://discord.com/channels/710506024489976028/1068578017292599356"))
             view.add_item(discord.ui.Button(label = "Janny", style = discord.ButtonStyle.link, emoji = "🎰", url = "https://discord.com/channels/710506024489976028/970038786908127273"))
-            view.add_item(discord.ui.Button(label = "Sorteios", style = discord.ButtonStyle.link, emoji = "🎉", url = "https://discord.com/channels/710506024489976028/1047160583302164550"))
-            print("Row criado")
+            #view.add_item(discord.ui.Button(label = "Sorteios", style = discord.ButtonStyle.link, emoji = "🎉", url = "https://discord.com/channels/710506024489976028/1047160583302164550"))
             await welcomeChannel.send(content = f"{member.mention} <@&1070416957108650014>", embed = guildMemberAdd, view = view)
-            print("Mensagem de boas vindas enviada")
             return
     except Exception as e:
         print(e)
